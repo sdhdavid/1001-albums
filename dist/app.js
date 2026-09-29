@@ -157,8 +157,8 @@ function renderMode() {
     const complete = a.youtubeAlbumComplete;
     $('mode-explain').textContent = complete ? 'נגן YouTube של האלבום. בפלייליסט אפשר לבחור קטע מתוך הנגן ולהמשיך להאזין ברצף.' : 'נגן YouTube עם קטע מתוך האלבום. עדיין לא נמצא מקור אמין לכל ההקלטות של מהדורת האלבום.';
     $('album-youtube-player').src = a.youtubeAlbumPlaylist
-      ? `https://www.youtube-nocookie.com/embed/videoseries?list=${a.youtubeAlbumPlaylist}`
-      : `https://www.youtube-nocookie.com/embed/${a.youtubeAlbumVideo}`;
+      ? `https://www.youtube.com/embed/videoseries?list=${a.youtubeAlbumPlaylist}`
+      : `https://www.youtube.com/embed/${a.youtubeAlbumVideo}`;
     $('album-youtube-player').title = `נגן YouTube — ${a.title}`;
     $('album-youtube-direct').href = a.youtubeAlbumPlaylist
       ? `https://www.youtube.com/playlist?list=${a.youtubeAlbumPlaylist}`
