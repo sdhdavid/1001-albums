@@ -177,6 +177,15 @@ function setCatalogOpen(open) {
   catalogOpen = open; $('catalog').classList.toggle('open', open);
   $('catalog-toggle').setAttribute('aria-expanded', String(open));
 }
+// English names inside Hebrew text: isolate each Latin run so it keeps its own
+// order, and keep short ones on one line so a title never splits mid-phrase.
+function bidiText(el, text) {
+  const parts = text.split(/([A-Za-z][A-Za-z0-9’'.,&!?()\- ]*[A-Za-z0-9!?.)’'])/);
+  el.replaceChildren(...parts.map((part, i) => {
+    if (i % 2 === 0) return document.createTextNode(part);
+    const run = element('bdi', part.length <= 28 ? 'latin nowrap' : 'latin', part); run.dir = 'ltr'; return run;
+  }));
+}
 function renderList() {
   const search = $('album-search').value.trim().toLocaleLowerCase();
   const visible = albums.filter(a => `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
@@ -210,7 +219,7 @@ function renderAlbum() {
   $('album-year').textContent = a.year; $('album-number').textContent = `#${String(a.n).padStart(3, '0')}`;
   $('record-number').textContent = String(a.n).padStart(3, '0');
   $('chapter').textContent = `אלבום ${active + 1} מתוך ${albums.length} במסע`;
-  $('album-note').textContent = a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note;
+  bidiText($('album-note'), a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note);
   $('previous-album').disabled = active === 0; $('next-album').disabled = active === albums.length - 1;
   $('focus-editor').open = false;
   prepareGuide(); renderDone(); renderList(); renderMode(); renderCover();
