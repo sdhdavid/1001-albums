@@ -39,7 +39,6 @@ const trackKey = (a, t) => a.youtubePlaylist || a.fullAlbumVideo ? t[2] : t[1];
 // Where a song sits inside the YouTube playlist (-1: not in this playlist).
 const playlistIndex = (a, t) => resolved[a.n]?.[t[2]] ?? t[2];
 const playable = (a, t) => !a.youtubePlaylist || playlistIndex(a, t) >= 0;
-const clock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 function simplify(text, artist = '') {
   let s = String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’‘`´]/g, "'");
   for (const part of artist.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().split(/\s*(?:&|\/|,|\+|and|featuring|with)\s+/)) if (part.length > 3) s = s.split(part).join(' ');
@@ -303,7 +302,8 @@ function renderQueue() {
   $('track-list').replaceChildren(...queue.map((t, i) => {
     const li = element('li', playable(a, t) ? '' : 'track-missing');
     const name = element('span', 'track-name', t[0]); name.dir = 'auto';
-    if (a.fullAlbumVideo) name.append(element('span', 'track-time', clock(t[3])));
+    const length = a.durations?.[a.tracks.indexOf(t)];
+    if (length) name.append(element('span', 'track-time', length));
     const b = element('button', 'track-play', playable(a, t) ? 'ניגון ▶' : 'לא זמין'); b.type = 'button';
     b.setAttribute('aria-label', playable(a, t) ? `ניגון ${t[0]}` : `${t[0]} אינו זמין ברשימת הניגון`);
     b.addEventListener('click', () => playAt(i));
