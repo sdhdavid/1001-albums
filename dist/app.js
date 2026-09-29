@@ -4,6 +4,7 @@ const DONE_KEY = 'album-journey-2005-done';
 const FOCUS_KEY = 'album-journey-2005-focus-ids';
 const SERVICE_KEY = 'album-journey-2005-service';
 const COVERS_KEY = 'album-journey-2005-covers';
+const WELCOME_KEY = 'album-journey-2005-welcomed';
 function readStore(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
@@ -221,6 +222,10 @@ function selectAlbum(index) {
   if (catalogOpen) { setCatalogOpen(false); window.scrollTo?.({top: 0, behavior: 'smooth'}); }
 }
 $('catalog-toggle').addEventListener('click', () => setCatalogOpen(!catalogOpen));
+// First visit: a short explanation of the site, dismissed once and reopenable from the header.
+$('welcome').hidden = Boolean(readStore(WELCOME_KEY, false));
+$('close-welcome').addEventListener('click', () => { $('welcome').hidden = true; writeStore(WELCOME_KEY, true); });
+$('show-welcome').addEventListener('click', () => { $('welcome').hidden = false; window.scrollTo?.({top: 0, behavior: 'smooth'}); });
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
   const external = Boolean(a.externalAlbum);
