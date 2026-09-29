@@ -173,6 +173,15 @@ async function boot({broken=false, noStorage=false}={}) {
   while(n['album-title'].textContent!=='A Love Supreme')await nx();
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(n['album-list'].children.length,2);
   assert.equal(calls.filter(x=>x[0]==='create').length,1,'only one player');
+  // Genre filter: chips list the labels in use; picking one narrows the list without touching the journey order.
+  n['album-search'].value='';n['album-search'].listeners.input();
+  const chips=n['genre-filter'].children;assert.equal(n['genre-filter'].hidden,false);assert.equal(chips[0].textContent,'הכול');
+  const chip=g=>chips.find(c=>c.textContent.startsWith(g+' ·'));
+  const catalogNow=JSON.parse(fs.readFileSync('dist/albums.json','utf8')).filter(a=>a.ready);
+  chip("ג'אז").click();assert.equal(n['album-list'].children.length,catalogNow.filter(a=>a.genres?.includes("ג'אז")).length);
+  n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(n['album-list'].children.length,2,'search combines with genre');
+  n['genre-filter'].children[0].click();assert.equal(n['album-list'].children.length,2);n['album-search'].value='';n['album-search'].listeners.input();
+  assert.equal(n['album-list'].children.length,catalogNow.length);
   // Spotify: every album has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
   const all=pilotAll();
   for (const [k,a] of Object.entries(all)) assert.match(a.spotifyAlbum||'',/^[A-Za-z0-9]{22}$/,`spotify id for ${k}`);

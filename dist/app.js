@@ -219,9 +219,23 @@ function playPick(a, name) {
   if (!queue.includes(track)) { mode = 'full'; renderMode(); }
   playAt(queue.indexOf(track));
 }
+let genre = '';
+// Genre chips: "הכול" plus every label in use, most common first. Filters the list only; the journey order is unchanged.
+function renderGenres() {
+  const counts = {};
+  for (const a of albums) for (const g of a.genres ?? []) counts[g] = (counts[g] ?? 0) + 1;
+  const names = Object.keys(counts).sort((x, y) => counts[y] - counts[x] || x.localeCompare(y, 'he'));
+  $('genre-filter').hidden = names.length === 0;
+  $('genre-filter').replaceChildren(...['', ...names].map(g => {
+    const b = element('button', 'genre-chip' + (g === genre ? ' active' : ''), g ? `${g} · ${counts[g]}` : 'הכול');
+    b.type = 'button'; b.setAttribute('aria-pressed', String(g === genre));
+    b.addEventListener('click', () => { genre = g; renderGenres(); renderList(); });
+    return b;
+  }));
+}
 function renderList() {
   const search = $('album-search').value.trim().toLocaleLowerCase();
-  const visible = albums.filter(a => `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
+  const visible = albums.filter(a => (!genre || a.genres?.includes(genre)) && `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
   $('album-list').replaceChildren(...visible.map(a => {
     const b = element('button', 'album-row' + (a === currentAlbum() ? ' active' : ''));
     b.type = 'button'; b.setAttribute('aria-current', String(a === currentAlbum()));
@@ -602,7 +616,7 @@ async function init() {
     if (!albums.length) throw new Error('No albums');
     await loadAlbum(albums[0]);
     $('loading').hidden = true; $('album-view').hidden = false;
-    renderAlbum(); loadPlayer(); prefetchNeighbours();
+    renderGenres(); renderAlbum(); loadPlayer(); prefetchNeighbours();
   } catch { $('loading').hidden = true; $('album-view').hidden = true; $('load-error').hidden = false; }
 }
 function prefetchNeighbours() {
