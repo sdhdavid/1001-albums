@@ -73,6 +73,11 @@ a { color: #b4e3d6; }
 .detail { --tint: 16 26 36; padding: clamp(28px, 4.5vw, 65px) clamp(24px, 5.5vw, 92px) 35px; min-width: 0; background: radial-gradient(ellipse 110% 560px at 30% 0, rgb(var(--tint) / .26), transparent 72%) no-repeat; }
 .detail-topline { display: flex; justify-content: space-between; gap: 18px; align-items: start; }
 .edition-label { color: #9db1b8; font-size: .82rem; white-space: nowrap; }
+.top-pager { display: flex; align-items: center; gap: 10px; }
+.top-pager .eyebrow { margin: 0; }
+.top-pager-button { color: #e5eeee; border: 1px solid #506670; border-radius: 50%; background: transparent; width: 34px; height: 34px; padding: 0; font-size: 1rem; line-height: 1; flex: none; cursor: pointer; }
+.top-pager-button:not(:disabled):hover { background: #253843; }
+.top-pager-button:disabled { opacity: .35; cursor: default; }
 .title-grid { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 30px; align-items: center; margin-top: 12px; }
 .position-row { direction: ltr; display: flex; gap: 14px; align-items: center; margin-bottom: 11px; }
 .album-number { font-size: 1.05rem; font-weight: 800; color: #ff9277; direction: ltr; }
