@@ -1,8 +1,8 @@
 """Look up a length for every track in dist/pilot.json.
 
-Runs where the public catalogs are reachable (GitHub Actions). Tries the
-iTunes Search API first, then MusicBrainz, matching songs by normalized
-title. Prints a JSON map {album number: ["m:ss" or null, ...]} between
+Runs where the public catalogs are reachable (GitHub Actions). Collects
+several editions from the iTunes Search API and MusicBrainz, matches songs
+by normalized title and takes the median length per song. Prints a JSON map {album number: ["m:ss" or null, ...]} between
 markers so the result can be read from the job log.
 """
 import json, re, sys, time, unicodedata, urllib.parse, urllib.request
@@ -37,39 +37,35 @@ def clock(ms):
     s = round(ms / 1000); return f'{s // 60}:{s % 60:02d}'
 
 def assign(names, cands):
-    """cands: list of (title, ms). Greedy best-first match, threshold .8."""
+    """cands: list of (title, ms). Greedy best-first match, threshold .8; returns ms per name."""
     pairs = sorted(((sim(n, t), i, j) for i, n in enumerate(names) for j, (t, _) in enumerate(cands)), reverse=True)
     out, used_i, used_j = [None] * len(names), set(), set()
     for score, i, j in pairs:
         if score < .8: break
         if i in used_i or j in used_j or not cands[j][1]: continue
-        out[i] = clock(cands[j][1]); used_i.add(i); used_j.add(j)
+        out[i] = cands[j][1]; used_i.add(i); used_j.add(j)
     return out
 
-def itunes(artist, title, names):
-    best = [None] * len(names)
+def editions(artist, title):
+    """Yield track lists (title, ms) from several editions in both catalogs."""
     q = urllib.parse.quote(f'{artist} {title}')
-    res = get(f'https://itunes.apple.com/search?term={q}&entity=album&limit=12&country=US', .5) or {}
-    for c in res.get('results', []):
-        if sim(c.get('collectionName', ''), title) < .75: continue
-        tracks = get(f"https://itunes.apple.com/lookup?id={c['collectionId']}&entity=song&country=US", .5) or {}
-        cands = [(t.get('trackName', ''), t.get('trackTimeMillis')) for t in tracks.get('results', []) if t.get('wrapperType') == 'track']
-        got = assign(names, cands)
-        if sum(x is not None for x in got) > sum(x is not None for x in best): best = got
-        if all(best): break
-    return best
-
-def musicbrainz(artist, title, names):
-    best = [None] * len(names)
-    q = urllib.parse.quote(f'releasegroup:"{title}" AND artist:"{artist}"')
-    res = get(f'https://musicbrainz.org/ws/2/release?query={q}&fmt=json&limit=10', 1.1) or {}
-    for rel in res.get('releases', [])[:6]:
+    res = get(f'https://itunes.apple.com/search?term={q}&entity=album&limit=15&country=US', .4) or {}
+    for c in [c for c in res.get('results', []) if sim(c.get('collectionName', ''), title) >= .75][:8]:
+        tracks = get(f"https://itunes.apple.com/lookup?id={c['collectionId']}&entity=song&country=US", .4) or {}
+        yield [(t.get('trackName', ''), t.get('trackTimeMillis')) for t in tracks.get('results', []) if t.get('wrapperType') == 'track']
+    q = urllib.parse.quote(f'release:"{title}" AND artist:"{artist}"')
+    res = get(f'https://musicbrainz.org/ws/2/release?query={q}&fmt=json&limit=15', 1.1) or {}
+    for rel in [r for r in res.get('releases', []) if sim(r.get('title', ''), title) >= .75][:8]:
         data = get(f"https://musicbrainz.org/ws/2/release/{rel['id']}?inc=recordings&fmt=json", 1.1) or {}
-        cands = [(t.get('title', ''), t.get('length')) for m in data.get('media', []) for t in m.get('tracks', [])]
-        got = assign(names, cands)
-        if sum(x is not None for x in got) > sum(x is not None for x in best): best = got
-        if all(best): break
-    return best
+        yield [(t.get('title', ''), t.get('length')) for m in data.get('media', []) for t in m.get('tracks', [])]
+
+def lengths(artist, title, names):
+    """Median length per song across every edition found, so one live take or single edit can't skew it."""
+    seen = [[] for _ in names]
+    for cands in editions(artist, title):
+        for i, ms in enumerate(assign(names, cands)):
+            if ms: seen[i].append(ms)
+    return [clock(sorted(v)[len(v) // 2]) if v else None for v in seen], [len(v) for v in seen]
 
 pilot = json.load(open('dist/pilot.json'))
 catalog = {str(a['n']): a for a in json.load(open('dist/albums.json'))}
@@ -78,14 +74,11 @@ for n, album in pilot.items():
     meta = catalog[n]; names = [t[0] for t in album['tracks']]
     artist = re.split(r' \+ | featuring |/| and Her| & His', meta['artist'])[0].strip()
     title = re.sub(r'[“”"]', '', meta['title'])
-    got = itunes(artist, title, names)
-    if not all(got):
-        mb = musicbrainz(artist, title, names)
-        got = [a or b for a, b in zip(got, mb)]
+    got, votes = lengths(artist, title, names)
     result[n] = got
     print(f'{n:>3} {sum(x is not None for x in got):>2}/{len(names)} {meta["artist"]} — {meta["title"]}', file=sys.stderr)
-    for name, d in zip(names, got):
-        if d is None: print('      missing:', name, file=sys.stderr)
+    for name, d, v in zip(names, got, votes):
+        if d is None or v < 2: print(f'      {v} editions: {name} {d}', file=sys.stderr)
 print('===DURATIONS-BEGIN===')
 print(json.dumps(result, ensure_ascii=False, separators=(',', ':')))
 print('===DURATIONS-END===')
