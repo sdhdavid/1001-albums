@@ -1,0 +1,11 @@
+# Album Journey
+
+Hebrew RTL static listening site for the 2005 book order.
+
+The first 50 book entries are present consecutively, plus the earlier A Love Supreme listening pilot (53). All first 50 have original Hebrew story essays of at least 120 words, with edition metadata and printed page references from the provided 2005 book. The existing 23 albums with mapped recordings retain the embedded YouTube full and focused playback queues (278 listed tracks). Twenty-four more use verified multi-video YouTube playlists with numbered track controls in the site, including newly located complete playlists for #26 and #34 and a replacement for the unavailable #31 playlist. Four (#27, #29, #47, #49) use continuous full-album YouTube videos, clearly labeled as such. Playlist editions and order may differ from the printed LP, and regional availability and embedding rights may change. Entries 1–10 also include optional short track notes.
+
+YouTube IFrame API handles explicit full/focused queues and native playback synchronization. Local storage preserves completion and custom focused selections. Existing progress outside the playable catalog remains intact.
+
+Validation: `node --check dist/app.js` and `node tests/player-smoke.cjs`. The harness checks all 50 consecutive book entries, queue length and transport behavior. Third-party availability, embedding rights, and region-specific playback can change independently of this static site.
+
+Static output: dist. Hosting configuration: .openai/hosting.json.
