@@ -46,7 +46,7 @@ async function boot({broken=false, noStorage=false}={}) {
   const nx=async()=>{n['next-album'].click();await flush();}, pv=async()=>{n['previous-album'].click();await flush();};
   assert.deepEqual(n['album-list'].children.filter(c=>c.tag==='div').map(c=>c.textContent),['שנות ה־50','שנות ה־60'],'decade markers in book order');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
-  assert.equal(rows(),100); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
+  assert.equal(rows(),150); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
   // "Next album" from the bottom of the page jumps up to the new album; no jump when already at the top.
   { const v=n['album-view']; let jumps=0; v.scrollIntoView=()=>jumps++;
@@ -63,8 +63,8 @@ async function boot({broken=false, noStorage=false}={}) {
   const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
-  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 100 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,100);
-  assert.equal(n['toggle-progress'].textContent,'1 מתוך 100');
+  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 150 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,150);
+  assert.equal(n['toggle-progress'].textContent,'1 מתוך 150');
   for (let i=0;i<10;i++) {
     const data=pilotAll()[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
@@ -129,7 +129,7 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(n['album-youtube-player'].src,'about:blank','switching to the mapped player unloads prior album');
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
-  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const album100=added['100'];
+  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const lastAlbum=added['150'];
   for (let number=24; number<=50; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title);
     assert.equal(n['embedded-listening'].hidden,false);
@@ -162,10 +162,11 @@ async function boot({broken=false, noStorage=false}={}) {
       n['mode-full'].click();
     }
   }
-  for (let number=51; number<=100; number++) {
+  for (let number=51; number<=150; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title,`album ${number}`);
     const album=added[String(number)];
     if (number===53) { assert.equal(p.ids.length,4); continue; }
+    if (number===145) { assert.equal(album.fullAlbumVideo,true);assert.equal(p.ids[0],album.tracks[0][1]);assert.equal(album.picks.length,2,'two-piece album has two picks');assert(catalog[number-1].genres?.length>0);continue; }
     assert.equal(n['embedded-listening'].hidden,false);
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} queue`);
     assert.equal(p.ids.list,album.youtubePlaylist,`album ${number} playlist`);
@@ -179,7 +180,7 @@ async function boot({broken=false, noStorage=false}={}) {
   }
   assert(n['next-album'].disabled);
   assert.equal(n['album-youtube-player'].src,'about:blank');
-  n['track-list'].children[album100.tracks.length-1].children[1].click();p.options.events.onStateChange({data:0});assert.match(n['player-status'].textContent,/הסתיים/);
+  n['track-list'].children[lastAlbum.tracks.length-1].children[1].click();p.options.events.onStateChange({data:0});assert.match(n['player-status'].textContent,/הסתיים/);
   n['play-pause'].click();assert.equal(p.index,0,'replay starts from beginning');
   // Runtime matching: a reordered playlist with an extra bonus video maps songs by their real titles.
   n['album-search'].value='';
@@ -195,7 +196,7 @@ async function boot({broken=false, noStorage=false}={}) {
   p.index=8;p.options.events.onStateChange({data:1});assert.equal(n['track-list'].children[4].attributes['aria-current'],'true','bonus video is skipped to the next album song');
   p.playlist=[];
   while(n['album-title'].textContent!=='Are You Experienced')await nx();
-  n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),2);
+  n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),3);
   assert.equal(calls.filter(x=>x[0]==='create').length,1,'only one player');
   // Genre filter: the menu lists the labels in use; picking one narrows the list without touching the journey order.
   n['album-search'].value='';n['album-search'].listeners.input();
@@ -204,8 +205,8 @@ async function boot({broken=false, noStorage=false}={}) {
   const catalogNow=JSON.parse(fs.readFileSync('dist/albums.json','utf8')).filter(a=>a.ready);
   assert(menu.children.some(o=>o.value==="ג'אז"&&o.textContent.startsWith("ג'אז ·")));
   pick("ג'אז");assert.equal(rows(),catalogNow.filter(a=>a.genres?.includes("ג'אז")).length);
-  n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),2,'search combines with genre');
-  pick('');assert.equal(rows(),2);n['album-search'].value='';n['album-search'].listeners.input();
+  n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),3,'search combines with genre');
+  pick('');assert.equal(rows(),3);n['album-search'].value='';n['album-search'].listeners.input();
   assert.equal(rows(),catalogNow.length);
   // Spotify: every album has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
   const all=pilotAll();
@@ -243,5 +244,5 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(l.nodes['album-title'].textContent,'Tragic Songs of Life');assert.equal(l.nodes['album-error'].hidden,true,'retry after a failed load works');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–100 (including the 51–100 batch with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–150 (including the 51–100 and 101–150 batches with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});
