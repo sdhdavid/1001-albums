@@ -84,7 +84,15 @@
                 <button id="mode-short" class="mode-button" type="button" aria-pressed="false">האזנה ממוקדת</button>
               </div>
             </div>
+            <div id="service-switch" class="mode-switch service-switch" role="group" aria-label="שירות ההאזנה">
+              <button id="service-youtube" class="mode-button active" type="button" aria-pressed="true">YouTube</button>
+              <button id="service-spotify" class="mode-button" type="button" aria-pressed="false">Spotify</button>
+            </div>
             <p id="mode-explain" class="mode-explain player-intro"></p>
+            <div id="spotify-listening" class="spotify-listening" hidden>
+              <iframe id="spotify-player" title="נגן האלבום ב־Spotify" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+              <p class="embed-note">מי שמחובר ל־Spotify בדפדפן הזה עם מנוי שומע את השירים המלאים; בלי חיבור מושמעים קטעים קצרים. <a id="spotify-direct" target="_blank" rel="noopener noreferrer">פתיחה ב־Spotify ↗</a> · <a id="spotify-search" target="_blank" rel="noopener noreferrer">לא המהדורה הנכונה? חיפוש ב־Spotify ↗</a></p>
+            </div>
             <div id="external-listening" class="external-listening" hidden>
               <iframe id="album-youtube-player" title="נגן האלבום ב־YouTube" loading="lazy" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
               <p class="embed-note"><span id="album-source-note"></span> <a id="album-youtube-direct" target="_blank" rel="noopener noreferrer">פתיחה ב־YouTube ↗</a></p>
@@ -126,7 +134,7 @@
             <button id="previous-album" type="button"><span aria-hidden="true">→</span> האלבום הקודם</button>
             <button id="next-album" type="button">האלבום הבא <span aria-hidden="true">←</span></button>
           </div>
-          <p class="scope-note">חמישים האלבומים הראשונים בספר, לצד A Love Supreme שנשאר מן הפיילוט. המספרים והמיון לפי <a href="https://musicbrainz.org/series/4bc2a338-e1d8-4546-8a61-640da8aaf888" target="_blank" rel="noopener noreferrer">רשימת מהדורת 2005</a>. כל הנגנים באתר הם של YouTube. בחלק מהאלבומים הקטעים מסומנים במספרים לפי סדר הפלייליסט; בארבעה אחרים האלבום מוצג בהקלטה רציפה. זמינות ההקלטות עשויה להשתנות לפי אזור והרשאות YouTube. הטקסטים והמלצות ההאזנה מקוריים לאתר ואינם הטקסט או סימוני השירים של הספר. סימוני ההאזנה נשמרים בדפדפן. אתר עצמאי שאינו קשור להוצאת הספר או ל־YouTube.</p>
+          <p class="scope-note">חמישים האלבומים הראשונים בספר, לצד A Love Supreme שנשאר מן הפיילוט. המספרים והמיון לפי <a href="https://musicbrainz.org/series/4bc2a338-e1d8-4546-8a61-640da8aaf888" target="_blank" rel="noopener noreferrer">רשימת מהדורת 2005</a>. אפשר להאזין בנגן של YouTube או של Spotify; הבחירה נשמרת בדפדפן. בחלק מהאלבומים הקטעים מסומנים במספרים לפי סדר הפלייליסט; בארבעה אחרים האלבום מוצג בהקלטה רציפה. זמינות ההקלטות עשויה להשתנות לפי אזור והרשאות YouTube. הטקסטים והמלצות ההאזנה מקוריים לאתר ואינם הטקסט או סימוני השירים של הספר. סימוני ההאזנה נשמרים בדפדפן. אתר עצמאי שאינו קשור להוצאת הספר או ל־YouTube.</p>
         </div>
         <div id="load-error" class="load-error" hidden>לא הצלחנו לטעון את רשימת האלבומים. רענן את העמוד ונסה שוב.</div>
       </section>
