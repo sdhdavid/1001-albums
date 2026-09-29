@@ -37,6 +37,8 @@ async function boot({broken=false, noStorage=false}={}) {
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
   assert.equal(n['album-list'].children.length,51); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
+  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 51 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,51);
+  assert.equal(n['toggle-progress'].textContent,'1 מתוך 51');
   for (let i=0;i<10;i++) {
     const data=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
@@ -177,7 +179,10 @@ async function boot({broken=false, noStorage=false}={}) {
   n['service-youtube'].click();
   assert.equal(n['spotify-listening'].hidden,true);assert.equal(n['spotify-player'].src,'about:blank');assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['track-list'].children.length,all['50'].tracks.length);
+  // Phone drawer: opening the list and picking an album closes it again.
+  n['catalog-toggle'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'true');
+  n['previous-album'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'false');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});

@@ -3,6 +3,7 @@ const $ = id => document.getElementById(id);
 const DONE_KEY = 'album-journey-2005-done';
 const FOCUS_KEY = 'album-journey-2005-focus-ids';
 const SERVICE_KEY = 'album-journey-2005-service';
+const COVERS_KEY = 'album-journey-2005-covers';
 function readStore(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
@@ -108,6 +109,74 @@ function focusedIds(a) {
 function element(tag, className, text) {
   const el = document.createElement(tag); el.className = className; if (text !== undefined) el.textContent = text; return el;
 }
+// Album covers come from Spotify's public oEmbed endpoint and are cached per
+// browser. Anything that fails simply leaves the numbered placeholder in place.
+const storedCovers = readStore(COVERS_KEY, {});
+const coverCache = storedCovers && typeof storedCovers === 'object' && !Array.isArray(storedCovers) ? storedCovers : {};
+const coverPending = new Map(), coverRows = new WeakMap();
+let catalogOpen = false;
+function coverFor(a) {
+  const id = a.spotifyAlbum;
+  if (!id) return Promise.resolve(null);
+  if (typeof coverCache[id] === 'string') return Promise.resolve(coverCache[id]);
+  if (!coverPending.has(id)) coverPending.set(id, (async () => {
+    try {
+      const response = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(`https://open.spotify.com/album/${id}`)}`);
+      if (!response.ok) return null;
+      const url = (await response.json()).thumbnail_url;
+      if (typeof url !== 'string' || !url.startsWith('https://')) return null;
+      coverCache[id] = url;
+      try { localStorage.setItem(COVERS_KEY, JSON.stringify(coverCache)); } catch { /* cache is optional */ }
+      return url;
+    } catch { return null; }
+  })());
+  return coverPending.get(id);
+}
+function paintRowCover(box, a) {
+  coverFor(a).then(url => {
+    if (!url) return;
+    const img = element('img', ''); img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
+    img.onerror = () => img.remove(); img.src = url; box.replaceChildren(img);
+  });
+}
+const coverObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+  for (const entry of entries) if (entry.isIntersecting) {
+    coverObserver.unobserve(entry.target); paintRowCover(entry.target, coverRows.get(entry.target));
+  }
+}, {root: $('album-list'), rootMargin: '240px 0px'}) : null;
+function setTint(rgb) { document.querySelector('.detail')?.style?.setProperty('--tint', rgb || '16 26 36'); }
+function sampleTint(url, n) {
+  if (typeof Image !== 'function') return;
+  const probe = new Image(); probe.crossOrigin = 'anonymous';
+  probe.onload = () => {
+    try {
+      const canvas = document.createElement('canvas'); canvas.width = canvas.height = 12;
+      const ctx = canvas.getContext('2d'); ctx.drawImage(probe, 0, 0, 12, 12);
+      const px = ctx.getImageData(0, 0, 12, 12).data; let r = 0, g = 0, b = 0, w = 0;
+      for (let i = 0; i < px.length; i += 4) {
+        const hi = Math.max(px[i], px[i + 1], px[i + 2]), lo = Math.min(px[i], px[i + 1], px[i + 2]);
+        const weight = ((hi - lo) / 255) ** 2 * (1 - Math.abs((hi + lo) / 510 - .5)) + .01;
+        r += px[i] * weight; g += px[i + 1] * weight; b += px[i + 2] * weight; w += weight;
+      }
+      const k = 210 / Math.max(r / w, g / w, b / w, 1);
+      if (currentAlbum().n === n) setTint([r, g, b].map(v => Math.min(255, Math.round(v / w * k))).join(' '));
+    } catch { /* image served without CORS: keep the default tint */ }
+  };
+  probe.src = url;
+}
+function renderCover() {
+  const a = currentAlbum(), n = a.n, img = $('album-cover');
+  $('record-graphic').classList.toggle('has-cover', false); img.hidden = true; img.removeAttribute('src'); setTint(null);
+  coverFor(a).then(url => {
+    if (!url || currentAlbum().n !== n) return;
+    img.onload = () => { if (currentAlbum().n === n) { img.hidden = false; $('record-graphic').classList.toggle('has-cover', true); } };
+    img.src = url; sampleTint(url, n);
+  });
+}
+function setCatalogOpen(open) {
+  catalogOpen = open; $('catalog').classList.toggle('open', open);
+  $('catalog-toggle').setAttribute('aria-expanded', String(open));
+}
 function renderList() {
   const search = $('album-search').value.trim().toLocaleLowerCase();
   const visible = albums.filter(a => `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
@@ -117,12 +186,18 @@ function renderList() {
     const titles = element('span', 'row-titles');
     const title = element('span', 'row-title', a.title); title.dir = 'auto';
     const artist = element('span', 'row-artist', a.artist); artist.dir = 'auto'; titles.append(title, artist);
-    b.append(element('span', 'row-number', String(a.n).padStart(3, '0')), titles, element('span', 'row-check', done.has(a.n) ? '✓' : ''));
+    const cover = element('span', 'row-cover'), meta = element('span', 'row-meta');
+    meta.append(element('span', 'row-number', String(a.n).padStart(3, '0')), element('span', 'row-check', done.has(a.n) ? '✓' : ''));
+    b.append(cover, titles, meta);
+    if (coverObserver) { coverRows.set(cover, a); coverObserver.observe(cover); } else paintRowCover(cover, a);
     b.addEventListener('click', () => selectAlbum(albums.indexOf(a))); return b;
   }));
   $('list-empty').hidden = visible.length > 0;
   $('catalog-count').textContent = albums.length;
-  $('list-progress').textContent = `${albums.filter(a => done.has(a.n)).length} מתוך ${albums.length} הושלמו`;
+  const heard = albums.filter(a => done.has(a.n)).length;
+  $('list-progress').textContent = `האזנת ל־${heard} מתוך ${albums.length} אלבומים`;
+  $('progress-meter').max = albums.length; $('progress-meter').value = heard;
+  $('toggle-progress').textContent = `${heard} מתוך ${albums.length}`;
 }
 function renderDone() {
   const yes = done.has(currentAlbum().n);
@@ -138,12 +213,14 @@ function renderAlbum() {
   $('album-note').textContent = a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note;
   $('previous-album').disabled = active === 0; $('next-album').disabled = active === albums.length - 1;
   $('focus-editor').open = false;
-  prepareGuide(); renderDone(); renderList(); renderMode();
+  prepareGuide(); renderDone(); renderList(); renderMode(); renderCover();
 }
 function selectAlbum(index) {
   if (index === active || index < 0 || index >= albums.length) return;
   active = index; renderAlbum();
+  if (catalogOpen) { setCatalogOpen(false); window.scrollTo?.({top: 0, behavior: 'smooth'}); }
 }
+$('catalog-toggle').addEventListener('click', () => setCatalogOpen(!catalogOpen));
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
   const external = Boolean(a.externalAlbum);
