@@ -179,10 +179,13 @@ async function boot({broken=false, noStorage=false}={}) {
   n['service-youtube'].click();
   assert.equal(n['spotify-listening'].hidden,true);assert.equal(n['spotify-player'].src,'about:blank');assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['track-list'].children.length,all['50'].tracks.length);
+  // Welcome box: shown on first visit, dismissed and remembered, reopenable from the header.
+  assert.equal(n['welcome'].hidden,false);n['close-welcome'].click();assert.equal(n['welcome'].hidden,true);
+  assert.equal(storage.get('album-journey-2005-welcomed'),'true');n['show-welcome'].click();assert.equal(n['welcome'].hidden,false);
   // Phone drawer: opening the list and picking an album closes it again.
   n['catalog-toggle'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'true');
   n['previous-album'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'false');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});

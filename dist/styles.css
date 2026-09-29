@@ -1,6 +1,6 @@
 :root {
   color-scheme: dark;
-  font-family: Arial, "Noto Sans Hebrew", sans-serif;
+  font-family: "Rubik", Arial, "Noto Sans Hebrew", sans-serif;
   font-size: 16px;
   background: #101a24;
   color: #f0f5f2;
@@ -22,6 +22,17 @@ a { color: #b4e3d6; }
 .brand-mark { width: 26px; height: 26px; border: 3px solid #b4e3d6; border-radius: 50%; display: inline-block; position: relative; }
 .brand-mark:after { content: ""; position: absolute; width: 6px; height: 6px; background: #ff7958; border-radius: 50%; top: 7px; left: 7px; }
 .topbar-meta { font-size: .9rem; color: #adc0c6; }
+.topbar-help { background: none; border: 0; padding: 8px 0; }
+.topbar-help:hover { color: #f0f5f2; }
+.welcome { position: relative; margin-bottom: 38px; padding: 26px 28px; border: 1px solid #3f5f63; border-radius: 14px; background: linear-gradient(135deg, #1d3238, #172631); }
+.welcome-title { direction: rtl; max-width: none; font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -.02em; margin: 0 0 10px; }
+.welcome-text { margin: 0; max-width: 62ch; color: #d5dfe0; line-height: 1.7; }
+.welcome-steps { list-style: none; counter-reset: step; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 20px 0 22px; }
+.welcome-steps li { counter-increment: step; display: flex; align-items: center; gap: 8px; padding: 8px 13px 8px 15px; border-radius: 99px; background: #243a42; color: #d5dfe0; font-size: .92rem; }
+.welcome-steps li:before { content: counter(step); display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #b4e3d6; color: #14252e; font-size: .78rem; font-weight: 800; }
+.welcome-steps b { color: #f0f5f2; font-weight: 500; }
+.welcome-button { border: 0; border-radius: 8px; background: #b4e3d6; color: #14252e; font-weight: 700; padding: 11px 20px; min-height: 44px; }
+.welcome-button:hover { background: #cdeee4; }
 .meta-separator { color: #ff7958; margin: 0 .5rem; }
 .layout { display: grid; grid-template-columns: minmax(315px, 365px) minmax(0, 1fr); min-height: calc(100vh - 76px); }
 .catalog { background: #16232e; border-left: 1px solid #30434e; padding: 34px 20px 20px 24px; display: flex; flex-direction: column; min-height: 0; position: sticky; top: 0; height: calc(100vh - 76px); }
@@ -53,7 +64,7 @@ a { color: #b4e3d6; }
 .album-row .row-number { direction: ltr; color: #9eb5b9; font-size: .78rem; font-variant-numeric: tabular-nums; }
 .album-row.active .row-number { color: #b4e3d6; }
 .row-titles { overflow: hidden; }
-.row-title { display: block; font-size: .91rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+.row-title { display: block; font-size: .91rem; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .row-artist { display: block; font-size: .78rem; color: #acc0c4; margin-top: 5px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .row-check { color: #b4e3d6; font-size: 1.1rem; }
 .list-empty { padding: 18px 4px; color: #bcc9c9; }
@@ -64,7 +75,7 @@ a { color: #b4e3d6; }
 .position-row { display: flex; gap: 14px; align-items: center; margin-bottom: 11px; }
 .album-number { font-size: 1.05rem; font-weight: 800; color: #ff9277; direction: ltr; }
 .album-year { color: #c0d0d1; font-size: .98rem; border-right: 1px solid #527079; padding-right: 14px; }
-h2 { direction: ltr; text-align: right; font-size: clamp(2.35rem, 5vw, 5.15rem); line-height: 1.02; letter-spacing: -.065em; margin: 0; overflow-wrap: anywhere; max-width: 13ch; }
+h2 { direction: ltr; text-align: right; font-size: clamp(2.35rem, 5vw, 5.15rem); font-weight: 700; line-height: 1.02; letter-spacing: -.045em; margin: 0; overflow-wrap: anywhere; max-width: 13ch; }
 .artist { direction: ltr; text-align: right; color: #b4e3d6; font-size: clamp(1.08rem, 1.8vw, 1.45rem); margin: 22px 0 0; }
 .record-graphic { position: relative; overflow: hidden; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; border: 1px solid #4b626a; border-radius: 7px; color: #b4e3d6; font-size: 3.4rem; font-weight: 800; letter-spacing: -.09em; font-variant-numeric: tabular-nums; background: linear-gradient(135deg, #263c46, #1b2b36); }
 .record-graphic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
