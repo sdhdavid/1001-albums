@@ -21,7 +21,7 @@ SPOTIFY = {
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
 PLAYLIST_CHOICE = {115: 1, 127: 2, 133: 1}
 RENAME = {}
-KEEP_FIRST = {127: 11, 133: 11}   # drop bonus tracks / outtakes after the original album
+KEEP_FIRST = {124: 13, 127: 11, 133: 11}   # drop bonus tracks / outtakes after the original album
 DROP = {115: {1, 12, 16}}          # songs added on later editions, not on the original LP
 # Albums the automatic search got wrong, filled in by hand (playlists found with a web search).
 MANUAL = {
