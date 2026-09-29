@@ -220,19 +220,19 @@ function playPick(a, name) {
   playAt(queue.indexOf(track));
 }
 let genre = '';
-// Genre chips: "הכול" plus every label in use, most common first. Filters the list only; the journey order is unchanged.
+// Genre menu: "כל הז'אנרים" plus every label in use, most common first. Filters the list only; the journey order is unchanged.
 function renderGenres() {
   const counts = {};
   for (const a of albums) for (const g of a.genres ?? []) counts[g] = (counts[g] ?? 0) + 1;
   const names = Object.keys(counts).sort((x, y) => counts[y] - counts[x] || x.localeCompare(y, 'he'));
-  $('genre-filter').hidden = names.length === 0;
-  $('genre-filter').replaceChildren(...['', ...names].map(g => {
-    const b = element('button', 'genre-chip' + (g === genre ? ' active' : ''), g ? `${g} · ${counts[g]}` : 'הכול');
-    b.type = 'button'; b.setAttribute('aria-pressed', String(g === genre));
-    b.addEventListener('click', () => { genre = g; renderGenres(); renderList(); });
-    return b;
+  const menu = $('genre-select');
+  menu.hidden = names.length === 0;
+  menu.replaceChildren(...['', ...names].map(g => {
+    const o = element('option', '', g ? `${g} · ${counts[g]}` : "כל הז'אנרים"); o.value = g; return o;
   }));
+  menu.value = genre;
 }
+$('genre-select').addEventListener('change', () => { genre = $('genre-select').value; renderList(); });
 // The book groups albums by decade. A few entries carry a much later or earlier release year than their place in the book
 // (e.g. a 1985 release of a 1963 concert), so each album's decade is the median year of its neighbours in book order.
 function markDecades(list) {
