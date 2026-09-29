@@ -454,7 +454,8 @@ function cueQueue() {
   const a = currentAlbum();
   queueIndex = Math.max(0, firstPlayable());
   if (a.youtubePlaylist) player.cuePlaylist({list: a.youtubePlaylist, listType: 'playlist', index: Math.max(0, playlistIndex(a, queue[queueIndex])), startSeconds: 0});
-  else if (a.fullAlbumVideo) player.cuePlaylist([a.tracks[0][1]], 0, queue[0][3]);
+  // A one-video "playlist" is not reliably swapped in by YouTube's player; cue the video itself.
+  else if (a.fullAlbumVideo) player.cueVideoById({videoId: a.tracks[0][1], startSeconds: queue[0][3]});
   else player.cuePlaylist(queue.map(t => t[1]), 0, 0);
   player.setLoop(false); player.setShuffle(false);
   $('player-status').textContent = 'מוכן להאזנה. לחץ על הפעלה כאן או בנגן.';

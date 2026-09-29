@@ -30,6 +30,7 @@ async function boot({broken=false, noStorage=false}={}) {
       constructor(id,options){this.options=options;this.index=0;this.frame=new El();mock=this;calls.push(['create']);}
       getIframe(){return this.frame;} getPlaylistIndex(){return this.index;}
       stopVideo(){calls.push(['stop']);} cuePlaylist(ids,index){this.ids=ids;this.index=Array.isArray(ids)?index:ids.index;calls.push(['cue',...(Array.isArray(ids)?ids:[ids.list,ids.index])]);}
+      cueVideoById(o){this.ids=[o.videoId];calls.push(['cueVideo',o.videoId,o.startSeconds]);}
       setLoop(){} setShuffle(){} destroy(){} getPlaylist(){return this.playlist||[];} getCurrentTime(){return this.time||0;} seekTo(s){this.time=s;calls.push(['seek',s]);}
       playVideoAt(index){this.index=index;calls.push(['playAt',index]);this.options.events.onStateChange({data:1});}
       playVideo(){calls.push(['play']);this.options.events.onStateChange({data:1});}
@@ -133,6 +134,7 @@ async function boot({broken=false, noStorage=false}={}) {
     const last=album.tracks.length-1;
     if ([27,29,47,49].includes(number)) {
       assert.equal(p.ids[0],album.tracks[0][1]);
+      assert.deepEqual(calls.filter(c=>c[0]==='cueVideo').at(-1).slice(1,2),[album.tracks[0][1]],'continuous album cues its own video');
       assert.equal(album.fullAlbumVideo,true);
       n['track-list'].children[last].children[1].click();assert.deepEqual(calls.at(-2),['seek',album.tracks[last][3]]);
       assert.equal(n['track-list'].children[last].attributes['aria-current'],'true');
