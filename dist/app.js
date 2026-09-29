@@ -19,7 +19,7 @@ let guideRenderKey = '';
 let service = readStore(SERVICE_KEY, 'youtube') === 'spotify' ? 'spotify' : 'youtube';
 const TITLES_KEY = 'album-journey-2005-video-titles';
 const TITLE_CACHE_LIMIT = 1500;
-// Official album programs live in pilot.json. For YouTube playlists the site
+// Official album programs live in albums/N.json. For YouTube playlists the site
 // reads the playlist's real video titles at runtime and maps each song to the
 // matching playlist entry, so reordered, extended or partial playlists still
 // play the right song.
@@ -257,9 +257,14 @@ function renderAlbum() {
   $('focus-editor').open = false;
   prepareGuide(); renderDone(); renderList(); renderMode(); renderCover();
 }
-function selectAlbum(index) {
+let selecting = 0;
+async function selectAlbum(index) {
   if (index === active || index < 0 || index >= albums.length) return;
-  active = index; renderAlbum();
+  const ticket = ++selecting;
+  try { await loadAlbum(albums[index]); } catch { if (ticket === selecting) $('album-error').hidden = false; return; }
+  if (ticket !== selecting) return; // a newer pick superseded this one while it loaded
+  $('album-error').hidden = true;
+  active = index; renderAlbum(); prefetchNeighbours();
   if (catalogOpen) { setCatalogOpen(false); window.scrollTo?.({top: 0, behavior: 'smooth'}); }
 }
 $('catalog-toggle').addEventListener('click', () => setCatalogOpen(!catalogOpen));
@@ -574,15 +579,33 @@ $('mark-done').addEventListener('click', () => {
   writeStore(DONE_KEY, [...done]); renderDone(); renderList();
 });
 $('reset-focus').addEventListener('click', () => { delete focus[currentAlbum().n]; writeStore(FOCUS_KEY, focus); renderMode(); });
+// Data version: the deploy workflow stamps the commit here so browsers never mix old and new files.
+const V = '';
+const loaded = new Map();
+// Fetches one album's full data (tracks, story, durations) the first time it is needed.
+function loadAlbum(a) {
+  if (a.tracks) return Promise.resolve(a);
+  if (!loaded.has(a.n)) {
+    loaded.set(a.n, fetch(`./albums/${a.n}.json${V}`).then(r => { if (!r.ok) throw new Error('Album unavailable'); return r.json(); }).then(data => {
+      if (!validAlbum(data)) throw new Error('Invalid album');
+      return Object.assign(a, playableAlbum(data));
+    }).catch(e => { loaded.delete(a.n); throw e; }));
+  }
+  return loaded.get(a.n);
+}
+const validAlbum = a => Array.isArray(a.tracks) && a.tracks.length > 0 && a.tracks.every(t => a.youtubePlaylist ? typeof t[0] === 'string' && Number.isInteger(t[2]) : /^[A-Za-z0-9_-]{11}$/.test(t[1]));
 async function init() {
   try {
-    const [catalogResponse, pilotResponse] = await Promise.all([fetch('./albums.json'), fetch('./pilot.json')]);
-    if (!catalogResponse.ok || !pilotResponse.ok) throw new Error('Data unavailable');
-    const [catalog, pilot] = await Promise.all([catalogResponse.json(), pilotResponse.json()]);
-    albums = catalog.filter(a => Object.hasOwn(pilot, a.n)).map(a => playableAlbum({...a, ...pilot[a.n]})).sort((a, b) => a.n - b.n);
-    if (!albums.length || albums.some(a => !a.tracks.length || a.tracks.some(t => a.youtubePlaylist ? !(typeof t[0] === 'string' && Number.isInteger(t[2])) : !/^[A-Za-z0-9_-]{11}$/.test(t[1])))) throw new Error('Invalid pilot');
+    const response = await fetch(`./albums.json${V}`);
+    if (!response.ok) throw new Error('Data unavailable');
+    albums = (await response.json()).filter(a => a.ready).sort((a, b) => a.n - b.n);
+    if (!albums.length) throw new Error('No albums');
+    await loadAlbum(albums[0]);
     $('loading').hidden = true; $('album-view').hidden = false;
-    renderAlbum(); loadPlayer();
+    renderAlbum(); loadPlayer(); prefetchNeighbours();
   } catch { $('loading').hidden = true; $('album-view').hidden = true; $('load-error').hidden = false; }
+}
+function prefetchNeighbours() {
+  for (const a of [albums[active + 1], albums[active - 1]]) if (a) loadAlbum(a).catch(() => {});
 }
 init();

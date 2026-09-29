@@ -9,16 +9,17 @@ A Hebrew (RTL) static site for listening through *1001 Albums You Must Hear Befo
 - Personal texts on the site (welcome story) are in the owner's voice; don't rewrite them unasked.
 
 ## Layout
-- `dist/` is the whole site (no build step): `index.html`, `app.js` (vanilla JS, no deps), `styles.css`, `albums.json` (book catalog: n/year/title/artist, first 200 entries), `pilot.json` (per-album data for playable albums, keyed by book number).
-- `pilot.json` per album: `tracks` (playlist albums: `[name, null, playlistIndex]`; continuous-video albums #27/#29/#47/#49: `[name, videoId, null, startSeconds]`), `durations` ("m:ss" per track), `focus` (track indexes for the focused queue), `youtubePlaylist` or `fullAlbumVideo`, `spotifyAlbum` (22-char id), `story` (3 Hebrew paragraphs: who & when / what you hear / why it matters), `picks` ([track name, Hebrew note] ×3), `guide` (older intro text, sources, book metadata — kept as fallback/for checks, book box no longer shown).
-- `tools/`: `tracklists.py` + `build_tracks.py` (track programs → pilot.json), `stories.py` + `build_stories.py` (album stories → pilot.json), `fetch_durations.py` (median track lengths from iTunes + MusicBrainz).
-- `tests/player-smoke.cjs`: node DOM/YouTube mock harness. Run `node --check dist/app.js && node tests/player-smoke.cjs` before every push; update assertions when behavior changes.
+- `dist/` is the whole site (no build step): `index.html`, `app.js` (vanilla JS, no deps), `styles.css`, `albums.json` (book catalog: n/year/title/artist; albums that are playable also have `"ready": true` + `spotifyAlbum` — the list shows only ready ones and needs the cover), and `albums/N.json` (per-album data, fetched on demand when the album is opened; neighbours are prefetched).
+- `albums/N.json` per album: `tracks` (playlist albums: `[name, null, playlistIndex]`; continuous-video albums #27/#29/#47/#49: `[name, videoId, null, startSeconds]`; albums 1–10, 21, 23, 53: `[name, videoId]`), `durations` ("m:ss" per track), `focus` (track indexes for the focused queue), `youtubePlaylist` or `fullAlbumVideo`, `spotifyAlbum` (22-char id), `story` (3 Hebrew paragraphs: who & when / what you hear / why it matters), `picks` ([track name, Hebrew note] ×3), `guide` (older intro text, sources, book metadata — only on the first 50; new albums don't need it).
+- `tools/`: `store.py` (read/write albums + refresh the catalog flags — never edit `ready`/`spotifyAlbum` in albums.json by hand), `tracklists.py` + `build_tracks.py`, `stories.py` + `build_stories.py` (older track/story sources for 1–50), `check_albums.py` (validates every album), `add_albums.py` (batch → albums/N.json), `fetch_durations.py` + `merge_durations.py` (lengths from iTunes + MusicBrainz).
+- Batch pipeline for new albums: write `tools/batches/NAME.json` (format in the docstring of `add_albums.py`; tracklist, YouTube playlist, Spotify id, focus, story, picks) → run the manual "Fetch track durations" workflow with `batch=tools/batches/NAME.json`, read the JSON from the log, save it and run `merge_durations.py` (check each total against the book) → `python3 tools/add_albums.py tools/batches/NAME.json` (validates, then writes) → smoke test → deploy.
+- `tests/player-smoke.cjs`: node DOM/YouTube mock harness. Run `node --check dist/app.js && python3 tools/check_albums.py && node tests/player-smoke.cjs` before every push; update assertions when behavior changes.
 
 ## Features (don't break)
 YouTube player (IFrame API, youtube.com host so Premium is recognized) and a YouTube/Spotify switch (Spotify album embed), per-song ▶ in track list and in story picks, full/focused queues, covers from Spotify oEmbed (cached in localStorage, lazy in list) with per-album background tint, progress "האזנת ל־X מתוך N" + bar, phone album drawer, first-visit welcome box (reopen via "מה זה?"), premium-cookies help box with copy buttons, English names left-aligned and bidi-isolated inside Hebrew text (`bidiText`). Font: Rubik (Google Fonts).
 
 ## Deploy
-Push to branch → open PR to `main` → merge. `.github/workflows/pages.yml` publishes `dist/` to Pages and stamps `?v=<commit>` on CSS/JS/JSON URLs (cache busting). Check the "Publish site" run succeeds afterwards.
+Push to branch → open PR to `main` → merge. `.github/workflows/pages.yml` publishes `dist/` to Pages and stamps `?v=<commit>` on CSS/JS and (via `const V` in app.js) on every JSON fetch (cache busting). Check the "Publish site" run succeeds afterwards.
 
 ## Environment constraints (cloud sandbox)
 - Spotify, YouTube, MusicBrainz, iTunes, github.io are blocked from the sandbox. Google Fonts CSS is reachable via curl but not from the headless browser.
@@ -29,7 +30,7 @@ Push to branch → open PR to `main` → merge. `.github/workflows/pages.yml` pu
 Original Hebrew, never copied from the book. ~150 words: three short paragraphs + three picks whose names match `tracks` exactly (build_stories.py asserts this). Warm, clear, non-academic; link to other albums on the site by number when relevant ("אלבום 14"). Only state facts you're sure of; soften or drop uncertain dates, chart positions and personnel.
 
 ## Next steps (agreed with the owner)
-1. Infrastructure round: split `pilot.json` into per-album files loaded on demand; extend `albums.json` to all 1001 entries; a repeatable batch pipeline for adding albums (tracklist, YouTube playlist, Spotify id, durations, story, checks); fill in #51–52.
+1. Infrastructure round. Done: per-album files loaded on demand; batch pipeline + validation. Still open: extend `albums.json` to all 1001 entries (needs a numbered source for the 2005 list — MusicBrainz series is unreachable from the sandbox, so fetch it in an Actions job); fill in #51–52 (Otis Blue, The Beach Boys Today!) as the first batch.
 2. Add albums in batches of 25–50; the owner reviews texts.
 3. Polish from friends' feedback.
 4. Later: shared layer (who listened to what, ratings, comments) with accounts.

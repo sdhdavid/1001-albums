@@ -2,9 +2,14 @@ name: Fetch track durations
 
 # Run by hand (Actions tab → Run workflow) after adding albums. The job log
 # prints a JSON map of track lengths between DURATIONS markers; check each
-# album's total against guide.book.duration before merging it into pilot.json.
+# album's total against guide.book.duration before merging it with tools/merge_durations.py.
 on:
   workflow_dispatch:
+    inputs:
+      batch:
+        description: 'Batch file to look up (e.g. tools/batches/51-52.json). Empty = every album on the site.'
+        required: false
+        default: ''
 
 jobs:
   fetch:
@@ -12,4 +17,4 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - run: python3 tools/fetch_durations.py
+      - run: python3 tools/fetch_durations.py ${{ inputs.batch }}
