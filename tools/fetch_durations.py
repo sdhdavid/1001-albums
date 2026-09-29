@@ -1,4 +1,6 @@
-"""Look up a length for every track in dist/pilot.json.
+"""Look up a length for every track of the albums in dist/albums/ (or of a batch file).
+
+Usage: python3 tools/fetch_durations.py [BATCH.json]
 
 Runs where the public catalogs are reachable (GitHub Actions). Collects
 several editions from the iTunes Search API and MusicBrainz, matches songs
@@ -67,7 +69,8 @@ def lengths(artist, title, names):
             if ms: seen[i].append(ms)
     return [clock(sorted(v)[len(v) // 2]) if v else None for v in seen], [len(v) for v in seen]
 
-pilot = json.load(open('dist/pilot.json'))
+sys.path.insert(0, 'tools'); import store
+pilot = {str(a['n']): a for a in json.load(open(sys.argv[1]))} if len(sys.argv) > 1 else {str(n): a for n, a in store.load_all().items()}
 catalog = {str(a['n']): a for a in json.load(open('dist/albums.json'))}
 result = {}
 for n, album in pilot.items():

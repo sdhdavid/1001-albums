@@ -1,7 +1,7 @@
 # Album stories for the site, written from scratch in Hebrew (not the book's text).
 # Each entry: three short sections (who & when / what you hear / why it matters)
-# and "picks": songs to notice, by exact track name as it appears in pilot.json.
-# Merged into dist/pilot.json (guide.story, guide.picks) by tools/build_stories.py.
+# and "picks": songs to notice, by exact track name as it appears in albums/N.json.
+# Merged into dist/albums/N.json (story, picks) by tools/build_stories.py.
 
 STORIES = {
   1: {

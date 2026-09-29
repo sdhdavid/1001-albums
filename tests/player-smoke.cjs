@@ -11,6 +11,8 @@ class El {
   click() { if (!this.disabled) this.listeners.click?.(); }
   remove() {}
 }
+const flush=()=>new Promise(r=>setImmediate(r));
+const pilotAll=()=>Object.fromEntries(fs.readdirSync('dist/albums').map(f=>[f.slice(0,-5),JSON.parse(fs.readFileSync('dist/albums/'+f,'utf8'))]));
 function noteMatches(n,data){
   if (data.story) assert.equal(n['album-note'].children.length,data.story.length+(data.picks?.length?1:0));
   else assert.equal(n['album-note'].children[0].children.map(c=>c.textContent).join(''),data.guide.intro.map(s=>s.text).join(' '));
@@ -19,11 +21,11 @@ async function boot({broken=false, noStorage=false}={}) {
   const html=fs.readFileSync('dist/index.html','utf8'), nodes={};
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
   const storage=new Map([['album-journey-2005-done','[1,200]']]);
-  const calls=[]; let mock;
+  const calls=[], fetched=[]; let mock, failAlbum=null;
   const ctx={console, location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
     document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El()},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
-    fetch:async url=>({ok:!broken,json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2),'utf8'))}),
+    fetch:async url=>(fetched.push(url),{ok:!broken&&!(failAlbum&&url.includes(`/${failAlbum}.json`)),json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2).replace(/\?.*$/,''),'utf8'))}),
     YT:{Player:class {
       constructor(id,options){this.options=options;this.index=0;this.frame=new El();mock=this;calls.push(['create']);}
       getIframe(){return this.frame;} getPlaylistIndex(){return this.index;}
@@ -35,42 +37,43 @@ async function boot({broken=false, noStorage=false}={}) {
     }}
   };ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync('dist/app.js','utf8'),ctx);
   await new Promise(resolve=>setImmediate(resolve));
-  return {nodes,calls,storage,ctx,get player(){return mock;}};
+  return {nodes,calls,fetched,storage,ctx,fail:n=>{failAlbum=n;},get player(){return mock;}};
 }
 (async()=>{
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
+  const nx=async()=>{n['next-album'].click();await flush();}, pv=async()=>{n['previous-album'].click();await flush();};
   assert.equal(n['album-list'].children.length,51); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
-  const pilotData=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'));
+  const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
   assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 51 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,51);
   assert.equal(n['toggle-progress'].textContent,'1 מתוך 51');
   for (let i=0;i<10;i++) {
-    const data=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))[String(i+1)];
+    const data=pilotAll()[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
     noteMatches(n,data);
     assert.equal(n['album-essay'].hidden,false);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,data.focus.length);
-    n['mode-full'].click();n['next-album'].click();
+    n['mode-full'].click();await nx();
   }
   assert.equal(n['album-title'].textContent,'Palo Congo');
   p.options.events.onReady();
-  const added=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'));
+  const added=pilotAll();
   assert.equal(p.ids.list,'PLowQCq3Ss89iHLhI8fLDx6Tdu4fj_Fcgu');
   assert.equal(n['track-list'].children.length,8);
   n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
   n['next-track'].click();assert.equal(p.index,1);
-  n['mode-full'].click();n['next-album'].click();assert.equal(n['album-title'].textContent,'Birth of the Cool');
+  n['mode-full'].click();await nx();assert.equal(n['album-title'].textContent,'Birth of the Cool');
   assert.equal(n['track-list'].children.length,12);
   assert.equal(p.ids.list,'PLowQCq3Ss89jlWMOmeDEJEawXiV901pAs');
-  n['next-album'].click();assert.equal(n['album-title'].textContent,'Kenya');
+  await nx();assert.equal(n['album-title'].textContent,'Kenya');
   assert.equal(n['track-list'].children.length,12);
   assert.equal(p.ids.list,'PLowQCq3Ss89i33_zzDhdErj7Ymwm6I_EZ');
   n['mode-short'].click();n['next-track'].click();assert.equal(p.index,5,'playlist-focused next jumps to original album position');
   n['mode-full'].click();
   for (let number=14; number<=20; number++) {
-    n['next-album'].click();
+    await nx();
     const album=added[String(number)];
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} original program`);
     noteMatches(n,album);
@@ -85,7 +88,7 @@ async function boot({broken=false, noStorage=false}={}) {
     n['mode-full'].click();
   }
   assert.equal(n['album-title'].textContent,'The Genius of Ray Charles');
-  n['next-album'].click();assert.equal(n['album-title'].textContent,'Kind of Blue');
+  await nx();assert.equal(n['album-title'].textContent,'Kind of Blue');
   assert.equal(n['album-essay'].hidden,false);
   assert(!n['play-pause'].disabled);
   assert.equal(p.ids.length,5);
@@ -105,21 +108,21 @@ async function boot({broken=false, noStorage=false}={}) {
   n['focus-options'].children[2].children[0].checked=false;n['focus-options'].children[2].children[0].listeners.change();
   n['focus-options'].children[3].children[0].checked=false;n['focus-options'].children[3].children[0].listeners.change();
   assert.equal(p.ids.length,1);assert.equal(n['focus-error'].hidden,false);
-  n['mode-full'].click();n['next-album'].click();assert.equal(n['album-title'].textContent,'Gunfighter Ballads and Trail Songs');
+  n['mode-full'].click();await nx();assert.equal(n['album-title'].textContent,'Gunfighter Ballads and Trail Songs');
   assert.equal(n['embedded-listening'].hidden,false);assert.equal(n['external-listening'].hidden,true);
   assert.equal(n['track-list'].children.length,12);
   assert.equal(p.ids.list,added['22'].youtubePlaylist);
   n['track-list'].children[6].children[1].click();assert.equal(p.index,6);
   n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
   n['mode-full'].click();
-  n['next-album'].click();assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
+  await nx();assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['album-youtube-player'].src,'about:blank','switching to the mapped player unloads prior album');
   assert.equal(n['album-essay'].hidden,false);
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
   const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));
   for (let number=24; number<=50; number++) {
-    n['next-album'].click();assert.equal(n['album-title'].textContent,catalog[number-1].title);
+    await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title);
     assert.equal(n['embedded-listening'].hidden,false);
     assert.equal(n['external-listening'].hidden,true);
     const album=added[String(number)];
@@ -150,13 +153,13 @@ async function boot({broken=false, noStorage=false}={}) {
     }
     assert.equal(n['album-essay'].hidden,false);
   }
-  n['next-album'].click();assert.equal(n['album-title'].textContent,'A Love Supreme');assert.equal(p.ids.length,4);assert(n['next-album'].disabled);
+  await nx();assert.equal(n['album-title'].textContent,'A Love Supreme');assert.equal(p.ids.length,4);assert(n['next-album'].disabled);
   assert.equal(n['album-youtube-player'].src,'about:blank');
   p.index=3;p.options.events.onStateChange({data:0});assert.match(n['player-status'].textContent,/הסתיים/);
   n['play-pause'].click();assert.equal(p.index,0,'replay starts from beginning');
   // Runtime matching: a reordered playlist with an extra bonus video maps songs by their real titles.
   n['album-search'].value='';
-  const back=()=>{while(n['album-title'].textContent!=='Getz / Gilberto')n['previous-album'].click();};back();
+  while(n['album-title'].textContent!=='Getz / Gilberto')await pv();
   const gg=added['41'];const order=[3,0,1,2,5,4,7,6];
   p.playlist=[...order.map(i=>'vid'+i),'bonus'];
   const titleOf={};order.forEach(i=>titleOf['vid'+i]=`Stan Getz & João Gilberto - ${gg.tracks[i][0]} (Remastered 2003)`);titleOf.bonus='Stan Getz - Ipanema interview';
@@ -167,23 +170,23 @@ async function boot({broken=false, noStorage=false}={}) {
   n['track-list'].children[3].children[1].click();assert.equal(p.index,0,'Desafinado found at playlist position 0');
   p.index=8;p.options.events.onStateChange({data:1});assert.equal(n['track-list'].children[4].attributes['aria-current'],'true','bonus video is skipped to the next album song');
   p.playlist=[];
-  while(n['album-title'].textContent!=='A Love Supreme')n['next-album'].click();
+  while(n['album-title'].textContent!=='A Love Supreme')await nx();
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(n['album-list'].children.length,2);
   assert.equal(calls.filter(x=>x[0]==='create').length,1,'only one player');
   // Spotify: every album has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
-  const all=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'));
+  const all=pilotAll();
   for (const [k,a] of Object.entries(all)) assert.match(a.spotifyAlbum||'',/^[A-Za-z0-9]{22}$/,`spotify id for ${k}`);
   n['service-spotify'].click();
   assert.equal(n['spotify-listening'].hidden,false);assert.equal(n['embedded-listening'].hidden,true);assert.equal(n['mode-switch'].hidden,true);
   assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['53'].spotifyAlbum}?utm_source=generator`);
   assert.equal(calls.at(-1)[0],'stop');assert.equal(storage.get('album-journey-2005-service'),'"spotify"');
-  n['previous-album'].click();assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['50'].spotifyAlbum}?utm_source=generator`);
+  await pv();assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['50'].spotifyAlbum}?utm_source=generator`);
   n['service-youtube'].click();
   assert.equal(n['spotify-listening'].hidden,true);assert.equal(n['spotify-player'].src,'about:blank');assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['track-list'].children.length,all['50'].tracks.length);
   // Story picks: ▶ on a pick plays that song in the site player.
-  while(n['album-title'].textContent!=='Brilliant Corners')n['previous-album'].click();
-  const bc=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))['10'];
+  while(n['album-title'].textContent!=='Brilliant Corners')await pv();
+  const bc=pilotAll()['10'];
   n['mode-short'].click();
   const picks=n['album-note'].children.at(-1).children[1].children;
   const pannonica=picks.findIndex(li=>li.children[0].children[1].textContent==='Pannonica');
@@ -196,7 +199,14 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(storage.get('album-journey-2005-welcomed'),'true');n['show-welcome'].click();assert.equal(n['welcome'].hidden,false);
   // Phone drawer: opening the list and picking an album closes it again.
   n['catalog-toggle'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'true');
-  n['previous-album'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'false');
+  await pv();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'false');
+  // On-demand loading: only the catalog, the first album and its neighbour are fetched up front; a failed album keeps the current one on screen.
+  const l=await boot();
+  assert.deepEqual(l.fetched.filter(u=>u.startsWith('./')).map(u=>u.replace(/\?.*/,'')),['./albums.json','./albums/1.json','./albums/2.json']);
+  l.fail(3);l.nodes['next-album'].click();await flush();l.nodes['next-album'].click();await flush();
+  assert.equal(l.nodes['album-title'].textContent,'Elvis Presley');assert.equal(l.nodes['album-error'].hidden,false);
+  l.fail(null);l.nodes['next-album'].click();await flush();
+  assert.equal(l.nodes['album-title'].textContent,'Tragic Songs of Life');assert.equal(l.nodes['album-error'].hidden,true,'retry after a failed load works');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
   console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
