@@ -27,6 +27,7 @@ a { color: #b4e3d6; }
 .topbar-help:hover { color: #f0f5f2; }
 .welcome { position: relative; margin-bottom: 38px; padding: 26px 28px; border: 1px solid #3f5f63; border-radius: 14px; background: linear-gradient(135deg, #1d3238, #172631); }
 .welcome-title { direction: rtl; max-width: none; font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -.02em; margin: 0 0 10px; }
+.book-en { color: #aabcc0; }
 .welcome-text { margin: 0; max-width: 62ch; color: #d5dfe0; line-height: 1.7; }
 .welcome-steps { list-style: none; counter-reset: step; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 20px 0 22px; }
 .welcome-steps li { counter-increment: step; display: flex; align-items: center; gap: 8px; padding: 8px 13px 8px 15px; border-radius: 99px; background: #243a42; color: #d5dfe0; font-size: .92rem; }
