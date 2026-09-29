@@ -280,7 +280,8 @@ function renderAlbum() {
   $('record-number').textContent = String(a.n).padStart(3, '0');
   $('chapter').textContent = `אלבום ${active + 1} מתוך ${albums.length} במסע`;
   renderStory(a);
-  $('previous-album').disabled = active === 0; $('next-album').disabled = active === albums.length - 1;
+  $('previous-album').disabled = $('previous-album-top').disabled = active === 0;
+  $('next-album').disabled = $('next-album-top').disabled = active === albums.length - 1;
   $('focus-editor').open = false;
   prepareGuide(); renderDone(); renderList(); renderMode(); renderCover();
 }
@@ -593,6 +594,15 @@ $('next-track').addEventListener('click', () => playAt(firstPlayable(queueIndex 
 $('album-search').addEventListener('input', renderList);
 $('previous-album').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album').addEventListener('click', () => selectAlbum(active + 1));
+$('previous-album-top').addEventListener('click', () => selectAlbum(active - 1));
+$('next-album-top').addEventListener('click', () => selectAlbum(active + 1));
+// Keyboard: in this right-to-left site ← is the next album and → the previous one
+// (not while typing in the search box or with modifier keys held).
+document.addEventListener?.('keydown', e => {
+  if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName ?? '') || e.target?.isContentEditable) return;
+  if (e.key === 'ArrowLeft') selectAlbum(active + 1);
+  else if (e.key === 'ArrowRight') selectAlbum(active - 1);
+});
 for (const s of ['youtube', 'spotify']) $('service-' + s).addEventListener('click', () => {
   if (service !== s) { service = s; writeStore(SERVICE_KEY, s); renderMode(); }
 });

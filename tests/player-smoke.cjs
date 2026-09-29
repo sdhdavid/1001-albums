@@ -23,7 +23,7 @@ async function boot({broken=false, noStorage=false}={}) {
   const storage=new Map([['album-journey-2005-done','[1,200]']]);
   const calls=[], fetched=[]; let mock, failAlbum=null;
   const ctx={console, location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
-    document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El()},
+    document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El(),addEventListener:(k,fn)=>{nodes['__'+k]=fn;}},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
     fetch:async url=>(fetched.push(url),{ok:!broken&&!(failAlbum&&url.includes(`/${failAlbum}.json`)),json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2).replace(/\?.*$/,''),'utf8'))}),
     YT:{Player:class {
@@ -53,6 +53,13 @@ async function boot({broken=false, noStorage=false}={}) {
     v.getBoundingClientRect=()=>({top:-900}); await nx(); assert.equal(jumps,1,'next album scrolls up to the new album');
     v.getBoundingClientRect=()=>({top:40}); await pv(); assert.equal(jumps,1,'no jump when the album top is visible');
     delete v.getBoundingClientRect; }
+  // Top arrows and keyboard arrows move between albums like the bottom pager (← next, → previous in RTL).
+  assert.equal(n['previous-album-top'].disabled,true,'no previous album on the first one');
+  n['next-album-top'].click();await flush();assert.equal(n['album-title'].textContent,'Elvis Presley');
+  n['previous-album-top'].click();await flush();assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
+  n['__keydown']({key:'ArrowLeft',target:{tagName:'BODY'}});await flush();assert.equal(n['album-title'].textContent,'Elvis Presley');
+  n['__keydown']({key:'ArrowLeft',target:{tagName:'INPUT'}});await flush();assert.equal(n['album-title'].textContent,'Elvis Presley','typing in search does not switch albums');
+  n['__keydown']({key:'ArrowRight',target:{tagName:'BODY'}});await flush();assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
