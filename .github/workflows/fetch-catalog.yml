@@ -1,0 +1,24 @@
+name: Fetch catalog
+
+# Run by hand. Downloads the numbered 2005 list from MusicBrainz (blocked in the
+# Claude sandbox) and saves it to the branch "catalog-data" as tools/catalog-2005.json.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/fetch_catalog.py
+      - name: Save to branch catalog-data
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git checkout -B catalog-data
+          git add -f tools/catalog-2005.json
+          git commit -m "MusicBrainz 2005 list"
+          git push -f origin catalog-data
