@@ -39,7 +39,6 @@ const trackKey = (a, t) => a.youtubePlaylist || a.fullAlbumVideo ? t[2] : t[1];
 // Where a song sits inside the YouTube playlist (-1: not in this playlist).
 const playlistIndex = (a, t) => resolved[a.n]?.[t[2]] ?? t[2];
 const playable = (a, t) => !a.youtubePlaylist || playlistIndex(a, t) >= 0;
-const clock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 function simplify(text, artist = '') {
   let s = String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’‘`´]/g, "'");
   for (const part of artist.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().split(/\s*(?:&|\/|,|\+|and|featuring|with)\s+/)) if (part.length > 3) s = s.split(part).join(' ');
@@ -225,6 +224,16 @@ $('catalog-toggle').addEventListener('click', () => setCatalogOpen(!catalogOpen)
 // First visit: a short explanation of the site, dismissed once and reopenable from the header.
 $('welcome').hidden = Boolean(readStore(WELCOME_KEY, false));
 $('close-welcome').addEventListener('click', () => { $('welcome').hidden = true; writeStore(WELCOME_KEY, true); });
+// Premium help: show this site's own address and copy snippets to the clipboard.
+for (const el of document.querySelectorAll?.('.site-host') ?? []) el.textContent = location.host || el.textContent;
+for (const b of document.querySelectorAll?.('.copy-button') ?? []) {
+  if (b.classList.contains('site-copy') && location.host) b.dataset.copy = location.host;
+  b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'הועתק ✓'; }
+    catch { b.textContent = 'לא הצלחתי, סמנו והעתיקו ידנית'; }
+    setTimeout(() => { b.textContent = 'העתקה'; }, 2500);
+  });
+}
 $('show-welcome').addEventListener('click', () => { $('welcome').hidden = false; window.scrollTo?.({top: 0, behavior: 'smooth'}); });
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
@@ -303,7 +312,8 @@ function renderQueue() {
   $('track-list').replaceChildren(...queue.map((t, i) => {
     const li = element('li', playable(a, t) ? '' : 'track-missing');
     const name = element('span', 'track-name', t[0]); name.dir = 'auto';
-    if (a.fullAlbumVideo) name.append(element('span', 'track-time', clock(t[3])));
+    const length = a.durations?.[a.tracks.indexOf(t)];
+    if (length) name.append(element('span', 'track-time', length));
     const b = element('button', 'track-play', playable(a, t) ? 'ניגון ▶' : 'לא זמין'); b.type = 'button';
     b.setAttribute('aria-label', playable(a, t) ? `ניגון ${t[0]}` : `${t[0]} אינו זמין ברשימת הניגון`);
     b.addEventListener('click', () => playAt(i));
@@ -350,18 +360,9 @@ function prepareGuide() {
   $('album-essay').hidden = !guide;
   $('track-note').hidden = true;
   guideRenderKey = '';
-  if (!guide) { $('essay-body').replaceChildren(); $('book-meta').hidden = true; return; }
+  if (!guide) { $('essay-body').replaceChildren(); return; }
   $('essay-title').hidden = true;
   $('essay-body').replaceChildren(sourceLinks([...new Set([...guide.intro.flatMap(section => section.sources), ...(guide.sources.listen ? ['listen'] : [])])]));
-  const book = guide.book;
-  $('book-meta').hidden = !book;
-  if (book) {
-    $('book-year').textContent = String(book.year);
-    $('book-label').textContent = book.label;
-    $('book-producer').textContent = book.producer;
-    $('book-duration').textContent = book.duration;
-    $('book-pages').textContent = book.pages;
-  }
 }
 function syncGuide() {
   const a = currentAlbum(), track = queue[queueIndex];

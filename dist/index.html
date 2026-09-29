@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101a24">
   <meta name="description" content="מסע האזנה לפי סדר האלבומים במהדורת 2005, עם מסלול מלא וממוקד.">
-  <title>1001 אלבומים — מסע האזנה</title>
+  <title>1001 אלבומים שחייבים לשמוע</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101a24'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%23b4e3d6' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23ff7958'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +17,8 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>1001 אלבומים</span></div>
-      <button id="show-welcome" class="topbar-meta topbar-help" type="button">מה זה? <span class="meta-separator">/</span> איך זה עובד</button>
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>1001 אלבומים</span><span class="brand-sub">שחייבים לשמוע</span></div>
+      <button id="show-welcome" class="topbar-meta topbar-help" type="button">מה זה?<span class="help-more"> <span class="meta-separator">/</span> איך זה עובד</span></button>
     </header>
     <main class="layout">
       <aside id="catalog" class="catalog" aria-label="רשימת האלבומים">
@@ -90,15 +90,6 @@
             <a href="#listening-panel" class="text-button">מעבר להאזנה ↓</a>
             <h3 id="essay-title"></h3>
             <div id="essay-body"></div>
-            <div id="book-meta" class="book-meta" hidden aria-label="פרטי הרשומה בספר מהדורת 2005">
-              <span class="book-meta-heading">ברשומת הספר · מהדורת 2005</span>
-              <span><span class="book-meta-label">שנת הספר</span> <b id="book-year"></b></span>
-              <span><span class="book-meta-label">חברה</span> <b id="book-label"></b></span>
-              <span><span class="book-meta-label">מפיק</span> <b id="book-producer"></b></span>
-              <span><span class="book-meta-label">משך</span> <b id="book-duration"></b></span>
-              <span><span class="book-meta-label">עמ׳ בספר</span> <b id="book-pages"></b></span>
-            </div>
-            <p class="guide-credit">טקסט מקורי לאתר, המבוסס על רשומת הספר ומקורות נוספים כשאלה מקושרים. אינו הטקסט של הספר.</p>
           </section>
           <div id="listening-panel" class="listen-panel">
             <div class="panel-top">
@@ -153,6 +144,24 @@
             </details>
             <p class="embed-note">הנגן מוטמע מ־YouTube. ההאזנה כפופה לזמינות ולהרשאות של YouTube; הטבות המנוי ל־YouTube Music אינן מובטחות בתוך האתר. השאר את העמוד פתוח להאזנה רציפה. <a id="youtube-direct" target="_blank" rel="noopener noreferrer">אם הנגן לא נטען, פתיחה ב־YouTube ↗</a></p>
             </div>
+            <details id="premium-help" class="premium-help">
+              <summary>💡 יש לך מנוי ועדיין יש פרסומות או רק קטעים קצרים? <span class="help-link">איך לתקן</span></summary>
+              <p>הדפדפן מונע מ־YouTube ומ־Spotify לזהות את החשבון שלך בתוך אתר אחר. מאשרים את זה פעם אחת, רק לאתר הזה:</p>
+              <h5>במחשב (Chrome)</h5>
+              <ol>
+                <li>מעתיקים את כתובת ההגדרות: <code dir="ltr">chrome://settings/cookies</code> <button class="copy-button" type="button" data-copy="chrome://settings/cookies">העתקה</button></li>
+                <li>פותחים לשונית חדשה, מדביקים בשורת הכתובת ולוחצים Enter.</li>
+                <li>ב„אתרים שמורשים להשתמש בקובצי Cookie של צד שלישי” לוחצים „הוספה” ומדביקים את כתובת האתר: <code dir="ltr" class="site-host">sdhdavid.github.io</code> <button class="copy-button site-copy" type="button" data-copy="sdhdavid.github.io">העתקה</button></li>
+                <li>מוודאים שמחוברים ל־YouTube או ל־Spotify באותו דפדפן, ומרעננים את הדף.</li>
+              </ol>
+              <h5>באנדרואיד (Chrome)</h5>
+              <ol>
+                <li>בתפריט ⋮ ← הגדרות ← הגדרות אתר ← קובצי Cookie של צד שלישי.</li>
+                <li>מוסיפים חריגה לאתר ומדביקים את כתובת האתר: <code dir="ltr" class="site-host">sdhdavid.github.io</code> <button class="copy-button site-copy" type="button" data-copy="sdhdavid.github.io">העתקה</button></li>
+              </ol>
+              <h5>באייפון ובאייפד</h5>
+              <p>אפל חוסמת את זה בכל הדפדפנים. הכי פשוט ללחוץ „פתיחה ב־YouTube” או „פתיחה ב־Spotify”, והאלבום ייפתח באפליקציה עם המנוי.</p>
+            </details>
           </div>
           <div class="pager">
             <button id="previous-album" type="button"><span aria-hidden="true">→</span> האלבום הקודם</button>
