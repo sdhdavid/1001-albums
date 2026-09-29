@@ -293,6 +293,8 @@ async function selectAlbum(index) {
   $('album-error').hidden = true;
   active = index; renderAlbum(); prefetchNeighbours();
   if (catalogOpen) { setCatalogOpen(false); window.scrollTo?.({top: 0, behavior: 'smooth'}); }
+  // Picking the next album from the bottom of the page: jump up to the new album's top.
+  else if ($('album-view').getBoundingClientRect?.().top < 0) $('album-view').scrollIntoView?.({block: 'start'});
 }
 $('catalog-toggle').addEventListener('click', () => setCatalogOpen(!catalogOpen));
 // First visit: a short explanation of the site, dismissed once and reopenable from the header.
@@ -430,13 +432,8 @@ function sourceLinks(ids) {
   return links;
 }
 function prepareGuide() {
-  const guide = currentAlbum().guide;
-  $('album-essay').hidden = !guide;
   $('track-note').hidden = true;
   guideRenderKey = '';
-  if (!guide) { $('essay-body').replaceChildren(); return; }
-  $('essay-title').hidden = true;
-  $('essay-body').replaceChildren(sourceLinks([...new Set([...guide.intro.flatMap(section => section.sources), ...(guide.sources.listen ? ['listen'] : [])])]));
 }
 function syncGuide() {
   const a = currentAlbum(), track = queue[queueIndex];
