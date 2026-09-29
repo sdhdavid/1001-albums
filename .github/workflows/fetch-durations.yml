@@ -1,9 +1,10 @@
-name: Fetch track durations (temporary)
+name: Fetch track durations
 
+# Run by hand (Actions tab → Run workflow) after adding albums. The job log
+# prints a JSON map of track lengths between DURATIONS markers; check each
+# album's total against guide.book.duration before merging it into pilot.json.
 on:
-  push:
-    branches: [claude/busy-goldberg-1gy4wg]
-    paths: [tools/fetch_durations.py, .github/workflows/fetch-durations.yml]
+  workflow_dispatch:
 
 jobs:
   fetch:

@@ -15,3 +15,5 @@ Track programs: every entry 1–50 lists its real song titles (official album or
 Spotify: each entry also has a `spotifyAlbum` id in `dist/pilot.json`. A YouTube / Spotify switch in the listening panel (remembered in local storage) swaps the YouTube player for Spotify's album embed. Signed-in Spotify Premium users hear full tracks; others get previews.
 
 Publishing: pushes to `main` deploy `dist/` to GitHub Pages (`.github/workflows/pages.yml`).
+
+Track lengths: every entry has a `durations` array in `dist/pilot.json` (one "m:ss" per track), shown next to each song. They come from `tools/fetch_durations.py` (median across iTunes and MusicBrainz editions, run via the manual "Fetch track durations" workflow) and were checked against each album's book length; a few were corrected by hand.

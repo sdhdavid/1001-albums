@@ -37,6 +37,9 @@ async function boot({broken=false, noStorage=false}={}) {
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
   assert.equal(n['album-list'].children.length,51); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
+  const pilotData=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'));
+  for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
+  assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
   assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 51 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,51);
   assert.equal(n['toggle-progress'].textContent,'1 מתוך 51');
   for (let i=0;i<10;i++) {
@@ -182,5 +185,5 @@ async function boot({broken=false, noStorage=false}={}) {
   n['previous-album'].click();assert.equal(n['catalog-toggle'].attributes['aria-expanded'],'false');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});
