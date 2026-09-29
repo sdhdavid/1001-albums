@@ -1,0 +1,37 @@
+name: Discover albums
+
+# Run by hand with a range of album numbers. Looks up track lists, lengths and
+# YouTube playlists (the sandbox can't reach those sites) and saves the review
+# file tools/discovered.json to the branch "discover-data".
+on:
+  workflow_dispatch:
+    inputs:
+      first:
+        description: 'First album number'
+        required: true
+      last:
+        description: 'Last album number'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install yt-dlp
+      - env:
+          FIRST: ${{ inputs.first }}
+          LAST: ${{ inputs.last }}
+        run: python3 tools/discover.py "$FIRST" "$LAST" tools/discovered.json
+      - name: Save to branch discover-data
+        if: always()
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git checkout -B discover-data
+          git add -f tools/discovered.json
+          git commit -m "Discovered album data"
+          git push -f origin discover-data
