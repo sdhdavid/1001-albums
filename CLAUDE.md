@@ -1,6 +1,6 @@
 # 1001 אלבומים — project notes for Claude
 
-A Hebrew (RTL) static site for listening through *1001 Albums You Must Hear Before You Die* (2005 edition) in book order, for the owner's friends and family. Live at https://sdhdavid.github.io/1001-albums/ (GitHub Pages). Currently 51 albums: book #1–50 plus #53 (A Love Supreme); #51–52 are missing.
+A Hebrew (RTL) static site for listening through *1001 Albums You Must Hear Before You Die* (2005 edition) in book order, for the owner's friends and family. Live at https://sdhdavid.github.io/1001-albums/ (GitHub Pages). Currently 51 playable albums (catalog lists all 1001): book #1–50 plus #53 (A Love Supreme); #51–52 are missing.
 
 ## Working with the owner
 - The owner does not code and doesn't know GitHub. Reply in Hebrew, in plain language, no jargon; say what changed on the site, not how.
@@ -30,7 +30,8 @@ Push to branch → open PR to `main` → merge. `.github/workflows/pages.yml` pu
 Original Hebrew, never copied from the book. ~150 words: three short paragraphs + three picks whose names match `tracks` exactly (build_stories.py asserts this). Warm, clear, non-academic; link to other albums on the site by number when relevant ("אלבום 14"). Only state facts you're sure of; soften or drop uncertain dates, chart positions and personnel.
 
 ## Next steps (agreed with the owner)
-1. Infrastructure round. Done: per-album files loaded on demand; batch pipeline + validation. Still open: extend `albums.json` to all 1001 entries (needs a numbered source for the 2005 list — MusicBrainz series is unreachable from the sandbox, so fetch it in an Actions job); fill in #51–52 (Otis Blue, The Beach Boys Today!) as the first batch.
+1. Infrastructure round. Done: per-album files loaded on demand; batch pipeline + validation. `albums.json` now holds the full numbered list (from the MusicBrainz series via the manual "Fetch catalog" workflow; source copy in `tools/catalog-2005.json`; entries 1–200 keep their earlier hand-checked titles). Known oddities in the source: number 336 appears twice (Dion's *Born to Be With You* was left out, *The Hissing of Summer Lawns* kept), 924 is missing, and 623/634 are both *It Takes a Nation of Millions*. Owner decides how to resolve. Still open: fill in #51–52 (Otis Blue, The Beach Boys Today!) as the first batch.
+   Genres: `tools/genres.py` (labels per album, applied to the catalog by `store.rebuild_index()`; only 1–53 tagged so far — tag the rest, owner reviews).
 2. Add albums in batches of 25–50; the owner reviews texts.
 3. Polish from friends' feedback.
 4. Later: shared layer (who listened to what, ratings, comments) with accounts.
