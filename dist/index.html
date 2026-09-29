@@ -18,7 +18,12 @@
       <div class="topbar-meta">מהדורת 2005 <span class="meta-separator">/</span> מסע האזנה</div>
     </header>
     <main class="layout">
-      <aside class="catalog" aria-label="רשימת האלבומים">
+      <aside id="catalog" class="catalog" aria-label="רשימת האלבומים">
+        <button id="catalog-toggle" class="catalog-toggle" type="button" aria-expanded="false" aria-controls="catalog-body">
+          <span class="toggle-label">כל האלבומים</span>
+          <span id="toggle-progress" class="toggle-progress"></span>
+        </button>
+        <div id="catalog-body" class="catalog-body">
         <div class="catalog-heading">
           <div>
             <p class="eyebrow">הרשימה</p>
@@ -31,9 +36,14 @@
           <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="10.7" cy="10.7" r="6.6"></circle><path d="m16 16 4.3 4.3"></path></svg>
           <input id="album-search" type="search" placeholder="למשל: Frank Sinatra" autocomplete="off">
         </div>
-        <div class="list-topline"><span>לפי סדר הספר</span><span id="list-progress">0 הושלמו</span></div>
+        <div class="progress-block">
+          <p id="list-progress" class="progress-text">האזנת ל־0 מתוך 0 אלבומים</p>
+          <progress id="progress-meter" class="progress-meter" max="1" value="0" aria-labelledby="list-progress"></progress>
+        </div>
+        <div class="list-topline"><span>לפי סדר הספר</span></div>
         <div id="album-list" class="album-list"></div>
         <p id="list-empty" class="list-empty" hidden>לא נמצאו אלבומים בחיפוש הזה.</p>
+        </div>
       </aside>
 
       <section class="detail" aria-label="האלבום הנבחר">
@@ -49,7 +59,7 @@
               <h2 id="album-title" dir="auto"></h2>
               <p id="album-artist" class="artist" dir="auto"></p>
             </div>
-            <div class="record-graphic" aria-hidden="true"><span id="record-number"></span></div>
+            <div id="record-graphic" class="record-graphic" aria-hidden="true"><img id="album-cover" alt="" hidden><span id="record-number"></span></div>
           </div>
           <div class="detail-rule"></div>
           <div class="note-grid">
