@@ -52,7 +52,7 @@ def editions(artist, title):
     """Yield track lists (title, ms) from several editions in both catalogs."""
     q = urllib.parse.quote(f'{artist} {title}')
     res = get(f'https://itunes.apple.com/search?term={q}&entity=album&limit=15&country=US', .4) or {}
-    for c in [c for c in res.get('results', []) if sim(c.get('collectionName', ''), title) >= .75][:8]:
+    for c in [c for c in res.get('results', []) if sim(c.get('collectionName', ''), title) >= .75 and sim(c.get('artistName', ''), artist) >= .5][:8]:
         tracks = get(f"https://itunes.apple.com/lookup?id={c['collectionId']}&entity=song&country=US", .4) or {}
         yield [(t.get('trackName', ''), t.get('trackTimeMillis')) for t in tracks.get('results', []) if t.get('wrapperType') == 'track']
     q = urllib.parse.quote(f'release:"{title}" AND artist:"{artist}"')

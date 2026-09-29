@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       first:
-        description: 'First album number'
+        description: 'First album number, or a comma list like 56,63,74 (then Last = 0)'
         required: true
       last:
         description: 'Last album number'

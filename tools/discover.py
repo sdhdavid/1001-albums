@@ -1,6 +1,6 @@
 """Find track lists, lengths and YouTube playlists for a range of albums.
 
-Usage: python3 tools/discover.py FIRST LAST OUT.json      (runs in GitHub Actions: "Discover albums")
+Usage: python3 tools/discover.py FIRST LAST OUT.json   (or: '56,63,74' 0 OUT.json for a list)     (runs in GitHub Actions: "Discover albums")
 
 For each catalog entry N in FIRST..LAST (skipping albums already on the site):
   * track list + lengths from the original-looking iTunes edition (median lengths across editions via fetch_durations helpers)
@@ -18,7 +18,10 @@ ns = {}; exec(compile(src, 'fetch_durations_helpers', 'exec'), ns)
 get, sim, norm, clock, editions, assign = (ns[k] for k in ('get', 'sim', 'norm', 'clock', 'editions', 'assign'))
 import yt_dlp, store
 
-first, last, out_path = int(args[0]), int(args[1]), args[2]
+wanted = [int(x) for x in args[0].split(',')] if ',' in args[0] or args[1] == '0' else list(range(int(args[0]), int(args[1]) + 1))
+out_path = args[2]
+# Titles the automatic clean-up gets wrong: n -> (artist, title) to search for.
+OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fifth Dimension')}
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
 BAD = re.compile(r'deluxe|anniversary|expanded|sessions|collector|super|box|live|bonus|mono|stereo|demo|remix', re.I)
@@ -42,24 +45,31 @@ def yt_candidates(artist, title):
     info = ydl.extract_info(f'https://www.youtube.com/results?search_query={q}&sp=EgIQAw%253D%253D', download=False) or {}
     return [(e.get('id'), e.get('title')) for e in info.get('entries', []) if e and e.get('id') and str(e['id']).startswith(('PL', 'OLAK'))][:6]
 
+def variants(t):
+    t = t or ''
+    out = [t, re.sub(r'^\s*\d+[\.\)\-]?\s*', '', t)]
+    if ' - ' in t: out.append(t.split(' - ', 1)[1])
+    return [simple(v) for v in out if simple(v)]
+
 def score(names, entries):
-    titles = [simple(t or '') for t in entries]
+    titles = [variants(t) for t in entries]
     pos, used = [], set()
     for n in names:
         best, bj = 0, -1
         for j, t in enumerate(titles):
             if j in used: continue
-            s = sim(simple(n), t)
+            s = max((sim(simple(n), v) for v in t), default=0)
             if s > best: best, bj = s, j
         if best >= .8: used.add(bj); pos.append(bj)
         else: pos.append(-1)
     return pos
 
 result = {}
-for n in range(first, last + 1):
+for n in wanted:
     if n in have or n not in catalog: continue
     meta = catalog[n]; artist = re.split(r' \+ | featuring |/| and Her| & His', meta['artist'])[0].strip(); title = re.sub(r'[“”"]', '', meta['title'])
     title = re.sub(r'\s*\(.*?\)\s*$', '', title)
+    artist, title = OVERRIDE.get(n, (artist, title))
     edition, counts = pick_edition(artist, title)
     rec = {'n': n, 'artist': meta['artist'], 'title': meta['title'], 'editionSizes': counts}
     if edition:
