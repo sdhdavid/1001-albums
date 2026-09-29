@@ -257,10 +257,30 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .track-list li.track-missing .track-name { color: #8fa2a6; font-weight: 400; }
 .track-list li.track-missing .track-play { border-style: dashed; color: #8fa2a6; }
 
-.genre-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; }
-.genre-chip { font: inherit; font-size: .82rem; color: #ccd7d9; background: transparent; border: 1px solid rgba(204, 215, 217, .35); border-radius: 999px; padding: 4px 11px; cursor: pointer; }
-.genre-chip:hover { border-color: #ccd7d9; }
-.genre-chip.active { background: #ccd7d9; color: #10191b; border-color: #ccd7d9; }
 .decade-mark { display: flex; align-items: center; gap: 10px; margin: 18px 6px 4px; color: #7f979d; font-size: .74rem; letter-spacing: .04em; }
 .decade-mark::after { content: ""; flex: 1; height: 1px; background: #2b3d48; }
 .album-list > .decade-mark:first-child { margin-top: 4px; }
+.genre-select { width: 100%; margin-top: 8px; height: 38px; font: inherit; font-size: .88rem; color: #ccd7d9; background: #21323e; border: 1px solid #3c505a; border-radius: 9px; padding: 0 10px; }
+.genre-select[hidden] { display: none; }
+/* Compact sidebar so the album list gets most of the height on laptop screens. */
+.catalog { padding-top: 20px; }
+.catalog-heading { margin-bottom: 14px; }
+.eyebrow { margin-bottom: 6px; }
+.search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.search-wrap input { height: 42px; padding-top: 8px; padding-bottom: 8px; }
+.search-wrap svg { top: 11px; }
+.progress-block { margin-top: 10px; padding: 8px 12px 10px; }
+.progress-text { margin-bottom: 7px; font-size: .84rem; }
+.list-topline { margin: 10px 5px 4px; }
+.catalog-body > * { flex-shrink: 0; }
+.catalog-body > .album-list { flex: 1 1 auto; flex-shrink: 1; }
+.album-row { min-height: 58px; padding-top: 9px; padding-bottom: 9px; }
+@media (min-width: 1051px) and (max-height: 720px) {
+  .catalog { padding-top: 14px; }
+  .catalog .eyebrow, .list-topline { display: none; }
+  .catalog-heading { margin-bottom: 10px; }
+  .catalog h1 { font-size: 1.25rem; }
+  .genre-select { height: 34px; margin-top: 6px; }
+  .search-wrap input { height: 38px; }
+  .search-wrap svg { top: 9px; }
+}
