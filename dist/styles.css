@@ -18,7 +18,8 @@ a { color: #b4e3d6; }
   height: 76px; display: flex; justify-content: space-between; align-items: center;
   padding: 0 clamp(22px, 3vw, 48px); border-bottom: 1px solid #2b3e49;
 }
-.brand { display: inline-flex; gap: 13px; align-items: center; font-weight: 800; font-size: 1.24rem; letter-spacing: -.035em; }
+.brand { white-space: nowrap; display: inline-flex; gap: 13px; align-items: center; font-weight: 800; font-size: 1.24rem; letter-spacing: -.035em; }
+.brand-sub { font-weight: 400; font-size: .92rem; color: #b4e3d6; letter-spacing: 0; margin-inline-start: -4px; }
 .brand-mark { width: 26px; height: 26px; border: 3px solid #b4e3d6; border-radius: 50%; display: inline-block; position: relative; }
 .brand-mark:after { content: ""; position: absolute; width: 6px; height: 6px; background: #ff7958; border-radius: 50%; top: 7px; left: 7px; }
 .topbar-meta { font-size: .9rem; color: #adc0c6; }
@@ -173,7 +174,9 @@ h2 { direction: ltr; text-align: right; font-size: clamp(2.35rem, 5vw, 5.15rem);
   .listen-panel { margin-top: 32px; }
 }
 @media (max-width: 530px) {
-  .brand { font-size: 1.04rem; }
+  .brand { font-size: 1.04rem; gap: 10px; }
+  .brand-sub { font-size: .82rem; }
+  .help-more { display: none; }
   .topbar-meta { white-space: nowrap; }
   .edition-label { display: none; }
   h2 { font-size: clamp(2.25rem, 9vw, 3.6rem); }
