@@ -2191,10 +2191,75 @@
     }
   },
   "22": {
-    "externalAlbum": "https://music.youtube.com/search?q=Marty%20Robbins%20Gunfighter%20Ballads%20and%20Trail%20Songs%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLPKiuFLGsAxpDipLa0XJp5qVaeHxzpH3s",
+    "focus": [
+      0,
+      6,
+      8
+    ],
+    "tracks": [
+      [
+        "Big Iron",
+        null,
+        0
+      ],
+      [
+        "Cool Water",
+        null,
+        1
+      ],
+      [
+        "Billy the Kid",
+        null,
+        2
+      ],
+      [
+        "A Hundred and Sixty Acres",
+        null,
+        3
+      ],
+      [
+        "They’re Hanging Me Tonight",
+        null,
+        4
+      ],
+      [
+        "The Strawberry Roan",
+        null,
+        5
+      ],
+      [
+        "El Paso",
+        null,
+        6
+      ],
+      [
+        "In the Valley",
+        null,
+        7
+      ],
+      [
+        "The Master’s Call",
+        null,
+        8
+      ],
+      [
+        "Running Gun",
+        null,
+        9
+      ],
+      [
+        "The Little Green Valley",
+        null,
+        10
+      ],
+      [
+        "Utah Carol",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2218,9 +2283,7 @@
         "duration": "35:53",
         "pages": "44–45"
       }
-    },
-    "youtubeAlbumPlaylist": "PLPKiuFLGsAxpDipLa0XJp5qVaeHxzpH3s",
-    "youtubeAlbumComplete": true
+    }
   },
   "23": {
     "note": "דייב ברובק וחבריו משחקים במשקלים לא שגרתיים בלי לאבד את הקלות והמלודיה. נסה לספור את הדופק ואז לשכוח מהספירה ולתת לגרוב לעבוד. Take Five מציע נקודת כניסה נהדרת; שים לב גם למעברים השובבים ב־Three to Get Ready.",
@@ -2280,10 +2343,80 @@
     }
   },
   "24": {
-    "externalAlbum": "https://music.youtube.com/search?q=Joan%20Baez%20Joan%20Baez%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLGbMvkohHFnAyVZUjDPeIFqWOgt1BegQN",
+    "focus": [
+      3,
+      5,
+      10
+    ],
+    "tracks": [
+      [
+        "Silver Dagger",
+        null,
+        0
+      ],
+      [
+        "East Virginia",
+        null,
+        1
+      ],
+      [
+        "Fare Thee Well (10,000 Miles)",
+        null,
+        2
+      ],
+      [
+        "House of the Rising Sun",
+        null,
+        3
+      ],
+      [
+        "All My Trials",
+        null,
+        4
+      ],
+      [
+        "Wildwood Flower",
+        null,
+        5
+      ],
+      [
+        "Donna Donna",
+        null,
+        6
+      ],
+      [
+        "John Riley",
+        null,
+        7
+      ],
+      [
+        "Rake and Rambling Boy",
+        null,
+        8
+      ],
+      [
+        "Little Moses",
+        null,
+        9
+      ],
+      [
+        "Mary Hamilton",
+        null,
+        10
+      ],
+      [
+        "Henry Martin",
+        null,
+        11
+      ],
+      [
+        "El Preso Número Nueve",
+        null,
+        12
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2307,15 +2440,78 @@
         "duration": "46:07",
         "pages": "48–49"
       }
-    },
-    "youtubeAlbumPlaylist": "PLGbMvkohHFnAyVZUjDPeIFqWOgt1BegQN",
-    "youtubeAlbumComplete": true
+    }
   },
   "25": {
-    "externalAlbum": "https://music.youtube.com/search?q=Elvis%20Presley%20Elvis%20Is%20Back%21%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLpPbUIwqIPUHb0AGlNK0sOnCHtqdmk7gd",
+    "focus": [
+      1,
+      7,
+      11
+    ],
+    "tracks": [
+      [
+        "Make Me Know It",
+        null,
+        0
+      ],
+      [
+        "Fever",
+        null,
+        1
+      ],
+      [
+        "The Girl of My Best Friend",
+        null,
+        2
+      ],
+      [
+        "I Will Be Home Again",
+        null,
+        3
+      ],
+      [
+        "Dirty, Dirty Feeling",
+        null,
+        4
+      ],
+      [
+        "Thrill of Your Love",
+        null,
+        5
+      ],
+      [
+        "Soldier Boy",
+        null,
+        6
+      ],
+      [
+        "Such a Night",
+        null,
+        7
+      ],
+      [
+        "It Feels So Right",
+        null,
+        8
+      ],
+      [
+        "Girl Next Door Went A-Walking",
+        null,
+        9
+      ],
+      [
+        "Like a Baby",
+        null,
+        10
+      ],
+      [
+        "Reconsider Baby",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2339,15 +2535,88 @@
         "duration": "—",
         "pages": "50–51"
       }
-    },
-    "youtubeAlbumPlaylist": "PLpPbUIwqIPUHb0AGlNK0sOnCHtqdmk7gd",
-    "youtubeAlbumComplete": true
+    }
   },
   "26": {
-    "externalAlbum": "https://music.youtube.com/search?q=Miriam%20Makeba%20Miriam%20Makeba%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLowQCq3Ss89ikMwB_bPRQuaQttWp0xaD4",
+    "focus": [
+      2,
+      6,
+      7
+    ],
+    "tracks": [
+      [
+        "The Retreat Song",
+        null,
+        0
+      ],
+      [
+        "Suliram",
+        null,
+        1
+      ],
+      [
+        "The Click Song",
+        null,
+        2
+      ],
+      [
+        "Umhome",
+        null,
+        3
+      ],
+      [
+        "Olilili",
+        null,
+        4
+      ],
+      [
+        "Lakutshn, Ilanga",
+        null,
+        5
+      ],
+      [
+        "Mbube",
+        null,
+        6
+      ],
+      [
+        "The Naughty Little Flea",
+        null,
+        7
+      ],
+      [
+        "Where Does It Lead?",
+        null,
+        8
+      ],
+      [
+        "Nomeva",
+        null,
+        9
+      ],
+      [
+        "House of the Rising Sun",
+        null,
+        10
+      ],
+      [
+        "Saduva",
+        null,
+        11
+      ],
+      [
+        "One More Dance",
+        null,
+        12
+      ],
+      [
+        "Iya Guduza",
+        null,
+        13
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2371,15 +2640,90 @@
         "duration": "34:42",
         "pages": "50–51"
       }
-    },
-    "youtubeAlbumVideo": "bzsnycUpJ_8",
-    "youtubeAlbumComplete": false
+    }
   },
   "27": {
-    "externalAlbum": "https://music.youtube.com/search?q=The%20Everly%20Brothers%20A%20Date%20With%20The%20Everly%20Brothers%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "fullAlbumVideo": true,
+    "focus": [
+      0,
+      6,
+      7
+    ],
+    "tracks": [
+      [
+        "Made to Love",
+        "B4zmuCZ8HZc",
+        null,
+        0
+      ],
+      [
+        "That’s Just Too Much",
+        "B4zmuCZ8HZc",
+        null,
+        125
+      ],
+      [
+        "Stick with Me Baby",
+        "B4zmuCZ8HZc",
+        null,
+        285
+      ],
+      [
+        "Baby What You Want Me to Do",
+        "B4zmuCZ8HZc",
+        null,
+        402
+      ],
+      [
+        "Sigh, Cry, Almost Die",
+        "B4zmuCZ8HZc",
+        null,
+        542
+      ],
+      [
+        "Always It’s You",
+        "B4zmuCZ8HZc",
+        null,
+        680
+      ],
+      [
+        "Love Hurts",
+        "B4zmuCZ8HZc",
+        null,
+        830
+      ],
+      [
+        "Lucille",
+        "B4zmuCZ8HZc",
+        null,
+        973
+      ],
+      [
+        "So How Come (No One Loves Me)",
+        "B4zmuCZ8HZc",
+        null,
+        1125
+      ],
+      [
+        "Donna, Donna",
+        "B4zmuCZ8HZc",
+        null,
+        1263
+      ],
+      [
+        "A Change of Heart",
+        "B4zmuCZ8HZc",
+        null,
+        1398
+      ],
+      [
+        "Cathy’s Clown",
+        "B4zmuCZ8HZc",
+        null,
+        1525
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2403,15 +2747,38 @@
         "duration": "27:53",
         "pages": "52–53"
       }
-    },
-    "youtubeAlbumVideo": "B4zmuCZ8HZc",
-    "youtubeAlbumComplete": true
+    }
   },
   "28": {
-    "externalAlbum": "https://music.youtube.com/search?q=Jimmy%20Smith%20Back%20at%20the%20Chicken%20Shack%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "OLAK5uy_nLME5r-mtPvt1KVVDOH-U2FyLm41zL8tw",
+    "focus": [
+      0,
+      1,
+      2
+    ],
+    "tracks": [
+      [
+        "Back at the Chicken Shack",
+        null,
+        0
+      ],
+      [
+        "When I Grow Too Old to Dream",
+        null,
+        1
+      ],
+      [
+        "Minor Chant",
+        null,
+        2
+      ],
+      [
+        "Messy Bessie",
+        null,
+        3
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2435,15 +2802,72 @@
         "duration": "43:49",
         "pages": "52–53"
       }
-    },
-    "youtubeAlbumPlaylist": "OLAK5uy_nLME5r-mtPvt1KVVDOH-U2FyLm41zL8tw",
-    "youtubeAlbumComplete": true
+    }
   },
   "29": {
-    "externalAlbum": "https://music.youtube.com/search?q=Muddy%20Waters%20Muddy%20Waters%20at%20Newport%201960%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "fullAlbumVideo": true,
+    "focus": [
+      1,
+      2,
+      6
+    ],
+    "tracks": [
+      [
+        "I Got My Brand on You",
+        "rC5qQhIuHkU",
+        null,
+        0
+      ],
+      [
+        "I’m Your Hoochie Coochie Man",
+        "rC5qQhIuHkU",
+        null,
+        290
+      ],
+      [
+        "Baby, Please Don’t Go",
+        "rC5qQhIuHkU",
+        null,
+        467
+      ],
+      [
+        "Soon Forgotten",
+        "rC5qQhIuHkU",
+        null,
+        651
+      ],
+      [
+        "Tiger in Your Tank",
+        "rC5qQhIuHkU",
+        null,
+        908
+      ],
+      [
+        "I Feel So Good",
+        "rC5qQhIuHkU",
+        null,
+        1180
+      ],
+      [
+        "Got My Mojo Working",
+        "rC5qQhIuHkU",
+        null,
+        1361
+      ],
+      [
+        "Got My Mojo Working, Part 2",
+        "rC5qQhIuHkU",
+        null,
+        1628
+      ],
+      [
+        "Goodbye Newport Blues",
+        "rC5qQhIuHkU",
+        null,
+        1803
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2467,15 +2891,48 @@
         "duration": "32:38",
         "pages": "52–53"
       }
-    },
-    "youtubeAlbumVideo": "rC5qQhIuHkU",
-    "youtubeAlbumComplete": true
+    }
   },
   "30": {
-    "externalAlbum": "https://music.youtube.com/search?q=Bill%20Evans%20Trio%20featuring%20Scott%20LaFaro%20Sunday%20at%20the%20Village%20Vanguard%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLowQCq3Ss89hinL8xP9YRy5JqPtV7yYht",
+    "focus": [
+      0,
+      1,
+      2
+    ],
+    "tracks": [
+      [
+        "Gloria’s Step",
+        null,
+        0
+      ],
+      [
+        "My Man’s Gone Now",
+        null,
+        1
+      ],
+      [
+        "Solar",
+        null,
+        2
+      ],
+      [
+        "Alice in Wonderland",
+        null,
+        3
+      ],
+      [
+        "All of You",
+        null,
+        4
+      ],
+      [
+        "Jade Visions",
+        null,
+        5
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2499,15 +2956,78 @@
         "duration": "68:09",
         "pages": "52–53"
       }
-    },
-    "youtubeAlbumPlaylist": "PLowQCq3Ss89hinL8xP9YRy5JqPtV7yYht",
-    "youtubeAlbumComplete": true
+    }
   },
   "31": {
-    "externalAlbum": "https://music.youtube.com/search?q=Ray%20Charles%20Modern%20Sounds%20in%20Country%20and%20Western%20Music%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PL1a1FcevWP19h-lU6yce1_TuLRWCzXJ20",
+    "focus": [
+      0,
+      8,
+      10
+    ],
+    "tracks": [
+      [
+        "Bye Bye Love",
+        null,
+        0
+      ],
+      [
+        "You Don’t Know Me",
+        null,
+        1
+      ],
+      [
+        "Half as Much",
+        null,
+        2
+      ],
+      [
+        "I Love You So Much It Hurts",
+        null,
+        3
+      ],
+      [
+        "Just a Little Lovin’ (Will Go a Long Way)",
+        null,
+        4
+      ],
+      [
+        "Born to Lose",
+        null,
+        5
+      ],
+      [
+        "Worried Mind",
+        null,
+        6
+      ],
+      [
+        "It Makes No Difference Now",
+        null,
+        7
+      ],
+      [
+        "You Win Again",
+        null,
+        8
+      ],
+      [
+        "Careless Love",
+        null,
+        9
+      ],
+      [
+        "I Can’t Stop Loving You",
+        null,
+        10
+      ],
+      [
+        "Hey, Good Lookin’",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2531,15 +3051,78 @@
         "duration": "39:51",
         "pages": "54–55"
       }
-    },
-    "youtubeAlbumPlaylist": "PLNPGM2D7aODepy1UzMdpV1I5pYkfKIdha",
-    "youtubeAlbumComplete": true
+    }
   },
   "32": {
-    "externalAlbum": "https://music.youtube.com/search?q=Booker%20T.%20%26%20the%20M.G.s%20Green%20Onions%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLeOgNl_bi7EXJXweUNXnRBhAjBdgWqsWR",
+    "focus": [
+      0,
+      2,
+      5
+    ],
+    "tracks": [
+      [
+        "Green Onions",
+        null,
+        0
+      ],
+      [
+        "Rinky Dink",
+        null,
+        1
+      ],
+      [
+        "I Got a Woman",
+        null,
+        2
+      ],
+      [
+        "Mo’ Onions",
+        null,
+        3
+      ],
+      [
+        "Twist and Shout",
+        null,
+        4
+      ],
+      [
+        "Behave Yourself",
+        null,
+        5
+      ],
+      [
+        "Stranger on the Shore",
+        null,
+        6
+      ],
+      [
+        "Lonely Avenue",
+        null,
+        7
+      ],
+      [
+        "One Who Really Loves You",
+        null,
+        8
+      ],
+      [
+        "You Can’t Sit Down",
+        null,
+        9
+      ],
+      [
+        "A Woman, a Lover, a Friend",
+        null,
+        10
+      ],
+      [
+        "Comin’ Home Baby",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2563,15 +3146,53 @@
         "duration": "34:55",
         "pages": "56–57"
       }
-    },
-    "youtubeAlbumPlaylist": "PLeOgNl_bi7EXJXweUNXnRBhAjBdgWqsWR",
-    "youtubeAlbumComplete": true
+    }
   },
   "33": {
-    "externalAlbum": "https://music.youtube.com/search?q=Stan%20Getz%20/%20Charlie%20Byrd%20Jazz%20Samba%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "OLAK5uy_m3PIfGZyVGORBbUKVb9fFwQlFsIW16yG8",
+    "focus": [
+      0,
+      4,
+      5
+    ],
+    "tracks": [
+      [
+        "Desafinado",
+        null,
+        0
+      ],
+      [
+        "Samba Dees Days",
+        null,
+        1
+      ],
+      [
+        "O Pato",
+        null,
+        2
+      ],
+      [
+        "Samba Triste",
+        null,
+        3
+      ],
+      [
+        "Samba de Uma Nota Só",
+        null,
+        4
+      ],
+      [
+        "É Luxo Só",
+        null,
+        5
+      ],
+      [
+        "Bahia",
+        null,
+        6
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2595,15 +3216,78 @@
         "duration": "33:08",
         "pages": "56–57"
       }
-    },
-    "youtubeAlbumPlaylist": "OLAK5uy_m3PIfGZyVGORBbUKVb9fFwQlFsIW16yG8",
-    "youtubeAlbumComplete": true
+    }
   },
   "34": {
-    "externalAlbum": "https://music.youtube.com/search?q=Ray%20Price%20Night%20Life%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLowQCq3Ss89jz1iejIedRBojbvYe3MSzK",
+    "focus": [
+      0,
+      3,
+      4
+    ],
+    "tracks": [
+      [
+        "Introduction and Theme / Night Life",
+        null,
+        0
+      ],
+      [
+        "Lonely Street",
+        null,
+        1
+      ],
+      [
+        "The Wild Side of Life",
+        null,
+        2
+      ],
+      [
+        "Sittin’ and Thinkin’",
+        null,
+        3
+      ],
+      [
+        "The Twenty-Fourth Hour",
+        null,
+        4
+      ],
+      [
+        "A Girl in the Night",
+        null,
+        5
+      ],
+      [
+        "Pride",
+        null,
+        6
+      ],
+      [
+        "There’s No Fool Like a Young Fool",
+        null,
+        7
+      ],
+      [
+        "If She Could See Me Now",
+        null,
+        8
+      ],
+      [
+        "Bright Lights and Blonde Haired Women",
+        null,
+        9
+      ],
+      [
+        "Are You Sure",
+        null,
+        10
+      ],
+      [
+        "Let Me Talk to You",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2627,15 +3311,88 @@
         "duration": "37:36",
         "pages": "58–59"
       }
-    },
-    "youtubeAlbumVideo": "ZjvV37t5UIU",
-    "youtubeAlbumComplete": false
+    }
   },
   "35": {
-    "externalAlbum": "https://music.youtube.com/search?q=The%20Beatles%20With%20The%20Beatles%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLycVTiaj8OI-XRoKhxMmBhnsefIc77M2_",
+    "focus": [
+      0,
+      2,
+      13
+    ],
+    "tracks": [
+      [
+        "It Won’t Be Long",
+        null,
+        0
+      ],
+      [
+        "All I’ve Got to Do",
+        null,
+        1
+      ],
+      [
+        "All My Loving",
+        null,
+        2
+      ],
+      [
+        "Don’t Bother Me",
+        null,
+        3
+      ],
+      [
+        "Little Child",
+        null,
+        4
+      ],
+      [
+        "Till There Was You",
+        null,
+        5
+      ],
+      [
+        "Please Mr. Postman",
+        null,
+        6
+      ],
+      [
+        "Roll Over Beethoven",
+        null,
+        7
+      ],
+      [
+        "Hold Me Tight",
+        null,
+        8
+      ],
+      [
+        "You Really Got a Hold on Me",
+        null,
+        9
+      ],
+      [
+        "I Wanna Be Your Man",
+        null,
+        10
+      ],
+      [
+        "Devil in Her Heart",
+        null,
+        11
+      ],
+      [
+        "Not a Second Time",
+        null,
+        12
+      ],
+      [
+        "Money (That’s What I Want)",
+        null,
+        13
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2659,15 +3416,83 @@
         "duration": "33:24",
         "pages": "58–59"
       }
-    },
-    "youtubeAlbumPlaylist": "PLycVTiaj8OI-XRoKhxMmBhnsefIc77M2_",
-    "youtubeAlbumComplete": true
+    }
   },
   "36": {
-    "externalAlbum": "https://music.youtube.com/search?q=Bob%20Dylan%20The%20Freewheelin%E2%80%99%20Bob%20Dylan%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLfGibfZATlGpj4XK7uSPrgpRiTXcI_VP1",
+    "focus": [
+      0,
+      2,
+      6
+    ],
+    "tracks": [
+      [
+        "Blowin’ in the Wind",
+        null,
+        0
+      ],
+      [
+        "Girl from the North Country",
+        null,
+        1
+      ],
+      [
+        "Masters of War",
+        null,
+        2
+      ],
+      [
+        "Down the Highway",
+        null,
+        3
+      ],
+      [
+        "Bob Dylan’s Blues",
+        null,
+        4
+      ],
+      [
+        "A Hard Rain’s a-Gonna Fall",
+        null,
+        5
+      ],
+      [
+        "Don’t Think Twice, It’s All Right",
+        null,
+        6
+      ],
+      [
+        "Bob Dylan’s Dream",
+        null,
+        7
+      ],
+      [
+        "Oxford Town",
+        null,
+        8
+      ],
+      [
+        "Talkin’ World War III Blues",
+        null,
+        9
+      ],
+      [
+        "Corrina, Corrina",
+        null,
+        10
+      ],
+      [
+        "Honey, Just Allow Me One More Chance",
+        null,
+        11
+      ],
+      [
+        "I Shall Be Free",
+        null,
+        12
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2691,15 +3516,83 @@
         "duration": "—",
         "pages": "60–61"
       }
-    },
-    "youtubeAlbumPlaylist": "PLfGibfZATlGpj4XK7uSPrgpRiTXcI_VP1",
-    "youtubeAlbumComplete": true
+    }
   },
   "37": {
-    "externalAlbum": "https://music.youtube.com/search?q=Various%20Artists%20A%20Christmas%20Gift%20for%20You%20from%20Phil%20Spector%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLE8DD293602B2D59E",
+    "focus": [
+      1,
+      4,
+      10
+    ],
+    "tracks": [
+      [
+        "White Christmas",
+        null,
+        0
+      ],
+      [
+        "Frosty the Snowman",
+        null,
+        1
+      ],
+      [
+        "The Bells of St. Mary’s",
+        null,
+        2
+      ],
+      [
+        "Santa Claus Is Coming to Town",
+        null,
+        3
+      ],
+      [
+        "Sleigh Ride",
+        null,
+        4
+      ],
+      [
+        "Marshmallow World",
+        null,
+        5
+      ],
+      [
+        "I Saw Mommy Kissing Santa Claus",
+        null,
+        6
+      ],
+      [
+        "Rudolph the Red-Nosed Reindeer",
+        null,
+        7
+      ],
+      [
+        "Winter Wonderland",
+        null,
+        8
+      ],
+      [
+        "Parade of the Wooden Soldiers",
+        null,
+        9
+      ],
+      [
+        "Christmas (Baby Please Come Home)",
+        null,
+        10
+      ],
+      [
+        "Here Comes Santa Claus",
+        null,
+        11
+      ],
+      [
+        "Silent Night",
+        null,
+        12
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2723,15 +3616,63 @@
         "duration": "35:11",
         "pages": "62–63"
       }
-    },
-    "youtubeAlbumPlaylist": "PLE8DD293602B2D59E",
-    "youtubeAlbumComplete": true
+    }
   },
   "38": {
-    "externalAlbum": "https://music.youtube.com/search?q=Sam%20Cooke%20Live%20at%20the%20Harlem%20Square%20Club%2C%201963%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLMYJI0hHMCKJLSVcCWoBOKN9NUJYECM2T",
+    "focus": [
+      1,
+      4,
+      6
+    ],
+    "tracks": [
+      [
+        "Feel It",
+        null,
+        0
+      ],
+      [
+        "Chain Gang",
+        null,
+        1
+      ],
+      [
+        "Cupid",
+        null,
+        2
+      ],
+      [
+        "Medley: It’s All Right / (I Love You) For Sentimental Reasons",
+        null,
+        3
+      ],
+      [
+        "Twistin’ the Night Away",
+        null,
+        4
+      ],
+      [
+        "Somebody Have Mercy",
+        null,
+        5
+      ],
+      [
+        "Bring It On Home to Me",
+        null,
+        6
+      ],
+      [
+        "Nothing Can Change This Love",
+        null,
+        7
+      ],
+      [
+        "Having a Party",
+        null,
+        8
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2755,15 +3696,38 @@
         "duration": "—",
         "pages": "62–63"
       }
-    },
-    "youtubeAlbumPlaylist": "PLMYJI0hHMCKJLSVcCWoBOKN9NUJYECM2T",
-    "youtubeAlbumComplete": true
+    }
   },
   "39": {
-    "externalAlbum": "https://music.youtube.com/search?q=Charles%20Mingus%20The%20Black%20Saint%20and%20the%20Sinner%20Lady%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "OLAK5uy_l4ly6CzAmlKechBRMsrghhTYS1doI64O0",
+    "focus": [
+      0,
+      1,
+      2
+    ],
+    "tracks": [
+      [
+        "Track A – Solo Dancer",
+        null,
+        0
+      ],
+      [
+        "Track B – Duet Solo Dancers",
+        null,
+        1
+      ],
+      [
+        "Track C – Group Dancers",
+        null,
+        2
+      ],
+      [
+        "Mode D / E / F – Trio and Group Dancers, Single Solos, Group and Solo Dance",
+        null,
+        3
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2787,15 +3751,58 @@
         "duration": "39:25",
         "pages": "62–63"
       }
-    },
-    "youtubeAlbumPlaylist": "OLAK5uy_l4ly6CzAmlKechBRMsrghhTYS1doI64O0",
-    "youtubeAlbumComplete": true
+    }
   },
   "40": {
-    "externalAlbum": "https://music.youtube.com/search?q=James%20Brown%20Live%20at%20the%20Apollo%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLNPGM2D7aODfdrlfMEh2BJAWjxwYh80Q8",
+    "focus": [
+      5,
+      6,
+      7
+    ],
+    "tracks": [
+      [
+        "Introduction to James Brown and The Famous Flames",
+        null,
+        0
+      ],
+      [
+        "I’ll Go Crazy",
+        null,
+        1
+      ],
+      [
+        "Try Me",
+        null,
+        2
+      ],
+      [
+        "Think",
+        null,
+        3
+      ],
+      [
+        "I Don’t Mind",
+        null,
+        4
+      ],
+      [
+        "Lost Someone",
+        null,
+        5
+      ],
+      [
+        "Medley: Please, Please, Please / You’ve Got the Power / I Found Someone / …",
+        null,
+        6
+      ],
+      [
+        "Night Train",
+        null,
+        7
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2819,15 +3826,58 @@
         "duration": "31:33",
         "pages": "62–63"
       }
-    },
-    "youtubeAlbumPlaylist": "PLNPGM2D7aODfdrlfMEh2BJAWjxwYh80Q8",
-    "youtubeAlbumComplete": true
+    }
   },
   "41": {
-    "externalAlbum": "https://music.youtube.com/search?q=Stan%20Getz%20/%20Jo%C3%A3o%20Gilberto%20featuring%20Ant%C3%B4nio%20Carlos%20Jobim%20Getz%20/%20Gilberto%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "OLAK5uy_lb7YNh-cPHZnacF4gw_iVI29IZ01yv_3Y",
+    "focus": [
+      0,
+      3,
+      4
+    ],
+    "tracks": [
+      [
+        "The Girl from Ipanema",
+        null,
+        0
+      ],
+      [
+        "Doralice",
+        null,
+        1
+      ],
+      [
+        "Para Machucar Meu Coração",
+        null,
+        2
+      ],
+      [
+        "Desafinado",
+        null,
+        3
+      ],
+      [
+        "Corcovado (Quiet Nights of Quiet Stars)",
+        null,
+        4
+      ],
+      [
+        "Só Danço Samba",
+        null,
+        5
+      ],
+      [
+        "O Grande Amor",
+        null,
+        6
+      ],
+      [
+        "Vivo Sonhando",
+        null,
+        7
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2851,15 +3901,83 @@
         "duration": "34:02",
         "pages": "64–65"
       }
-    },
-    "youtubeAlbumPlaylist": "OLAK5uy_lb7YNh-cPHZnacF4gw_iVI29IZ01yv_3Y",
-    "youtubeAlbumComplete": true
+    }
   },
   "42": {
-    "externalAlbum": "https://music.youtube.com/search?q=The%20Beatles%20A%20Hard%20Day%E2%80%99s%20Night%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PL0jp-uZ7a4g_4iMT5wmgU7YLqeNQiS1G_",
+    "focus": [
+      0,
+      2,
+      4
+    ],
+    "tracks": [
+      [
+        "A Hard Day’s Night",
+        null,
+        0
+      ],
+      [
+        "I Should Have Known Better",
+        null,
+        1
+      ],
+      [
+        "If I Fell",
+        null,
+        2
+      ],
+      [
+        "I’m Happy Just to Dance with You",
+        null,
+        3
+      ],
+      [
+        "And I Love Her",
+        null,
+        4
+      ],
+      [
+        "Tell Me Why",
+        null,
+        5
+      ],
+      [
+        "Can’t Buy Me Love",
+        null,
+        6
+      ],
+      [
+        "Any Time at All",
+        null,
+        7
+      ],
+      [
+        "I’ll Cry Instead",
+        null,
+        8
+      ],
+      [
+        "Things We Said Today",
+        null,
+        9
+      ],
+      [
+        "When I Get Home",
+        null,
+        10
+      ],
+      [
+        "You Can’t Do That",
+        null,
+        11
+      ],
+      [
+        "I’ll Be Back",
+        null,
+        12
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2883,15 +4001,93 @@
         "duration": "29:47",
         "pages": "66–67"
       }
-    },
-    "youtubeAlbumPlaylist": "PL0jp-uZ7a4g_4iMT5wmgU7YLqeNQiS1G_",
-    "youtubeAlbumComplete": true
+    }
   },
   "43": {
-    "externalAlbum": "https://music.youtube.com/search?q=Jacques%20Brel%20Olympia%2064%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLDIxWXRU4UDrQBcipkebtIDJeMPIGIZ57",
+    "focus": [
+      0,
+      5,
+      9
+    ],
+    "tracks": [
+      [
+        "Amsterdam",
+        null,
+        0
+      ],
+      [
+        "Les Timides",
+        null,
+        1
+      ],
+      [
+        "Le Dernier Repas",
+        null,
+        2
+      ],
+      [
+        "Les Jardins du casino",
+        null,
+        3
+      ],
+      [
+        "Les Vieux",
+        null,
+        4
+      ],
+      [
+        "Les Toros",
+        null,
+        5
+      ],
+      [
+        "Tango funèbre",
+        null,
+        6
+      ],
+      [
+        "Le Plat Pays",
+        null,
+        7
+      ],
+      [
+        "Les Bonbons",
+        null,
+        8
+      ],
+      [
+        "Mathilde",
+        null,
+        9
+      ],
+      [
+        "Les Bigotes",
+        null,
+        10
+      ],
+      [
+        "Les Bourgeois",
+        null,
+        11
+      ],
+      [
+        "Jef",
+        null,
+        12
+      ],
+      [
+        "Au suivant",
+        null,
+        13
+      ],
+      [
+        "Madeleine",
+        null,
+        14
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2915,15 +4111,78 @@
         "duration": "47:56",
         "pages": "68–69"
       }
-    },
-    "youtubeAlbumPlaylist": "PLDIxWXRU4UDrQBcipkebtIDJeMPIGIZ57",
-    "youtubeAlbumComplete": true
+    }
   },
   "44": {
-    "externalAlbum": "https://music.youtube.com/search?q=Solomon%20Burke%20Rock%20%E2%80%99n%20Soul%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLowQCq3Ss89gsn2Wucisfp39CiX0TZvCf",
+    "focus": [
+      1,
+      2,
+      5
+    ],
+    "tracks": [
+      [
+        "Goodbye Baby (Baby Goodbye)",
+        null,
+        0
+      ],
+      [
+        "Cry to Me",
+        null,
+        1
+      ],
+      [
+        "If You Need Me",
+        null,
+        2
+      ],
+      [
+        "Hard Ain’t It Hard",
+        null,
+        3
+      ],
+      [
+        "Can’t Nobody Love You",
+        null,
+        4
+      ],
+      [
+        "Just Out of Reach (Of My Two Empty Arms)",
+        null,
+        5
+      ],
+      [
+        "You’re Good for Me",
+        null,
+        6
+      ],
+      [
+        "He’ll Have to Go",
+        null,
+        7
+      ],
+      [
+        "Won’t You Give Him (One More Chance)",
+        null,
+        8
+      ],
+      [
+        "Someone to Love Me",
+        null,
+        9
+      ],
+      [
+        "I Almost Lost My Mind",
+        null,
+        10
+      ],
+      [
+        "Home in Your Heart",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2947,15 +4206,78 @@
         "duration": "34:06",
         "pages": "68–69"
       }
-    },
-    "youtubeAlbumPlaylist": "PLowQCq3Ss89gsn2Wucisfp39CiX0TZvCf",
-    "youtubeAlbumComplete": true
+    }
   },
   "45": {
-    "externalAlbum": "https://music.youtube.com/search?q=Dusty%20Springfield%20A%20Girl%20Called%20Dusty%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLowQCq3Ss89g7z4hUKG5BN8M_9R8TcD6T",
+    "focus": [
+      0,
+      1,
+      8
+    ],
+    "tracks": [
+      [
+        "Mama Said",
+        null,
+        0
+      ],
+      [
+        "You Don’t Own Me",
+        null,
+        1
+      ],
+      [
+        "Do Re Mi",
+        null,
+        2
+      ],
+      [
+        "When the Lovelight Starts Shining Through His Eyes",
+        null,
+        3
+      ],
+      [
+        "My Colouring Book",
+        null,
+        4
+      ],
+      [
+        "Mockingbird",
+        null,
+        5
+      ],
+      [
+        "Twenty Four Hours from Tulsa",
+        null,
+        6
+      ],
+      [
+        "Nothing",
+        null,
+        7
+      ],
+      [
+        "Anyone Who Had a Heart",
+        null,
+        8
+      ],
+      [
+        "Will You Love Me Tomorrow",
+        null,
+        9
+      ],
+      [
+        "Wishin’ and Hopin’",
+        null,
+        10
+      ],
+      [
+        "Don’t You Know",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -2979,15 +4301,78 @@
         "duration": "28:37",
         "pages": "70–71"
       }
-    },
-    "youtubeAlbumPlaylist": "PLowQCq3Ss89g7z4hUKG5BN8M_9R8TcD6T",
-    "youtubeAlbumComplete": true
+    }
   },
   "46": {
-    "externalAlbum": "https://music.youtube.com/search?q=The%20Rolling%20Stones%20England%E2%80%99s%20Newest%20Hit%20Makers%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLKEOCWQDKove2Uz-0UjUKBsdarDHN_GjA",
+    "focus": [
+      1,
+      2,
+      8
+    ],
+    "tracks": [
+      [
+        "Not Fade Away",
+        null,
+        0
+      ],
+      [
+        "Route 66",
+        null,
+        1
+      ],
+      [
+        "I Just Want to Make Love to You",
+        null,
+        2
+      ],
+      [
+        "Honest I Do",
+        null,
+        3
+      ],
+      [
+        "Now I’ve Got a Witness",
+        null,
+        4
+      ],
+      [
+        "Little by Little",
+        null,
+        5
+      ],
+      [
+        "I’m a King Bee",
+        null,
+        6
+      ],
+      [
+        "Carol",
+        null,
+        7
+      ],
+      [
+        "Tell Me",
+        null,
+        8
+      ],
+      [
+        "Can I Get a Witness",
+        null,
+        9
+      ],
+      [
+        "You Can Make It If You Try",
+        null,
+        10
+      ],
+      [
+        "Walking the Dog",
+        null,
+        11
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -3011,15 +4396,90 @@
         "duration": "32:59",
         "pages": "72–73"
       }
-    },
-    "youtubeAlbumPlaylist": "PLKEOCWQDKove2Uz-0UjUKBsdarDHN_GjA",
-    "youtubeAlbumComplete": true
+    }
   },
   "47": {
-    "externalAlbum": "https://music.youtube.com/search?q=Buck%20Owens%20and%20His%20Buckaroos%20I%E2%80%99ve%20Got%20a%20Tiger%20by%20the%20Tail%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "fullAlbumVideo": true,
+    "focus": [
+      0,
+      8,
+      9
+    ],
+    "tracks": [
+      [
+        "I’ve Got a Tiger by the Tail",
+        "Kss_AF2Ts-o",
+        null,
+        0
+      ],
+      [
+        "Trouble and Me",
+        "Kss_AF2Ts-o",
+        null,
+        130
+      ],
+      [
+        "Let the Sad Times Roll On",
+        "Kss_AF2Ts-o",
+        null,
+        243
+      ],
+      [
+        "Wham Bam",
+        "Kss_AF2Ts-o",
+        null,
+        377
+      ],
+      [
+        "If You Fall Out of Love with Me",
+        "Kss_AF2Ts-o",
+        null,
+        497
+      ],
+      [
+        "Fallin’ for You",
+        "Kss_AF2Ts-o",
+        null,
+        632
+      ],
+      [
+        "We’re Gonna Let the Good Times Roll",
+        "Kss_AF2Ts-o",
+        null,
+        750
+      ],
+      [
+        "The Band Keeps Playin’ On",
+        "Kss_AF2Ts-o",
+        null,
+        883
+      ],
+      [
+        "Streets of Laredo",
+        "Kss_AF2Ts-o",
+        null,
+        1064
+      ],
+      [
+        "Cryin’ Time",
+        "Kss_AF2Ts-o",
+        null,
+        1239
+      ],
+      [
+        "A Maiden’s Prayer",
+        "Kss_AF2Ts-o",
+        null,
+        1386
+      ],
+      [
+        "Memphis",
+        "Kss_AF2Ts-o",
+        null,
+        1538
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -3043,15 +4503,83 @@
         "duration": "28:19",
         "pages": "72–73"
       }
-    },
-    "youtubeAlbumVideo": "Kss_AF2Ts-o",
-    "youtubeAlbumComplete": true
+    }
   },
   "48": {
-    "externalAlbum": "https://music.youtube.com/search?q=Jerry%20Lee%20Lewis%20Live%20at%20the%20Star%20Club%2C%20Hamburg%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLXRKTcRs-Xs7RqWKl8hqt9wPn7GWpt8K7",
+    "focus": [
+      0,
+      4,
+      12
+    ],
+    "tracks": [
+      [
+        "Mean Woman Blues",
+        null,
+        0
+      ],
+      [
+        "High School Confidential",
+        null,
+        1
+      ],
+      [
+        "Money (That’s What I Want)",
+        null,
+        2
+      ],
+      [
+        "Matchbox",
+        null,
+        3
+      ],
+      [
+        "What’d I Say, Part 1",
+        null,
+        4
+      ],
+      [
+        "What’d I Say, Part 2",
+        null,
+        5
+      ],
+      [
+        "Great Balls of Fire",
+        null,
+        6
+      ],
+      [
+        "Good Golly, Miss Molly",
+        null,
+        7
+      ],
+      [
+        "Lewis Boogie",
+        null,
+        8
+      ],
+      [
+        "Your Cheatin’ Heart",
+        null,
+        9
+      ],
+      [
+        "Hound Dog",
+        null,
+        10
+      ],
+      [
+        "Long Tall Sally",
+        null,
+        11
+      ],
+      [
+        "Whole Lotta Shakin’ Goin’ On",
+        null,
+        12
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -3075,15 +4603,90 @@
         "duration": "37:48",
         "pages": "74–75"
       }
-    },
-    "youtubeAlbumPlaylist": "PLXRKTcRs-Xs7RqWKl8hqt9wPn7GWpt8K7",
-    "youtubeAlbumComplete": true
+    }
   },
   "49": {
-    "externalAlbum": "https://music.youtube.com/search?q=The%20Sonics%20Here%20Are%20The%20Sonics%21%21%21%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "fullAlbumVideo": true,
+    "focus": [
+      0,
+      6,
+      10
+    ],
+    "tracks": [
+      [
+        "The Witch",
+        "VLtSAwRugUA",
+        null,
+        0
+      ],
+      [
+        "Do You Love Me",
+        "VLtSAwRugUA",
+        null,
+        160
+      ],
+      [
+        "Roll Over Beethoven",
+        "VLtSAwRugUA",
+        null,
+        298
+      ],
+      [
+        "Boss Hoss",
+        "VLtSAwRugUA",
+        null,
+        467
+      ],
+      [
+        "Dirty Robber",
+        "VLtSAwRugUA",
+        null,
+        611
+      ],
+      [
+        "Have Love Will Travel",
+        "VLtSAwRugUA",
+        null,
+        733
+      ],
+      [
+        "Psycho",
+        "VLtSAwRugUA",
+        null,
+        893
+      ],
+      [
+        "Money",
+        "VLtSAwRugUA",
+        null,
+        1030
+      ],
+      [
+        "Walking the Dog",
+        "VLtSAwRugUA",
+        null,
+        1150
+      ],
+      [
+        "Night Time Is the Right Time",
+        "VLtSAwRugUA",
+        null,
+        1315
+      ],
+      [
+        "Strychnine",
+        "VLtSAwRugUA",
+        null,
+        1493
+      ],
+      [
+        "Good Golly Miss Molly",
+        "VLtSAwRugUA",
+        null,
+        1626
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -3107,15 +4710,73 @@
         "duration": "29:20",
         "pages": "74–75"
       }
-    },
-    "youtubeAlbumVideo": "VLtSAwRugUA",
-    "youtubeAlbumComplete": true
+    }
   },
   "50": {
-    "externalAlbum": "https://music.youtube.com/search?q=Bob%20Dylan%20Bringing%20It%20All%20Back%20Home%20album",
     "note": "",
-    "focus": [],
-    "tracks": [],
+    "youtubePlaylist": "PLXRKTcRs-Xs4VBG76rh0C9EZsURxfQZP1",
+    "focus": [
+      0,
+      7,
+      9
+    ],
+    "tracks": [
+      [
+        "Subterranean Homesick Blues",
+        null,
+        0
+      ],
+      [
+        "She Belongs to Me",
+        null,
+        1
+      ],
+      [
+        "Maggie’s Farm",
+        null,
+        2
+      ],
+      [
+        "Love Minus Zero/No Limit",
+        null,
+        3
+      ],
+      [
+        "Outlaw Blues",
+        null,
+        4
+      ],
+      [
+        "On the Road Again",
+        null,
+        5
+      ],
+      [
+        "Bob Dylan’s 115th Dream",
+        null,
+        6
+      ],
+      [
+        "Mr. Tambourine Man",
+        null,
+        7
+      ],
+      [
+        "Gates of Eden",
+        null,
+        8
+      ],
+      [
+        "It’s Alright, Ma (I’m Only Bleeding)",
+        null,
+        9
+      ],
+      [
+        "It’s All Over Now, Baby Blue",
+        null,
+        10
+      ]
+    ],
     "guide": {
       "sources": {},
       "intro": [
@@ -3139,9 +4800,7 @@
         "duration": "47:21",
         "pages": "74–75"
       }
-    },
-    "youtubeAlbumPlaylist": "PLXRKTcRs-Xs4VBG76rh0C9EZsURxfQZP1",
-    "youtubeAlbumComplete": true
+    }
   },
   "53": {
     "note": "ארבעה חלקים שנשמעים כמו מסע אחד: מהמוטיב החוזר של Acknowledgement אל התנועה הנמרצת של Pursuance והסיום המהורהר של Psalm. הקשב לאופן שבו הסקסופון, הפסנתר, הבס והתופים דוחפים זה את זה קדימה. המסלול הממוקד הוא מבוא; כאן כדאי במיוחד לחזור גם לרצף המלא.",

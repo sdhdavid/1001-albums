@@ -11,33 +11,19 @@ function writeStore(key, value) {
   }
 }
 let albums = [], active = 0, mode = 'full', player = null, ready = false;
-let queue = [], queueIndex = 0, playerTimer = null, state = -1;
+let queue = [], queueIndex = 0, playerTimer = null, chapterTimer = null, state = -1;
 let guideRenderKey = ''; 
-// Counts checked on the public YouTube playlist pages. The four remaining albums
-// have a continuous full-recording video instead of separate song videos.
-const albumPlaylistCounts = {
-  22:12, 24:13, 25:12, 26:14, 28:4, 30:6, 31:12, 32:12,
-  33:7, 34:12, 35:14, 36:13, 37:13, 38:8, 39:4, 40:9,
-  41:8, 42:13, 43:15, 44:12, 45:20, 46:12, 48:13, 50:11
-};
-const correctedPlaylists = {
-  26:'PLowQCq3Ss89ikMwB_bPRQuaQttWp0xaD4',
-  31:'PL1a1FcevWP19h-lU6yce1_TuLRWCzXJ20',
-  34:'PLowQCq3Ss89jz1iejIedRBojbvYe3MSzK'
-};
+const TITLES_KEY = 'album-journey-2005-video-titles';
+const TITLE_CACHE_LIMIT = 1500;
+// Official album programs live in pilot.json. For YouTube playlists the site
+// reads the playlist's real video titles at runtime and maps each song to the
+// matching playlist entry, so reordered, extended or partial playlists still
+// play the right song.
+const resolved = {};
+const titleCache = (() => { const c = readStore(TITLES_KEY, {}); return c && typeof c === 'object' && !Array.isArray(c) ? c : {}; })();
 function playableAlbum(album) {
   const a = {...album};
-  if (!a.externalAlbum) return a;
-  if (albumPlaylistCounts[a.n]) {
-    a.youtubePlaylist = correctedPlaylists[a.n] || a.youtubeAlbumPlaylist;
-    a.tracks = Array.from({length:albumPlaylistCounts[a.n]}, (_, i) => [`קטע ${i + 1}`, '', i]);
-    a.focus = [...new Set([0, Math.floor(a.tracks.length / 2), a.tracks.length - 1])];
-  } else if (a.youtubeAlbumVideo && [27,29,47,49].includes(a.n)) {
-    a.fullAlbumVideo = true;
-    a.tracks = [['הקלטה רציפה של האלבום', a.youtubeAlbumVideo]];
-    a.focus = [0];
-  }
-  delete a.externalAlbum;
+  if (a.fullAlbumVideo) a.tracks = a.tracks.map((t, i) => [t[0], t[1], i, t[3] || 0]);
   return a;
 }
 const storedDone = readStore(DONE_KEY, []);
@@ -45,7 +31,73 @@ const done = new Set(Array.isArray(storedDone) ? storedDone.filter(Number.isInte
 const storedFocus = readStore(FOCUS_KEY, {});
 const focus = storedFocus && typeof storedFocus === 'object' && !Array.isArray(storedFocus) ? storedFocus : {};
 const currentAlbum = () => albums[active];
-const trackKey = (a, t) => a.youtubePlaylist ? t[2] : t[1];
+const trackKey = (a, t) => a.youtubePlaylist || a.fullAlbumVideo ? t[2] : t[1];
+// Where a song sits inside the YouTube playlist (-1: not in this playlist).
+const playlistIndex = (a, t) => resolved[a.n]?.[t[2]] ?? t[2];
+const playable = (a, t) => !a.youtubePlaylist || playlistIndex(a, t) >= 0;
+const clock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+function simplify(text, artist = '') {
+  let s = String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’‘`´]/g, "'");
+  for (const part of artist.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().split(/\s*(?:&|\/|,|\+|and|featuring|with)\s+/)) if (part.length > 3) s = s.split(part).join(' ');
+  s = s.replace(/\((?:[^)]*(?:remaster|live|mono|stereo|version|take|mix|edit|audio|official|lyric|bonus|19\d\d|20\d\d)[^)]*)\)|\[[^\]]*\]/g, ' ');
+  s = s.replace(/-\s*(?:\d{4}\s*)?(?:remaster|live|mono|stereo|single).*$/g, ' ');
+  return s.replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').replace(/\b(the|a|an|de|la|le|les|of)\b/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function similarity(song, title, artist) {
+  const a = simplify(song, artist), b = simplify(title, artist);
+  if (!a || !b) return 0;
+  if (a === b) return 1;
+  const words = a.split(' '), have = new Set(b.split(' '));
+  const hit = words.filter(w => have.has(w)).length / words.length;
+  return b.includes(a) ? Math.max(hit, .95) : hit * (words.length === 1 ? .9 : 1);
+}
+// Maps each song of the official program to a playlist entry using real video titles.
+function matchPlaylist(a, titles) {
+  const used = new Set(), map = a.tracks.map(() => -1);
+  const known = titles.filter(Boolean).length;
+  a.tracks.forEach((t, song) => {
+    let best = -1, score = .6;
+    titles.forEach((title, index) => {
+      if (!title || used.has(index)) return;
+      const value = similarity(t[0], title, a.artist) - Math.abs(index - song) * .002;
+      if (value > score) { score = value; best = index; }
+    });
+    if (best >= 0) { map[song] = best; used.add(best); }
+  });
+  const matched = map.filter(i => i >= 0).length;
+  if (!known || matched < Math.ceil(a.tracks.length / 2)) return a.tracks.map((t, i) => i < titles.length ? i : -1);
+  // A title that could not be read keeps its album position if that slot is free.
+  map.forEach((index, song) => { if (index < 0 && song < titles.length && !titles[song] && !used.has(song)) { map[song] = song; used.add(song); } });
+  return map;
+}
+async function videoTitle(id) {
+  if (titleCache[id]) return titleCache[id];
+  const url = encodeURIComponent(`https://www.youtube.com/watch?v=${id}`);
+  for (const endpoint of [`https://www.youtube.com/oembed?format=json&url=${url}`, `https://noembed.com/embed?url=${url}`]) {
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) continue;
+      const title = (await response.json()).title;
+      if (typeof title === 'string' && title) { titleCache[id] = title; return title; }
+    } catch { /* try the next endpoint */ }
+  }
+  return '';
+}
+const resolving = {};
+async function resolvePlaylist(a) {
+  if (!a.youtubePlaylist || resolved[a.n] || resolving[a.n] || typeof player?.getPlaylist !== 'function') return;
+  const ids = player.getPlaylist();
+  if (!Array.isArray(ids) || !ids.length) return;
+  resolving[a.n] = true;
+  try {
+    const titles = await Promise.all(ids.map(videoTitle));
+    const keys = Object.keys(titleCache);
+    if (keys.length > TITLE_CACHE_LIMIT) keys.slice(0, keys.length - TITLE_CACHE_LIMIT).forEach(k => delete titleCache[k]);
+    try { localStorage.setItem(TITLES_KEY, JSON.stringify(titleCache)); } catch { /* cache is optional */ }
+    resolved[a.n] = matchPlaylist(a, titles);
+  } finally { resolving[a.n] = false; }
+  if (currentAlbum() === a) { renderQueue(); renderFocus(); if (![1, 2, 3].includes(state)) cueQueue(); }
+}
 const defaultFocus = a => a.focus.map(i => trackKey(a, a.tracks[i]));
 function focusedIds(a) {
   const ids = Array.isArray(focus[a.n]) ? focus[a.n].filter(id => a.tracks.some(t => trackKey(a, t) === id)) : [];
@@ -93,7 +145,7 @@ function selectAlbum(index) {
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
   const external = Boolean(a.externalAlbum);
-  $('mode-switch').hidden = external || Boolean(a.fullAlbumVideo);
+  $('mode-switch').hidden = external;
   $('embedded-listening').hidden = external;
   $('external-listening').hidden = !external;
   $('listen-eyebrow').textContent = external ? 'האזנה ב־YouTube בתוך האתר' : 'מנגנים כאן, בתוך האתר';
@@ -129,22 +181,26 @@ function renderMode() {
     $('mode-' + m).classList.toggle('active', mode === m);
     $('mode-' + m).setAttribute('aria-pressed', String(mode === m));
   }
-  $('mode-explain').textContent = a.fullAlbumVideo
-    ? 'האלבום המלא בהקלטת YouTube רציפה. לוחצים על הפעלה ומאזינים מהתחלה עד הסוף.'
-    : mode === 'full'
-    ? `${queue.length} קטעים לפי סדר רשימת האלבום. בחרו מספר קטע או הפעילו את הרצף.`
-    : `${queue.length} קטעים מלאים למסלול ממוקד. אלה המלצות האתר, לא סימוני הספר. אפשר לשנות את הבחירה למטה.`;
-  $('focus-editor').hidden = mode !== 'short' || Boolean(a.fullAlbumVideo);
+  $('mode-explain').textContent = mode === 'full'
+    ? (a.fullAlbumVideo
+      ? `${queue.length} שירים לפי סדר האלבום, בתוך הקלטה רציפה אחת. לחיצה על שיר מדלגת אליו (זמני הפתיחה מחושבים לפי אורכי השירים וייתכן הפרש של שניות).`
+      : `${queue.length} שירים לפי סדר רשימת האלבום. בחרו שיר או הפעילו את הרצף.`)
+    : `${queue.length} שירים למסלול ממוקד. אלה המלצות האתר, לא סימוני הספר. אפשר לשנות את הבחירה למטה.`;
+  $('focus-editor').hidden = mode !== 'short';
   $('focus-error').hidden = true;
   renderQueue(); renderFocus(); cueQueue(); syncGuide();
 }
 function renderQueue() {
-  $('queue-count').textContent = currentAlbum().fullAlbumVideo ? 'הקלטת אלבום רציפה' : `${queue.length} קטעים`;
+  const a = currentAlbum();
+  const missing = queue.filter(t => !playable(a, t)).length;
+  $('queue-count').textContent = `${queue.length} שירים` + (a.fullAlbumVideo ? ' · הקלטה רציפה' : '') + (missing ? ` · ${missing} לא זמינים בנגן` : '');
   $('track-list').replaceChildren(...queue.map((t, i) => {
-    const li = element('li', '');
+    const li = element('li', playable(a, t) ? '' : 'track-missing');
     const name = element('span', 'track-name', t[0]); name.dir = 'auto';
-    const b = element('button', 'track-play', 'ניגון ▶'); b.type = 'button'; b.disabled = !ready;
-    b.setAttribute('aria-label', `ניגון ${t[0]}`); b.addEventListener('click', () => playAt(i));
+    if (a.fullAlbumVideo) name.append(element('span', 'track-time', clock(t[3])));
+    const b = element('button', 'track-play', playable(a, t) ? 'ניגון ▶' : 'לא זמין'); b.type = 'button';
+    b.setAttribute('aria-label', playable(a, t) ? `ניגון ${t[0]}` : `${t[0]} אינו זמין ברשימת הניגון`);
+    b.addEventListener('click', () => playAt(i));
     li.append(name, b); return li;
   }));
   updateControls();
@@ -165,11 +221,11 @@ function renderFocus() {
 function updateControls() {
   $('play-pause').disabled = !ready || !queue.length;
   $('play-pause').textContent = state === 1 ? 'השהיה ❚❚' : state === 2 ? 'המשך ▶' : 'הפעלת הרצף ▶';
-  $('previous-track').disabled = !ready || queueIndex <= 0;
-  $('next-track').disabled = !ready || queueIndex >= queue.length - 1;
+  $('previous-track').disabled = !ready || firstPlayable(queueIndex - 1, -1) < 0;
+  $('next-track').disabled = !ready || firstPlayable(queueIndex + 1) < 0;
   [...$('track-list').children].forEach((li, i) => {
     li.classList.toggle('current-track', i === queueIndex);
-    li.querySelector('button').disabled = !ready;
+    li.querySelector('button').disabled = !ready || !playable(currentAlbum(), queue[i]);
     if (i === queueIndex) li.setAttribute('aria-current', 'true'); else li.removeAttribute('aria-current');
   });
 }
@@ -218,47 +274,84 @@ function showError(message) {
   $('player-error-text').textContent = message; $('player-error').hidden = false;
   $('player-status').textContent = 'ההאזנה נעצרה. אפשר לנסות שוב או לבחור קטע אחר.';
 }
+function firstPlayable(from = 0, step = 1) {
+  const a = currentAlbum();
+  for (let i = from; i >= 0 && i < queue.length; i += step) if (playable(a, queue[i])) return i;
+  return -1;
+}
 function cueQueue() {
-  clearError();
+  clearError(); clearInterval(chapterTimer);
   if (!ready || !queue.length) return;
   player.stopVideo();
   const a = currentAlbum();
-  if (a.youtubePlaylist) player.cuePlaylist({list: a.youtubePlaylist, listType: 'playlist', index: mode === 'full' ? 0 : queue[0][2], startSeconds: 0});
+  queueIndex = Math.max(0, firstPlayable());
+  if (a.youtubePlaylist) player.cuePlaylist({list: a.youtubePlaylist, listType: 'playlist', index: Math.max(0, playlistIndex(a, queue[queueIndex])), startSeconds: 0});
+  else if (a.fullAlbumVideo) player.cuePlaylist([a.tracks[0][1]], 0, queue[0][3]);
   else player.cuePlaylist(queue.map(t => t[1]), 0, 0);
   player.setLoop(false); player.setShuffle(false);
   $('player-status').textContent = 'מוכן להאזנה. לחץ על הפעלה כאן או בנגן.';
   updateControls();
 }
+function finishQueue() {
+  player.stopVideo(); state = 0; clearInterval(chapterTimer);
+  $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.';
+  updateControls();
+}
 function playAt(index) {
   if (!ready || index < 0 || index >= queue.length) return;
+  const a = currentAlbum();
+  if (!playable(a, queue[index])) return;
   clearError(); queueIndex = index;
-  const a = currentAlbum(); player.playVideoAt(a.youtubePlaylist ? (mode === 'full' ? index : queue[index][2]) : index);
+  if (a.fullAlbumVideo) { player.seekTo(queue[index][3], true); player.playVideo(); }
+  else player.playVideoAt(a.youtubePlaylist ? playlistIndex(a, queue[index]) : index);
   updateControls(); syncGuide();
 }
-function onStateChange(event) {
-  state = event.data;
-  const index = player.getPlaylistIndex();
-  if (Number.isInteger(index) && index >= 0) {
-    const mapped = currentAlbum()?.youtubePlaylist && mode === 'short' ? queue.findIndex(t => t[2] === index) : index;
-    if (state === 1 && mapped < 0 && currentAlbum()?.youtubePlaylist && mode === 'short') {
-      const next = queue.findIndex(t => t[2] > index);
-      if (next >= 0) { playAt(next); return; }
-      player.stopVideo(); state = 0;
-      $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.';
-      updateControls(); return;
-    }
-    if (state === 1 && currentAlbum()?.youtubePlaylist && mode === 'full' && index >= queue.length) {
-      player.stopVideo(); state = 0;
-      $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.';
-      updateControls(); return;
-    }
-    if (mapped >= 0 && mapped < queue.length) queueIndex = mapped;
+// Continuous album videos: follow the song boundaries inside the recording.
+function followChapter() {
+  const a = currentAlbum();
+  if (!a?.fullAlbumVideo || state !== 1 || typeof player.getCurrentTime !== 'function') return;
+  const time = player.getCurrentTime() + .5;
+  let chapter = 0;
+  a.tracks.forEach((t, i) => { if (t[3] <= time) chapter = i; });
+  const position = queue.indexOf(a.tracks[chapter]);
+  if (position >= 0) {
+    if (position !== queueIndex) { queueIndex = position; announce(); updateControls(); }
+    return;
   }
+  const next = queue.findIndex(t => t[3] > a.tracks[chapter][3]);
+  if (next >= 0) playAt(next); else finishQueue();
+}
+function announce() {
   const title = queue[queueIndex]?.[0] || '';
   if (state === 1) { clearError(); $('player-status').textContent = `מתנגן ${queueIndex + 1} מתוך ${queue.length}: ${title}`; }
   if (state === 2 && $('player-error').hidden) $('player-status').textContent = `מושהה: ${title}`;
-  if (state === 0 && queueIndex === queue.length - 1) {
-    if (currentAlbum()?.youtubePlaylist && mode === 'short') player.stopVideo();
+}
+function onStateChange(event) {
+  state = event.data;
+  const a = currentAlbum();
+  if (a?.youtubePlaylist && (state === 5 || state === 1)) resolvePlaylist(a);
+  if (a?.fullAlbumVideo) {
+    clearInterval(chapterTimer);
+    if (state === 1) { chapterTimer = setInterval(followChapter, 1000); followChapter(); if (state !== 1) return; }
+    if (state === 0) { queueIndex = queue.length - 1; $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.'; updateControls(); return; }
+    announce(); updateControls(); syncGuide(); return;
+  }
+  const index = player.getPlaylistIndex();
+  if (a?.youtubePlaylist && Number.isInteger(index) && index >= 0 && state === 1) {
+    const position = queue.findIndex(t => playlistIndex(a, t) === index);
+    if (position < 0) {
+      // A playlist entry outside the album program or the focused queue: continue with the next song.
+      const next = firstPlayable(queueIndex + 1);
+      if (next >= 0) playAt(next); else finishQueue();
+      return;
+    }
+    queueIndex = position;
+  } else if (!a?.youtubePlaylist && Number.isInteger(index) && index >= 0 && index < queue.length) queueIndex = index;
+  announce();
+  if (state === 0 && (a?.youtubePlaylist || queueIndex === queue.length - 1)) {
+    const next = a?.youtubePlaylist ? firstPlayable(queueIndex + 1) : -1;
+    if (next >= 0) { playAt(next); return; }
+    if (a?.youtubePlaylist) player.stopVideo();
     $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.';
   }
   updateControls(); syncGuide();
@@ -313,11 +406,11 @@ $('retry-player').addEventListener('click', () => {
 $('play-pause').addEventListener('click', () => {
   if (!ready) return; clearError();
   if (state === 1) player.pauseVideo();
-  else if (state === 0 && queueIndex === queue.length - 1) playAt(0);
+  else if (state === 0 && queueIndex >= firstPlayable(queue.length - 1, -1)) playAt(firstPlayable());
   else player.playVideo();
 });
-$('previous-track').addEventListener('click', () => playAt(queueIndex - 1));
-$('next-track').addEventListener('click', () => playAt(queueIndex + 1));
+$('previous-track').addEventListener('click', () => playAt(firstPlayable(queueIndex - 1, -1)));
+$('next-track').addEventListener('click', () => playAt(firstPlayable(queueIndex + 1)));
 $('album-search').addEventListener('input', renderList);
 $('previous-album').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album').addEventListener('click', () => selectAlbum(active + 1));
