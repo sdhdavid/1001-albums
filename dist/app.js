@@ -186,6 +186,39 @@ function bidiText(el, text) {
     const run = element('bdi', part.length <= 28 ? 'latin nowrap' : 'latin', part); run.dir = 'ltr'; return run;
   }));
 }
+const STORY_HEADINGS = ['מי ומתי', 'מה שומעים כאן', 'למה זה חשוב'];
+function renderStory(a) {
+  if (!a.story) {
+    const p = element('p', ''); bidiText(p, a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note);
+    $('album-note').replaceChildren(p); return;
+  }
+  const sections = a.story.map((text, i) => {
+    const section = element('section', 'story-section'), p = element('p', '');
+    bidiText(p, text); section.append(element('h4', '', STORY_HEADINGS[i] ?? ''), p); return section;
+  });
+  if (a.picks?.length) {
+    const section = element('section', 'story-section story-picks'), list = element('ul', 'picks');
+    for (const [name, text] of a.picks) {
+      const li = element('li', ''), head = element('div', 'pick-head'), p = element('p', '');
+      const play = element('button', 'pick-play', '▶'); play.type = 'button'; play.setAttribute('aria-label', `ניגון ${name}`);
+      play.addEventListener('click', () => playPick(a, name));
+      const title = element('bdi', 'pick-name', name); title.dir = 'ltr';
+      bidiText(p, text); head.append(play, title); li.append(head, p); list.append(li);
+    }
+    section.append(element('h4', '', 'שירים לשים לב אליהם'), list); sections.push(section);
+  }
+  $('album-note').replaceChildren(...sections);
+}
+// A pick's ▶ plays that song in the site's YouTube player (switching to the
+// full album if the focused queue leaves it out); in Spotify mode it just
+// brings the Spotify player into view.
+function playPick(a, name) {
+  const track = a.tracks.find(t => t[0] === name);
+  $('listening-panel').scrollIntoView?.({behavior: 'smooth', block: 'start'});
+  if (!track || service === 'spotify') return;
+  if (!queue.includes(track)) { mode = 'full'; renderMode(); }
+  playAt(queue.indexOf(track));
+}
 function renderList() {
   const search = $('album-search').value.trim().toLocaleLowerCase();
   const visible = albums.filter(a => `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
@@ -219,7 +252,7 @@ function renderAlbum() {
   $('album-year').textContent = a.year; $('album-number').textContent = `#${String(a.n).padStart(3, '0')}`;
   $('record-number').textContent = String(a.n).padStart(3, '0');
   $('chapter').textContent = `אלבום ${active + 1} מתוך ${albums.length} במסע`;
-  bidiText($('album-note'), a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note);
+  renderStory(a);
   $('previous-album').disabled = active === 0; $('next-album').disabled = active === albums.length - 1;
   $('focus-editor').open = false;
   prepareGuide(); renderDone(); renderList(); renderMode(); renderCover();

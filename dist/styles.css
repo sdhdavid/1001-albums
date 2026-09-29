@@ -88,6 +88,16 @@ h2 { direction: ltr; text-align: left; font-size: clamp(2.35rem, 5vw, 5.15rem); 
 .note-eyebrow { margin-bottom: 13px; }
 .nowrap { white-space: nowrap; }
 .album-note { max-width: 66ch; margin: 0; color: #d5dfe0; font-size: 1.1rem; line-height: 1.75; }
+.album-note p { margin: 0; }
+.story-section + .story-section { margin-top: 22px; }
+.story-section h4 { margin: 0 0 6px; font-size: .82rem; font-weight: 700; letter-spacing: .06em; color: #a4d9cc; }
+.picks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.picks li { padding: 12px 14px; border: 1px solid #34505a; border-radius: 10px; background: rgb(22 36 46 / .7); }
+.picks p { font-size: .98rem; line-height: 1.65; color: #c9d6d7; }
+.pick-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.pick-name { font-weight: 700; color: #f0f5f2; }
+.pick-play { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #5b747b; background: transparent; color: #b4e3d6; font-size: .8rem; display: grid; place-items: center; padding: 0; }
+.pick-play:hover { background: #30473f; }
 .listening-action { text-align: center; }
 .done-button { border: 1px solid #638579; border-radius: 8px; color: #b4e3d6; background: transparent; padding: 12px 15px; min-height: 48px; width: 100%; }
 .done-button:hover, .done-button[aria-pressed="true"] { background: #28453f; }
