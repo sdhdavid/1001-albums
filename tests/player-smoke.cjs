@@ -46,13 +46,13 @@ async function boot({broken=false, noStorage=false}={}) {
   const nx=async()=>{n['next-album'].click();await flush();}, pv=async()=>{n['previous-album'].click();await flush();};
   assert.deepEqual(n['album-list'].children.filter(c=>c.tag==='div').map(c=>c.textContent),['שנות ה־50','שנות ה־60'],'decade markers in book order');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
-  assert.equal(rows(),51); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
+  assert.equal(rows(),100); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
   const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
-  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 51 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,51);
-  assert.equal(n['toggle-progress'].textContent,'1 מתוך 51');
+  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 100 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,100);
+  assert.equal(n['toggle-progress'].textContent,'1 מתוך 100');
   for (let i=0;i<10;i++) {
     const data=pilotAll()[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
@@ -124,7 +124,7 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(n['album-essay'].hidden,false);
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
-  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));
+  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const album100=added['100'];
   for (let number=24; number<=50; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title);
     assert.equal(n['embedded-listening'].hidden,false);
@@ -158,9 +158,25 @@ async function boot({broken=false, noStorage=false}={}) {
     }
     assert.equal(n['album-essay'].hidden,false);
   }
-  await nx();assert.equal(n['album-title'].textContent,'A Love Supreme');assert.equal(p.ids.length,4);assert(n['next-album'].disabled);
+  for (let number=51; number<=100; number++) {
+    await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title,`album ${number}`);
+    const album=added[String(number)];
+    if (number===53) { assert.equal(p.ids.length,4); continue; }
+    assert.equal(n['embedded-listening'].hidden,false);
+    assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} queue`);
+    assert.equal(p.ids.list,album.youtubePlaylist,`album ${number} playlist`);
+    assert.equal(album.durations.length,album.tracks.length);
+    assert(album.genres===undefined&&catalog[number-1].genres?.length>0,`album ${number} has genres in the catalog`);
+    const last=album.tracks.length-1;
+    n['track-list'].children[last].children[1].click();assert.equal(p.index,album.tracks[last][2],`album ${number} last song plays at its playlist position`);
+    n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
+    n['mode-full'].click();
+    assert.equal(n['album-essay'].hidden,true,`album ${number} has story text but no old guide`);
+    assert.equal(n['album-note'].children.length,4,`album ${number} story (3 sections + picks)`);
+  }
+  assert(n['next-album'].disabled);
   assert.equal(n['album-youtube-player'].src,'about:blank');
-  p.index=3;p.options.events.onStateChange({data:0});assert.match(n['player-status'].textContent,/הסתיים/);
+  n['track-list'].children[album100.tracks.length-1].children[1].click();p.options.events.onStateChange({data:0});assert.match(n['player-status'].textContent,/הסתיים/);
   n['play-pause'].click();assert.equal(p.index,0,'replay starts from beginning');
   // Runtime matching: a reordered playlist with an extra bonus video maps songs by their real titles.
   n['album-search'].value='';
@@ -175,7 +191,7 @@ async function boot({broken=false, noStorage=false}={}) {
   n['track-list'].children[3].children[1].click();assert.equal(p.index,0,'Desafinado found at playlist position 0');
   p.index=8;p.options.events.onStateChange({data:1});assert.equal(n['track-list'].children[4].attributes['aria-current'],'true','bonus video is skipped to the next album song');
   p.playlist=[];
-  while(n['album-title'].textContent!=='A Love Supreme')await nx();
+  while(n['album-title'].textContent!=='Are You Experienced')await nx();
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),2);
   assert.equal(calls.filter(x=>x[0]==='create').length,1,'only one player');
   // Genre filter: the menu lists the labels in use; picking one narrows the list without touching the journey order.
@@ -193,12 +209,12 @@ async function boot({broken=false, noStorage=false}={}) {
   for (const [k,a] of Object.entries(all)) assert.match(a.spotifyAlbum||'',/^[A-Za-z0-9]{22}$/,`spotify id for ${k}`);
   n['service-spotify'].click();
   assert.equal(n['spotify-listening'].hidden,false);assert.equal(n['embedded-listening'].hidden,true);assert.equal(n['mode-switch'].hidden,true);
-  assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['53'].spotifyAlbum}?utm_source=generator`);
+  assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['100'].spotifyAlbum}?utm_source=generator`);
   assert.equal(calls.at(-1)[0],'stop');assert.equal(storage.get('album-journey-2005-service'),'"spotify"');
-  await pv();assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['50'].spotifyAlbum}?utm_source=generator`);
+  await pv();assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['99'].spotifyAlbum}?utm_source=generator`);
   n['service-youtube'].click();
   assert.equal(n['spotify-listening'].hidden,true);assert.equal(n['spotify-player'].src,'about:blank');assert.equal(n['embedded-listening'].hidden,false);
-  assert.equal(n['track-list'].children.length,all['50'].tracks.length);
+  assert.equal(n['track-list'].children.length,all['99'].tracks.length);
   // Story picks: ▶ on a pick plays that song in the site player.
   while(n['album-title'].textContent!=='Brilliant Corners')await pv();
   const bc=pilotAll()['10'];
@@ -224,5 +240,5 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(l.nodes['album-title'].textContent,'Tragic Songs of Life');assert.equal(l.nodes['album-error'].hidden,true,'retry after a failed load works');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–100 (including the 51–100 batch with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});

@@ -1,0 +1,86 @@
+{
+  "youtubePlaylist": "PLKZWLu6q09LNgiuMV9iTRF2_eRTCoKF3G",
+  "spotifyAlbum": "6YabPKtZAjxwyWbuO9p4ZD",
+  "tracks": [
+    [
+      "Like a Rolling Stone",
+      null,
+      0
+    ],
+    [
+      "Tombstone Blues",
+      null,
+      1
+    ],
+    [
+      "It Takes a Lot to Laugh, It Takes a Train to Cry",
+      null,
+      2
+    ],
+    [
+      "From a Buick 6",
+      null,
+      3
+    ],
+    [
+      "Ballad of a Thin Man",
+      null,
+      4
+    ],
+    [
+      "Queen Jane Approximately",
+      null,
+      5
+    ],
+    [
+      "Highway 61 Revisited",
+      null,
+      6
+    ],
+    [
+      "Just Like Tom Thumb's Blues",
+      null,
+      7
+    ],
+    [
+      "Desolation Row",
+      null,
+      8
+    ]
+  ],
+  "focus": [
+    0,
+    4,
+    8
+  ],
+  "story": [
+    "ביולי 1965 עלה בוב דילן לבמה בפסטיבל הפולק של ניופורט עם להקה חשמלית, והקהל התחלק בין מריעים למוחים. חודש אחר כך יצא Highway 61 Revisited, ובו לקח את הרוק אל עולם המילים שלו.",
+    "האלבום נפתח ב־Like a Rolling Stone, שיר ארוך על נפילה מהגובה, עם אורגן שאל קופר ניגן בו כמעט בלי תכנון. הוא מסתיים ב־Desolation Row, שיר אקוסטי של כאחת עשרה דקות שמצייר תמונה של דמויות מוזרות.",
+    "זה אחד האלבומים החשובים בתולדות הרוק, ולצידו ממשיכים Bringing It All Back Home (אלבום 50) ו־Blonde on Blonde (אלבום 64), השלישייה שבה דילן שינה את הכללים."
+  ],
+  "picks": [
+    [
+      "Like a Rolling Stone",
+      "הבסיס של הכול, ואחד השירים הגדולים ביותר בהיסטוריה של הרוק."
+    ],
+    [
+      "Ballad of a Thin Man",
+      "שיר מרושע ואפל, על אדם שלא מבין את מה שקורה סביבו."
+    ],
+    [
+      "Desolation Row",
+      "שיר אקוסטי ארוך ומלא דמויות, שקט אחרי הסערה."
+    ]
+  ],
+  "durations": [
+    "6:13",
+    "5:58",
+    "4:09",
+    "3:19",
+    "5:59",
+    "5:31",
+    "3:30",
+    "5:32",
+    "11:20"
+  ]
+}
