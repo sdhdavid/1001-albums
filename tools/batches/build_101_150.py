@@ -19,9 +19,22 @@ SPOTIFY = {
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
+PLAYLIST_CHOICE = {115: 1, 127: 2, 133: 1}
 RENAME = {}
-KEEP_FIRST = {}   # drop bonus tracks / duplicates after the original album
+KEEP_FIRST = {127: 11, 133: 11}   # drop bonus tracks / outtakes after the original album
+DROP = {115: {1, 12, 16}}          # songs added on later editions, not on the original LP
+# Albums the automatic search got wrong, filled in by hand (playlists found with a web search).
+MANUAL = {
+ # the search matched the 1969 album of the same name; this is the 1968 one
+ 129: {'youtubePlaylist': 'PLowQCq3Ss89jc16dgqj9Fxg9ryvgDChZf',
+       'names': ['Tropicália', 'Clarice', 'No Dia Que Eu Vim-me Embora', 'Alegria, Alegria', 'Onde Andarás', 'Anunciação',
+                 'Superbacana', 'Paisagem Útil', 'Clara', 'Soy Loco por Ti, América', 'Ave Maria', 'Eles']},
+ # no playlist matched; this is the official YouTube Music album playlist
+ 111: {'youtubePlaylist': 'OLAK5uy_lnp_8yMyoUXE7yezOQkr546yLXO20oltk',
+       'names': ['An Introduction to Indian Music', 'Dadra', 'Maru-Bihag', 'Bhimpalasi', 'Sindhi-Bhairavi']},
+ # the playlists split the two long pieces unevenly; one full-album video with two chapters instead
+ 145: {'fullAlbumVideo': 'AKaZv7mwqQU', 'names': ['Shhh / Peaceful', 'In a Silent Way / It’s About That Time'], 'starts': [0, 1080]},
+}
 
 def clean(s):
     s = re.sub(r'\s*[\(\[][^)\]]*(remaster|mono|stereo|version|edit|mix|bonus|single|live|\b(19|20)\d\d\b)[^)\]]*[\)\]]', '', s, flags=re.I)
@@ -35,11 +48,24 @@ disc = json.load(open('tools/batches/101-150.discovered.json'))
 out = []
 for n in sorted(int(k) for k in disc):
     r = disc[str(n)]
+    if n in MANUAL and 'fullAlbumVideo' in MANUAL[n]:
+        m = MANUAL[n]; tracks = [[name, m['fullAlbumVideo'], None, t] for name, t in zip(m['names'], m['starts'])]
+        extra = {'fullAlbumVideo': True}
+    else:
+        extra = None
     yt = r['youtube'][PLAYLIST_CHOICE.get(n, 0)]
     names = [clean(t) for t in r['tracks']]
     pos = yt['positions']
+    if n in MANUAL and not extra:
+        yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names)))
     keep = KEEP_FIRST.get(n, len(names))
     names, pos = names[:keep], pos[:keep]
+    names = [x for i, x in enumerate(names) if i not in DROP.get(n, ())]
+    pos = [x for i, x in enumerate(pos) if i not in DROP.get(n, ())]
+    seen = {}
+    for i, x in enumerate(names):   # the same song twice (e.g. an encore): keep both, name the second
+        if x in seen: names[i] = x + ' (Encore)'
+        seen[x] = 1
     used = {p for p in pos if p >= 0}; spare = max(used | {len(names)}) + 1
     fixed = []
     for i, p in enumerate(pos):
@@ -48,7 +74,7 @@ for n in sorted(int(k) for k in disc):
             if p == spare: spare += 1
             used.add(p)
         fixed.append(p)
-    tracks = [[name, None, p] for name, p in zip(names, fixed)]
+    if not extra: tracks = [[name, None, p] for name, p in zip(names, fixed)]
     st = STORIES[n]; tnames = [t[0] for t in tracks]
     picks = [list(p) for p in st['picks']]
     lookup = {norm(t): t for t in tnames}
@@ -57,7 +83,8 @@ for n in sorted(int(k) for k in disc):
         p[0] = lookup[norm(p[0])]   # use the track's exact spelling
     focus = sorted({tnames.index(name) for name, _ in picks})
     assert len(SPOTIFY[n]) == 22
-    out.append({'n': n, 'youtubePlaylist': yt['id'], 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus,
-                'story': st['story'], 'picks': picks})
+    rec = {'n': n, 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus, 'story': st['story'], 'picks': picks}
+    rec.update(extra or {'youtubePlaylist': yt['id']})
+    out.append(rec)
 json.dump(out, open('tools/batches/101-150.json', 'w'), ensure_ascii=False, indent=1)
 print(len(out), 'albums')

@@ -34,7 +34,7 @@ def problems(n, a, known):
     s = a.get('story') or []
     if not 3 <= len(s) <= 5 or any(not isinstance(p, str) or len(p) < 40 for p in s): out.append('story must be 3–5 paragraphs')
     picks = a.get('picks') or []
-    if len(picks) != 3: out.append('need exactly three picks')
+    if len(picks) != min(3, len(tracks)): out.append('need three picks (or one per track when the album has fewer)')
     for p in picks:
         if p[0] not in names: out.append(f'pick not in tracks: {p[0]}')
     return out
