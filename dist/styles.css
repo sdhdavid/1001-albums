@@ -284,3 +284,6 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
   .search-wrap input { height: 38px; }
   .search-wrap svg { top: 9px; }
 }
+.album-genres { direction: ltr; list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0 0; padding: 0; }
+.album-genres[hidden] { display: none; }
+.album-genre { direction: rtl; font-size: .8rem; color: #c3d3d5; border: 1px solid rgba(180, 227, 214, .35); border-radius: 999px; padding: 3px 11px; background: rgba(180, 227, 214, .07); }

@@ -275,6 +275,7 @@ function renderDone() {
 function renderAlbum() {
   const a = currentAlbum();
   $('album-title').textContent = a.title; $('album-artist').textContent = a.artist;
+  $('album-genres').replaceChildren(...(a.genres ?? []).map(g => element('li', 'album-genre', g))); $('album-genres').hidden = !a.genres?.length;
   $('album-year').textContent = a.year; $('album-number').textContent = `#${String(a.n).padStart(3, '0')}`;
   $('record-number').textContent = String(a.n).padStart(3, '0');
   $('chapter').textContent = `אלבום ${active + 1} מתוך ${albums.length} במסע`;
