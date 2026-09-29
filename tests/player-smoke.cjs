@@ -11,6 +11,10 @@ class El {
   click() { if (!this.disabled) this.listeners.click?.(); }
   remove() {}
 }
+function noteMatches(n,data){
+  if (data.story) assert.equal(n['album-note'].children.length,data.story.length+(data.picks?.length?1:0));
+  else assert.equal(n['album-note'].children[0].children.map(c=>c.textContent).join(''),data.guide.intro.map(s=>s.text).join(' '));
+}
 async function boot({broken=false, noStorage=false}={}) {
   const html=fs.readFileSync('dist/index.html','utf8'), nodes={};
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
@@ -45,7 +49,7 @@ async function boot({broken=false, noStorage=false}={}) {
   for (let i=0;i<10;i++) {
     const data=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
-    assert.equal(n['album-note'].children.map(c=>c.textContent).join(''),data.guide.intro.map(s=>s.text).join(' '));
+    noteMatches(n,data);
     assert.equal(n['album-essay'].hidden,false);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,data.focus.length);
     n['mode-full'].click();n['next-album'].click();
@@ -69,7 +73,7 @@ async function boot({broken=false, noStorage=false}={}) {
     n['next-album'].click();
     const album=added[String(number)];
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} original program`);
-    assert.equal(n['album-note'].children.map(c=>c.textContent).join(''),album.guide.intro.map(s=>s.text).join(' '));
+    noteMatches(n,album);
     assert.equal(n['album-essay'].hidden,false);
     assert.equal(p.ids.list,album.youtubePlaylist);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
@@ -177,6 +181,16 @@ async function boot({broken=false, noStorage=false}={}) {
   n['service-youtube'].click();
   assert.equal(n['spotify-listening'].hidden,true);assert.equal(n['spotify-player'].src,'about:blank');assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['track-list'].children.length,all['50'].tracks.length);
+  // Story picks: ▶ on a pick plays that song in the site player.
+  while(n['album-title'].textContent!=='Brilliant Corners')n['previous-album'].click();
+  const bc=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))['10'];
+  n['mode-short'].click();
+  const picks=n['album-note'].children.at(-1).children[1].children;
+  const pannonica=picks.findIndex(li=>li.children[0].children[1].textContent==='Pannonica');
+  picks[pannonica].children[0].children[0].click();
+  const pi=bc.tracks.findIndex(t=>t[0]==='Pannonica');
+  assert.equal(p.index,bc.youtubePlaylist?pi:bc.focus.indexOf(pi),'pick plays Pannonica from the focused queue');
+  n['mode-full'].click();
   // Welcome box: shown on first visit, dismissed and remembered, reopenable from the header.
   assert.equal(n['welcome'].hidden,false);n['close-welcome'].click();assert.equal(n['welcome'].hidden,true);
   assert.equal(storage.get('album-journey-2005-welcomed'),'true');n['show-welcome'].click();assert.equal(n['welcome'].hidden,false);

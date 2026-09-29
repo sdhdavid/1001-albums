@@ -17,3 +17,5 @@ Spotify: each entry also has a `spotifyAlbum` id in `dist/pilot.json`. A YouTube
 Publishing: pushes to `main` deploy `dist/` to GitHub Pages (`.github/workflows/pages.yml`).
 
 Track lengths: every entry has a `durations` array in `dist/pilot.json` (one "m:ss" per track), shown next to each song. They come from `tools/fetch_durations.py` (median across iTunes and MusicBrainz editions, run via the manual "Fetch track durations" workflow) and were checked against each album's book length; a few were corrected by hand.
+
+Album stories: each entry has an original Hebrew `story` (three short sections: who & when, what you hear, why it matters) and `picks` (songs to notice, each with a ▶ that plays it in the site's player). Written in `tools/stories.py` and merged into `dist/pilot.json` with `python3 tools/build_stories.py`. The older `guide.intro` text stays as a fallback and for its source links.
