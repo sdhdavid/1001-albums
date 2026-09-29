@@ -32,7 +32,7 @@ def problems(n, a, known):
     f = a.get('focus') or []
     if not (2 <= len(f) <= len(tracks)) or any(not isinstance(i, int) or not 0 <= i < len(tracks) for i in f) or len(set(f)) != len(f): out.append('focus: 2+ distinct valid track indexes')
     s = a.get('story') or []
-    if len(s) != 3 or any(not isinstance(p, str) or len(p) < 40 for p in s): out.append('story must be three paragraphs')
+    if not 3 <= len(s) <= 5 or any(not isinstance(p, str) or len(p) < 40 for p in s): out.append('story must be 3–5 paragraphs')
     picks = a.get('picks') or []
     if len(picks) != 3: out.append('need exactly three picks')
     for p in picks:

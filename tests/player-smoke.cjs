@@ -172,7 +172,7 @@ async function boot({broken=false, noStorage=false}={}) {
     n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
     n['mode-full'].click();
     assert.equal(n['album-essay'].hidden,true,`album ${number} has story text but no old guide`);
-    assert.equal(n['album-note'].children.length,4,`album ${number} story (3 sections + picks)`);
+    assert.equal(n['album-note'].children.length,album.story.length+1,`album ${number} story sections + picks`);
   }
   assert(n['next-album'].disabled);
   assert.equal(n['album-youtube-player'].src,'about:blank');
