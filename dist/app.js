@@ -186,7 +186,7 @@ function bidiText(el, text) {
     const run = element('bdi', part.length <= 28 ? 'latin nowrap' : 'latin', part); run.dir = 'ltr'; return run;
   }));
 }
-const STORY_HEADINGS = ['מי ומתי', 'מה שומעים כאן', 'למה זה חשוב'];
+const STORY_HEADINGS = ['מי ומתי', 'מה שומעים כאן', 'למה זה חשוב', 'טיפ להאזנה'];
 function renderStory(a) {
   if (!a.story) {
     const p = element('p', ''); bidiText(p, a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note);
