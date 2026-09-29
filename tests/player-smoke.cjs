@@ -166,7 +166,18 @@ async function boot({broken=false, noStorage=false}={}) {
   while(n['album-title'].textContent!=='A Love Supreme')n['next-album'].click();
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(n['album-list'].children.length,2);
   assert.equal(calls.filter(x=>x[0]==='create').length,1,'only one player');
+  // Spotify: every album has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
+  const all=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'));
+  for (const [k,a] of Object.entries(all)) assert.match(a.spotifyAlbum||'',/^[A-Za-z0-9]{22}$/,`spotify id for ${k}`);
+  n['service-spotify'].click();
+  assert.equal(n['spotify-listening'].hidden,false);assert.equal(n['embedded-listening'].hidden,true);assert.equal(n['mode-switch'].hidden,true);
+  assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['53'].spotifyAlbum}?utm_source=generator`);
+  assert.equal(calls.at(-1)[0],'stop');assert.equal(storage.get('album-journey-2005-service'),'"spotify"');
+  n['previous-album'].click();assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['50'].spotifyAlbum}?utm_source=generator`);
+  n['service-youtube'].click();
+  assert.equal(n['spotify-listening'].hidden,true);assert.equal(n['spotify-player'].src,'about:blank');assert.equal(n['embedded-listening'].hidden,false);
+  assert.equal(n['track-list'].children.length,all['50'].tracks.length);
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search and progress. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–50 and jazz encore, all fifty YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});

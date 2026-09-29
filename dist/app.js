@@ -2,6 +2,7 @@
 const $ = id => document.getElementById(id);
 const DONE_KEY = 'album-journey-2005-done';
 const FOCUS_KEY = 'album-journey-2005-focus-ids';
+const SERVICE_KEY = 'album-journey-2005-service';
 function readStore(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
@@ -13,6 +14,7 @@ function writeStore(key, value) {
 let albums = [], active = 0, mode = 'full', player = null, ready = false;
 let queue = [], queueIndex = 0, playerTimer = null, chapterTimer = null, state = -1;
 let guideRenderKey = ''; 
+let service = readStore(SERVICE_KEY, 'youtube') === 'spotify' ? 'spotify' : 'youtube';
 const TITLES_KEY = 'album-journey-2005-video-titles';
 const TITLE_CACHE_LIMIT = 1500;
 // Official album programs live in pilot.json. For YouTube playlists the site
@@ -145,9 +147,31 @@ function selectAlbum(index) {
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
   const external = Boolean(a.externalAlbum);
-  $('mode-switch').hidden = external;
-  $('embedded-listening').hidden = external;
-  $('external-listening').hidden = !external;
+  const spotify = service === 'spotify';
+  for (const s of ['youtube', 'spotify']) {
+    $('service-' + s).classList.toggle('active', service === s);
+    $('service-' + s).setAttribute('aria-pressed', String(service === s));
+  }
+  $('spotify-listening').hidden = !spotify;
+  $('mode-explain').hidden = spotify;
+  $('mode-switch').hidden = external || spotify;
+  $('embedded-listening').hidden = external || spotify;
+  $('external-listening').hidden = !external || spotify;
+  if (spotify) {
+    if (ready) player.stopVideo();
+    clearInterval(chapterTimer); queue = []; queueIndex = 0; state = -1;
+    if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
+    $('listen-eyebrow').textContent = 'מנגנים כאן, בנגן של Spotify';
+    const src = a.spotifyAlbum ? `https://open.spotify.com/embed/album/${a.spotifyAlbum}?utm_source=generator` : 'about:blank';
+    if ($('spotify-player').src !== src) $('spotify-player').src = src;
+    $('spotify-player').hidden = !a.spotifyAlbum;
+    $('spotify-player').title = `נגן Spotify — ${a.title}`;
+    $('spotify-direct').hidden = !a.spotifyAlbum;
+    $('spotify-direct').href = a.spotifyAlbum ? `https://open.spotify.com/album/${a.spotifyAlbum}` : '#';
+    $('spotify-search').href = `https://open.spotify.com/search/${encodeURIComponent(`${a.artist} ${a.title}`)}/albums`;
+    return;
+  }
+  if ($('spotify-player').src && $('spotify-player').src !== 'about:blank') $('spotify-player').src = 'about:blank';
   $('listen-eyebrow').textContent = external ? 'האזנה ב־YouTube בתוך האתר' : 'מנגנים כאן, בתוך האתר';
   $('youtube-direct').href = a.youtubePlaylist
     ? `https://www.youtube.com/playlist?list=${a.youtubePlaylist}`
@@ -414,6 +438,9 @@ $('next-track').addEventListener('click', () => playAt(firstPlayable(queueIndex 
 $('album-search').addEventListener('input', renderList);
 $('previous-album').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album').addEventListener('click', () => selectAlbum(active + 1));
+for (const s of ['youtube', 'spotify']) $('service-' + s).addEventListener('click', () => {
+  if (service !== s) { service = s; writeStore(SERVICE_KEY, s); renderMode(); }
+});
 for (const m of ['full', 'short']) $('mode-' + m).addEventListener('click', () => {
   if (mode !== m) { mode = m; renderMode(); }
 });

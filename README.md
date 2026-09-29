@@ -11,3 +11,7 @@ Validation: `node --check dist/app.js` and `node tests/player-smoke.cjs`. The ha
 Static output: dist. Hosting configuration: .openai/hosting.json.
 
 Track programs: every entry 1–50 lists its real song titles (official album order, from `tools/tracklists.py` → `dist/pilot.json` via `tools/build_tracks.py`). For YouTube playlists the site reads each playlist video's title at runtime (YouTube oEmbed, noembed fallback, cached in local storage) and maps every song to its matching playlist entry, so reordered playlists and bonus videos are handled; songs missing from a playlist are marked unavailable. The four continuous full-album videos (#27, #29, #47, #49) get per-song chapters computed from track durations, with seeking and focused-queue skipping.
+
+Spotify: each entry also has a `spotifyAlbum` id in `dist/pilot.json`. A YouTube / Spotify switch in the listening panel (remembered in local storage) swaps the YouTube player for Spotify's album embed. Signed-in Spotify Premium users hear full tracks; others get previews.
+
+Publishing: pushes to `main` deploy `dist/` to GitHub Pages (`.github/workflows/pages.yml`).
