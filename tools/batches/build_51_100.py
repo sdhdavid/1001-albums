@@ -38,7 +38,15 @@ for n in sorted(int(k) for k in disc):
     pos = yt['positions']
     keep = KEEP_FIRST.get(n, len(names))
     names, pos = names[:keep], pos[:keep]
-    tracks = [[name, None, (p if p >= 0 else i)] for i, (name, p) in enumerate(zip(names, pos))]
+    used = {p for p in pos if p >= 0}; spare = max(used | {len(names)}) + 1
+    fixed = []
+    for i, p in enumerate(pos):
+        if p < 0:   # song not found in the playlist: keep positions unique (the site re-matches by title at run time)
+            p = i if i not in used else spare
+            if p == spare: spare += 1
+            used.add(p)
+        fixed.append(p)
+    tracks = [[name, None, p] for name, p in zip(names, fixed)]
     st = STORIES[n]; tnames = [t[0] for t in tracks]
     picks = [list(p) for p in st['picks']]
     lookup = {norm(t): t for t in tnames}
