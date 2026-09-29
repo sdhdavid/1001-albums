@@ -17,7 +17,7 @@ async function boot({broken=false, noStorage=false}={}) {
   const storage=new Map([['album-journey-2005-done','[1,200]']]);
   const calls=[]; let mock;
   const ctx={console, location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
-    document:{getElementById:id=>nodes[id],createElement:t=>new El(t),head:new El(),querySelector:()=>new El()},
+    document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El()},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
     fetch:async url=>({ok:!broken,json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2),'utf8'))}),
     YT:{Player:class {
@@ -45,7 +45,7 @@ async function boot({broken=false, noStorage=false}={}) {
   for (let i=0;i<10;i++) {
     const data=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
-    assert.equal(n['album-note'].textContent,data.guide.intro[0].text);
+    assert.equal(n['album-note'].children.map(c=>c.textContent).join(''),data.guide.intro.map(s=>s.text).join(' '));
     assert.equal(n['album-essay'].hidden,false);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,data.focus.length);
     n['mode-full'].click();n['next-album'].click();
@@ -69,7 +69,7 @@ async function boot({broken=false, noStorage=false}={}) {
     n['next-album'].click();
     const album=added[String(number)];
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} original program`);
-    assert.equal(n['album-note'].textContent,album.guide.intro[0].text);
+    assert.equal(n['album-note'].children.map(c=>c.textContent).join(''),album.guide.intro.map(s=>s.text).join(' '));
     assert.equal(n['album-essay'].hidden,false);
     assert.equal(p.ids.list,album.youtubePlaylist);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
