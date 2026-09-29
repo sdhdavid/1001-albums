@@ -5,7 +5,8 @@ dist/albums.json   catalog (n/year/title/artist). Albums that can be played on
                    list needs the cover before the album itself is opened).
 dist/albums/N.json everything the player, story and track list need for album N.
 """
-import json, os
+import json, os, sys
+sys.path.insert(0, 'tools'); from genres import TAGS
 
 ALBUMS_DIR = 'dist/albums'
 CATALOG = 'dist/albums.json'
@@ -43,6 +44,7 @@ def rebuild_index():
         if e['n'] in have:
             e['ready'] = True
             e['spotifyAlbum'] = have[e['n']]['spotifyAlbum']
+        if e['n'] in TAGS: e['genres'] = TAGS[e['n']]
         out.append(e)
     with open(CATALOG, 'w') as f:  # one album per line keeps the 1001-entry file compact and diffable
         f.write('[\n' + ',\n'.join(json.dumps(e, ensure_ascii=False) for e in out) + '\n]\n')
