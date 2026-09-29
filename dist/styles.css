@@ -234,11 +234,6 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .album-essay h4 { font-size: 1.14rem; margin: 28px 0 9px; }
 .album-essay p { font-size: 1.08rem; line-height: 1.9; color: #dce5e3; margin-top: 0; }
 .guide-sources { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .8rem; line-height: 1.6; }
-.book-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px 17px; margin-top: 16px; padding: 12px 14px; border-right: 2px solid #638579; background: #172832; color: #d1dfdd; font-size: .84rem; line-height: 1.6; }
-.book-meta-heading { color: #a4d9cc; font-weight: 800; }
-.book-meta-label { color: #9fb4b8; }
-.book-meta b { font-weight: 700; }
-.album-essay .guide-credit { font-size: .8rem; color: #9fb4b8; border-top: 1px solid #3e555d; padding-top: 16px; margin-top: 25px; }
 .track-note { margin-top: 23px; border-right: 3px solid #b4e3d6; padding: 4px 17px; }
 .track-note h4 { font-size: 1.08rem; margin: 0 0 9px; }
 .track-note > p:not(.eyebrow) { line-height: 1.75; margin: 0 0 12px; color: #cbd8d8; }

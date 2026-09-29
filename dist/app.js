@@ -360,18 +360,9 @@ function prepareGuide() {
   $('album-essay').hidden = !guide;
   $('track-note').hidden = true;
   guideRenderKey = '';
-  if (!guide) { $('essay-body').replaceChildren(); $('book-meta').hidden = true; return; }
+  if (!guide) { $('essay-body').replaceChildren(); return; }
   $('essay-title').hidden = true;
   $('essay-body').replaceChildren(sourceLinks([...new Set([...guide.intro.flatMap(section => section.sources), ...(guide.sources.listen ? ['listen'] : [])])]));
-  const book = guide.book;
-  $('book-meta').hidden = !book;
-  if (book) {
-    $('book-year').textContent = String(book.year);
-    $('book-label').textContent = book.label;
-    $('book-producer').textContent = book.producer;
-    $('book-duration').textContent = book.duration;
-    $('book-pages').textContent = book.pages;
-  }
 }
 function syncGuide() {
   const a = currentAlbum(), track = queue[queueIndex];

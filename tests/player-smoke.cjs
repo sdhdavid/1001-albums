@@ -43,27 +43,22 @@ async function boot({broken=false, noStorage=false}={}) {
     const data=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'))[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
     assert.equal(n['album-note'].textContent,data.guide.intro[0].text);
-    assert.equal(n['book-meta'].hidden,false);
-    assert.equal(n['book-year'].textContent,String(data.guide.book.year));
-    assert.equal(n['book-pages'].textContent,data.guide.book.pages);
+    assert.equal(n['album-essay'].hidden,false);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,data.focus.length);
     n['mode-full'].click();n['next-album'].click();
   }
   assert.equal(n['album-title'].textContent,'Palo Congo');
   p.options.events.onReady();
   const added=JSON.parse(fs.readFileSync('dist/pilot.json','utf8'));
-  assert.equal(n['book-pages'].textContent,'32–33');
   assert.equal(p.ids.list,'PLowQCq3Ss89iHLhI8fLDx6Tdu4fj_Fcgu');
   assert.equal(n['track-list'].children.length,8);
   n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
   n['next-track'].click();assert.equal(p.index,1);
   n['mode-full'].click();n['next-album'].click();assert.equal(n['album-title'].textContent,'Birth of the Cool');
   assert.equal(n['track-list'].children.length,12);
-  assert.equal(n['book-label'].textContent,'Capitol');
   assert.equal(p.ids.list,'PLowQCq3Ss89jlWMOmeDEJEawXiV901pAs');
   n['next-album'].click();assert.equal(n['album-title'].textContent,'Kenya');
   assert.equal(n['track-list'].children.length,12);
-  assert.equal(n['book-year'].textContent,'1957');
   assert.equal(p.ids.list,'PLowQCq3Ss89i33_zzDhdErj7Ymwm6I_EZ');
   n['mode-short'].click();n['next-track'].click();assert.equal(p.index,5,'playlist-focused next jumps to original album position');
   n['mode-full'].click();
@@ -72,7 +67,7 @@ async function boot({broken=false, noStorage=false}={}) {
     const album=added[String(number)];
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} original program`);
     assert.equal(n['album-note'].textContent,album.guide.intro[0].text);
-    assert.equal(n['book-pages'].textContent,album.guide.book.pages);
+    assert.equal(n['album-essay'].hidden,false);
     assert.equal(p.ids.list,album.youtubePlaylist);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
     n['next-track'].click();assert.equal(p.index,album.focus[1],`album ${number} playlist focus index`);
@@ -84,7 +79,7 @@ async function boot({broken=false, noStorage=false}={}) {
   }
   assert.equal(n['album-title'].textContent,'The Genius of Ray Charles');
   n['next-album'].click();assert.equal(n['album-title'].textContent,'Kind of Blue');
-  assert.equal(n['book-meta'].hidden,false);assert.equal(n['book-pages'].textContent,'42–43');
+  assert.equal(n['album-essay'].hidden,false);
   assert(!n['play-pause'].disabled);
   assert.equal(p.ids.length,5);
   n['play-pause'].click();assert.equal(calls.at(-1)[0],'play');
@@ -146,7 +141,7 @@ async function boot({broken=false, noStorage=false}={}) {
       n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
       n['mode-full'].click();
     }
-    assert.equal(n['book-meta'].hidden,false);
+    assert.equal(n['album-essay'].hidden,false);
   }
   n['next-album'].click();assert.equal(n['album-title'].textContent,'A Love Supreme');assert.equal(p.ids.length,4);assert(n['next-album'].disabled);
   assert.equal(n['album-youtube-player'].src,'about:blank');
