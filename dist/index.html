@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a24">
+  <meta name="description" content="מסע האזנה לפי סדר האלבומים במהדורת 2005, עם מסלול מלא וממוקד.">
+  <title>מסע באלבומים — מהדורת 2005</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101a24'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%23b4e3d6' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23ff7958'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>מסע באלבומים</span></div>
+      <div class="topbar-meta">מהדורת 2005 <span class="meta-separator">/</span> מסע האזנה</div>
+    </header>
+    <main class="layout">
+      <aside class="catalog" aria-label="רשימת האלבומים">
+        <div class="catalog-heading">
+          <div>
+            <p class="eyebrow">הרשימה</p>
+            <h1>המסע מתחיל כאן</h1>
+          </div>
+          <span id="catalog-count" class="catalog-count">51</span>
+        </div>
+        <label class="search-label" for="album-search">חיפוש לפי אלבום או אמן</label>
+        <div class="search-wrap">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="10.7" cy="10.7" r="6.6"></circle><path d="m16 16 4.3 4.3"></path></svg>
+          <input id="album-search" type="search" placeholder="למשל: Frank Sinatra" autocomplete="off">
+        </div>
+        <div class="list-topline"><span>לפי סדר הספר</span><span id="list-progress">0 הושלמו</span></div>
+        <div id="album-list" class="album-list"></div>
+        <p id="list-empty" class="list-empty" hidden>לא נמצאו אלבומים בחיפוש הזה.</p>
+      </aside>
+
+      <section class="detail" aria-label="האלבום הנבחר">
+        <div id="loading" class="loading">טוען את רשימת האלבומים…</div>
+        <div id="album-view" hidden>
+          <div class="detail-topline">
+            <span id="chapter" class="eyebrow"></span>
+            <span class="edition-label">50 האלבומים הראשונים · מהדורת 2005</span>
+          </div>
+          <div class="title-grid">
+            <div class="title-copy">
+              <div class="position-row"><span id="album-number" class="album-number"></span><span id="album-year" class="album-year"></span></div>
+              <h2 id="album-title" dir="auto"></h2>
+              <p id="album-artist" class="artist" dir="auto"></p>
+            </div>
+            <div class="record-graphic" aria-hidden="true"><span id="record-number"></span></div>
+          </div>
+          <div class="detail-rule"></div>
+          <div class="note-grid">
+            <div>
+              <p class="eyebrow note-eyebrow">לפני שמאזינים</p>
+              <p id="album-note" class="album-note"></p>
+            </div>
+            <div class="listening-action">
+              <button id="mark-done" class="done-button" type="button" aria-pressed="false">סימנתי שהאזנתי</button>
+              <p id="storage-note">הסימון נשמר בדפדפן הזה.</p>
+            </div>
+          </div>
+          <section id="album-essay" class="album-essay" hidden aria-label="הסיפור של האלבום">
+            <a href="#listening-panel" class="text-button">מעבר להאזנה ↓</a>
+            <h3 id="essay-title"></h3>
+            <div id="essay-body"></div>
+            <div id="book-meta" class="book-meta" hidden aria-label="פרטי הרשומה בספר מהדורת 2005">
+              <span class="book-meta-heading">ברשומת הספר · מהדורת 2005</span>
+              <span><span class="book-meta-label">שנת הספר</span> <b id="book-year"></b></span>
+              <span><span class="book-meta-label">חברה</span> <b id="book-label"></b></span>
+              <span><span class="book-meta-label">מפיק</span> <b id="book-producer"></b></span>
+              <span><span class="book-meta-label">משך</span> <b id="book-duration"></b></span>
+              <span><span class="book-meta-label">עמ׳ בספר</span> <b id="book-pages"></b></span>
+            </div>
+            <p class="guide-credit">טקסט מקורי לאתר, המבוסס על רשומת הספר ומקורות נוספים כשאלה מקושרים. אינו הטקסט של הספר.</p>
+          </section>
+          <div id="listening-panel" class="listen-panel">
+            <div class="panel-top">
+              <div><p id="listen-eyebrow" class="eyebrow">מנגנים כאן, בתוך האתר</p><h3>מה בא לך לשמוע?</h3></div>
+              <div id="mode-switch" class="mode-switch" role="group" aria-label="סוג האזנה">
+                <button id="mode-full" class="mode-button active" type="button" aria-pressed="true">אלבום מלא</button>
+                <button id="mode-short" class="mode-button" type="button" aria-pressed="false">האזנה ממוקדת</button>
+              </div>
+            </div>
+            <p id="mode-explain" class="mode-explain player-intro"></p>
+            <div id="external-listening" class="external-listening" hidden>
+              <iframe id="album-youtube-player" title="נגן האלבום ב־YouTube" loading="lazy" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <p class="embed-note"><span id="album-source-note"></span> <a id="album-youtube-direct" target="_blank" rel="noopener noreferrer">פתיחה ב־YouTube ↗</a></p>
+              <p>כדאי להתחיל עם:</p>
+              <ul id="external-highlights"></ul>
+              <a id="external-album-link" class="text-button" target="_blank" rel="noopener noreferrer">חיפוש האלבום ב־YouTube Music ↗</a>
+            </div>
+            <div id="embedded-listening">
+            <div class="youtube-frame"><div id="youtube-player"></div></div>
+            <div class="transport" role="group" aria-label="שליטה בהאזנה">
+              <button id="play-pause" class="save-button" type="button" disabled>הפעלת הרצף ▶</button>
+              <button id="previous-track" class="cancel-button" type="button" disabled>הקטע הקודם</button>
+              <button id="next-track" class="cancel-button" type="button" disabled>הקטע הבא</button>
+            </div>
+            <p id="player-status" class="player-status" role="status">טוען את נגן YouTube…</p>
+            <div id="player-error" class="player-error" role="alert" hidden>
+              <p id="player-error-text"></p>
+              <button id="retry-player" type="button" class="cancel-button">ניסיון נוסף</button>
+            </div>
+            <section id="track-note" class="track-note" hidden aria-label="על הקטע הנבחר">
+              <p class="eyebrow">על הקטע</p>
+              <h4 id="track-note-title" dir="auto"></h4>
+              <p id="track-note-text"></p>
+              <div id="track-note-sources"></div>
+            </section>
+            <div class="queue-heading"><h4>בתור להאזנה</h4><span id="queue-count"></span></div>
+            <ol id="track-list" class="track-list"></ol>
+            <details id="focus-editor" hidden>
+              <summary>בחירת הקטעים למסלול הממוקד</summary>
+              <p class="external-note">בחר לפחות קטע אחד. הקטעים יושמעו לפי סדר האלבום. שינוי הבחירה יעצור את הניגון ויכין רצף חדש.</p>
+              <div id="focus-options" class="focus-options"></div>
+              <p id="focus-error" class="form-error" role="alert" hidden>יש להשאיר לפחות קטע אחד במסלול.</p>
+              <button id="reset-focus" type="button" class="text-button">חזרה להמלצות האתר</button>
+            </details>
+            <p class="embed-note">הנגן מוטמע מ־YouTube. ההאזנה כפופה לזמינות ולהרשאות של YouTube; הטבות המנוי ל־YouTube Music אינן מובטחות בתוך האתר. השאר את העמוד פתוח להאזנה רציפה. <a id="youtube-direct" target="_blank" rel="noopener noreferrer">אם הנגן לא נטען, פתיחה ב־YouTube ↗</a></p>
+            </div>
+          </div>
+          <div class="pager">
+            <button id="previous-album" type="button"><span aria-hidden="true">→</span> האלבום הקודם</button>
+            <button id="next-album" type="button">האלבום הבא <span aria-hidden="true">←</span></button>
+          </div>
+          <p class="scope-note">חמישים האלבומים הראשונים בספר, לצד A Love Supreme שנשאר מן הפיילוט. המספרים והמיון לפי <a href="https://musicbrainz.org/series/4bc2a338-e1d8-4546-8a61-640da8aaf888" target="_blank" rel="noopener noreferrer">רשימת מהדורת 2005</a>. כל הנגנים באתר הם של YouTube. בחלק מהאלבומים הקטעים מסומנים במספרים לפי סדר הפלייליסט; בארבעה אחרים האלבום מוצג בהקלטה רציפה. זמינות ההקלטות עשויה להשתנות לפי אזור והרשאות YouTube. הטקסטים והמלצות ההאזנה מקוריים לאתר ואינם הטקסט או סימוני השירים של הספר. סימוני ההאזנה נשמרים בדפדפן. אתר עצמאי שאינו קשור להוצאת הספר או ל־YouTube.</p>
+        </div>
+        <div id="load-error" class="load-error" hidden>לא הצלחנו לטעון את רשימת האלבומים. רענן את העמוד ונסה שוב.</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
