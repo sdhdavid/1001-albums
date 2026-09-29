@@ -16,7 +16,7 @@ async function boot({broken=false, noStorage=false}={}) {
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
   const storage=new Map([['album-journey-2005-done','[1,200]']]);
   const calls=[]; let mock;
-  const ctx={console, location:{origin:'https://example.test'},setTimeout:()=>1,clearTimeout(){},
+  const ctx={console, location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
     document:{getElementById:id=>nodes[id],createElement:t=>new El(t),head:new El(),querySelector:()=>new El()},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
     fetch:async url=>({ok:!broken,json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2),'utf8'))}),
@@ -24,7 +24,7 @@ async function boot({broken=false, noStorage=false}={}) {
       constructor(id,options){this.options=options;this.index=0;this.frame=new El();mock=this;calls.push(['create']);}
       getIframe(){return this.frame;} getPlaylistIndex(){return this.index;}
       stopVideo(){calls.push(['stop']);} cuePlaylist(ids,index){this.ids=ids;this.index=Array.isArray(ids)?index:ids.index;calls.push(['cue',...(Array.isArray(ids)?ids:[ids.list,ids.index])]);}
-      setLoop(){} setShuffle(){} destroy(){}
+      setLoop(){} setShuffle(){} destroy(){} getPlaylist(){return this.playlist||[];} getCurrentTime(){return this.time||0;} seekTo(s){this.time=s;calls.push(['seek',s]);}
       playVideoAt(index){this.index=index;calls.push(['playAt',index]);this.options.events.onStateChange({data:1});}
       playVideo(){calls.push(['play']);this.options.events.onStateChange({data:1});}
       pauseVideo(){calls.push(['pause']);this.options.events.onStateChange({data:2});}
@@ -104,7 +104,7 @@ async function boot({broken=false, noStorage=false}={}) {
   n['mode-full'].click();n['next-album'].click();assert.equal(n['album-title'].textContent,'Gunfighter Ballads and Trail Songs');
   assert.equal(n['embedded-listening'].hidden,false);assert.equal(n['external-listening'].hidden,true);
   assert.equal(n['track-list'].children.length,12);
-  assert.equal(p.ids.list,added['22'].youtubeAlbumPlaylist);
+  assert.equal(p.ids.list,added['22'].youtubePlaylist);
   n['track-list'].children[6].children[1].click();assert.equal(p.index,6);
   n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
   n['mode-full'].click();
@@ -119,18 +119,29 @@ async function boot({broken=false, noStorage=false}={}) {
     assert.equal(n['embedded-listening'].hidden,false);
     assert.equal(n['external-listening'].hidden,true);
     const album=added[String(number)];
+    assert(album.tracks.every(tr=>!/^קטע \d/.test(tr[0])),`album ${number} has real song names`);
+    assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} queue`);
+    assert.equal(n['track-list'].children[0].children[0].textContent,album.tracks[0][0]);
+    assert.equal(n['mode-switch'].hidden,false);
+    const last=album.tracks.length-1;
     if ([27,29,47,49].includes(number)) {
-      assert.equal(n['track-list'].children.length,1);
-      assert.equal(n['mode-switch'].hidden,true);
-      assert.equal(p.ids[0],album.youtubeAlbumVideo);
-      assert.match(n['mode-explain'].textContent,/האלבום המלא/);
+      assert.equal(p.ids[0],album.tracks[0][1]);
+      assert.equal(album.fullAlbumVideo,true);
+      n['track-list'].children[last].children[1].click();assert.deepEqual(calls.at(-2),['seek',album.tracks[last][3]]);
+      assert.equal(n['track-list'].children[last].attributes['aria-current'],'true');
+      p.time=album.tracks[1][3]+3;p.options.events.onStateChange({data:1});
+      assert.match(n['player-status'].textContent,new RegExp(`2 מתוך ${album.tracks.length}`),'chapter follows playback time');
+      n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
+      const skipped=album.tracks.findIndex((tr,i)=>!album.focus.includes(i));
+      p.time=album.tracks[skipped][3]+1;p.options.events.onStateChange({data:1});
+      assert(album.focus.some(i=>p.time===album.tracks[i][3])||/הסתיים/.test(n['player-status'].textContent),'focused chapter skip');
+      n['mode-full'].click();
     } else {
-      const expected={24:13,25:12,26:14,28:4,30:6,31:12,32:12,33:7,34:12,35:14,36:13,37:13,38:8,39:4,40:9,41:8,42:13,43:15,44:12,45:20,46:12,48:13,50:11}[number];
-      assert.equal(n['track-list'].children.length,expected,`album ${number} queue`);
-      assert.equal(p.ids.list,number===31?'PL1a1FcevWP19h-lU6yce1_TuLRWCzXJ20':number===26?'PLowQCq3Ss89ikMwB_bPRQuaQttWp0xaD4':number===34?'PLowQCq3Ss89jz1iejIedRBojbvYe3MSzK':album.youtubeAlbumPlaylist);
+      assert.equal(p.ids.list,album.youtubePlaylist);
+      assert.equal(p.ids.list,number===31?'PL1a1FcevWP19h-lU6yce1_TuLRWCzXJ20':number===26?'PLowQCq3Ss89ikMwB_bPRQuaQttWp0xaD4':number===34?'PLowQCq3Ss89jz1iejIedRBojbvYe3MSzK':album.youtubePlaylist);
       assert.equal(n['youtube-direct'].href,`https://www.youtube.com/playlist?list=${p.ids.list}`);
-      n['track-list'].children[expected-1].children[1].click();assert.equal(p.index,expected-1);
-      n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
+      n['track-list'].children[last].children[1].click();assert.equal(p.index,last);
+      n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
       n['mode-full'].click();
     }
     assert.equal(n['book-meta'].hidden,false);
@@ -139,6 +150,20 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(n['album-youtube-player'].src,'about:blank');
   p.index=3;p.options.events.onStateChange({data:0});assert.match(n['player-status'].textContent,/הסתיים/);
   n['play-pause'].click();assert.equal(p.index,0,'replay starts from beginning');
+  // Runtime matching: a reordered playlist with an extra bonus video maps songs by their real titles.
+  n['album-search'].value='';
+  const back=()=>{while(n['album-title'].textContent!=='Getz / Gilberto')n['previous-album'].click();};back();
+  const gg=added['41'];const order=[3,0,1,2,5,4,7,6];
+  p.playlist=[...order.map(i=>'vid'+i),'bonus'];
+  const titleOf={};order.forEach(i=>titleOf['vid'+i]=`Stan Getz & João Gilberto - ${gg.tracks[i][0]} (Remastered 2003)`);titleOf.bonus='Stan Getz - Ipanema interview';
+  t.ctx.fetch=async url=>{const id=decodeURIComponent(url).match(/v=([^&]+)/)[1];return {ok:true,json:async()=>({title:titleOf[id]})};};
+  p.options.events.onStateChange({data:5});
+  await new Promise(r=>setTimeout(r,20));
+  n['track-list'].children[0].children[1].click();assert.equal(p.index,1,'Girl from Ipanema found at playlist position 1');
+  n['track-list'].children[3].children[1].click();assert.equal(p.index,0,'Desafinado found at playlist position 0');
+  p.index=8;p.options.events.onStateChange({data:1});assert.equal(n['track-list'].children[4].attributes['aria-current'],'true','bonus video is skipped to the next album song');
+  p.playlist=[];
+  while(n['album-title'].textContent!=='A Love Supreme')n['next-album'].click();
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(n['album-list'].children.length,2);
   assert.equal(calls.filter(x=>x[0]==='create').length,1,'only one player');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
