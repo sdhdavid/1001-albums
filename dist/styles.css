@@ -261,3 +261,6 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .genre-chip { font: inherit; font-size: .82rem; color: #ccd7d9; background: transparent; border: 1px solid rgba(204, 215, 217, .35); border-radius: 999px; padding: 4px 11px; cursor: pointer; }
 .genre-chip:hover { border-color: #ccd7d9; }
 .genre-chip.active { background: #ccd7d9; color: #10191b; border-color: #ccd7d9; }
+.decade-mark { display: flex; align-items: center; gap: 10px; margin: 18px 6px 4px; color: #7f979d; font-size: .74rem; letter-spacing: .04em; }
+.decade-mark::after { content: ""; flex: 1; height: 1px; background: #2b3d48; }
+.album-list > .decade-mark:first-child { margin-top: 4px; }
