@@ -224,6 +224,16 @@ $('catalog-toggle').addEventListener('click', () => setCatalogOpen(!catalogOpen)
 // First visit: a short explanation of the site, dismissed once and reopenable from the header.
 $('welcome').hidden = Boolean(readStore(WELCOME_KEY, false));
 $('close-welcome').addEventListener('click', () => { $('welcome').hidden = true; writeStore(WELCOME_KEY, true); });
+// Premium help: show this site's own address and copy snippets to the clipboard.
+for (const el of document.querySelectorAll?.('.site-host') ?? []) el.textContent = location.host || el.textContent;
+for (const b of document.querySelectorAll?.('.copy-button') ?? []) {
+  if (b.classList.contains('site-copy') && location.host) b.dataset.copy = location.host;
+  b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'הועתק ✓'; }
+    catch { b.textContent = 'לא הצלחתי, סמנו והעתיקו ידנית'; }
+    setTimeout(() => { b.textContent = 'העתקה'; }, 2500);
+  });
+}
 $('show-welcome').addEventListener('click', () => { $('welcome').hidden = false; window.scrollTo?.({top: 0, behavior: 'smooth'}); });
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);

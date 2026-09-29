@@ -210,6 +210,16 @@ h2 { direction: ltr; text-align: right; font-size: clamp(2.35rem, 5vw, 5.15rem);
 .focus-option input { width: 20px; height: 20px; accent-color: #b4e3d6; flex-shrink: 0; }
 .focus-option span { overflow-wrap: anywhere; }
 summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
+.premium-help { margin-top: 18px; border: 1px solid #3e535c; border-radius: 10px; padding: 12px 15px; background: #16242e; font-size: .9rem; line-height: 1.65; color: #d5dfe0; }
+.premium-help summary { color: #c9d8d8; }
+.premium-help .help-link { color: #b4e3d6; text-decoration: underline; }
+.premium-help h5 { margin: 16px 0 6px; font-size: .92rem; color: #f0f5f2; }
+.premium-help ol { margin: 0; padding-inline-start: 22px; }
+.premium-help li { margin-bottom: 6px; }
+.premium-help p { margin: 10px 0 0; }
+.premium-help code { background: #0f1a22; border: 1px solid #34505a; border-radius: 5px; padding: 1px 6px; font-size: .85rem; overflow-wrap: anywhere; }
+.copy-button { border: 1px solid #5b747b; background: transparent; color: #b4e3d6; border-radius: 6px; padding: 3px 10px; min-height: 30px; font-size: .8rem; margin-inline-start: 4px; }
+.copy-button:hover { background: #30473f; }
 .embed-note { color: #aabcc0; font-size: .81rem; line-height: 1.65; border-top: 1px solid #3e535c; margin-top: 24px; padding-top: 15px; }
 @media (max-width: 530px) {
   .listen-panel { padding: 16px 10px; margin-inline: -10px; }
