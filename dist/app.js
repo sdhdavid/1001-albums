@@ -233,10 +233,22 @@ function renderGenres() {
     return b;
   }));
 }
+// The book groups albums by decade. A few entries carry a much later or earlier release year than their place in the book
+// (e.g. a 1985 release of a 1963 concert), so each album's decade is the median year of its neighbours in book order.
+function markDecades(list) {
+  list.forEach((a, i) => {
+    const years = list.slice(Math.max(0, i - 5), i + 6).map(x => x.year).sort((x, y) => x - y);
+    a.decade = Math.floor(years[years.length >> 1] / 10) * 10;
+  });
+}
+const decadeLabel = d => `שנות ה־${d < 2000 ? d - 1900 : d}`;
 function renderList() {
   const search = $('album-search').value.trim().toLocaleLowerCase();
   const visible = albums.filter(a => (!genre || a.genres?.includes(genre)) && `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
-  $('album-list').replaceChildren(...visible.map(a => {
+  let lastDecade = null;
+  $('album-list').replaceChildren(...visible.flatMap(a => {
+    const marker = a.decade !== lastDecade ? [element('div', 'decade-mark', decadeLabel(a.decade))] : [];
+    lastDecade = a.decade;
     const b = element('button', 'album-row' + (a === currentAlbum() ? ' active' : ''));
     b.type = 'button'; b.setAttribute('aria-current', String(a === currentAlbum()));
     const titles = element('span', 'row-titles');
@@ -246,7 +258,7 @@ function renderList() {
     meta.append(element('span', 'row-number', String(a.n).padStart(3, '0')), element('span', 'row-check', done.has(a.n) ? '✓' : ''));
     b.append(cover, titles, meta);
     if (coverObserver) { coverRows.set(cover, a); coverObserver.observe(cover); } else paintRowCover(cover, a);
-    b.addEventListener('click', () => selectAlbum(albums.indexOf(a))); return b;
+    b.addEventListener('click', () => selectAlbum(albums.indexOf(a))); return [...marker, b];
   }));
   $('list-empty').hidden = visible.length > 0;
   $('catalog-count').textContent = albums.length;
@@ -613,7 +625,9 @@ async function init() {
   try {
     const response = await fetch(`./albums.json${V}`);
     if (!response.ok) throw new Error('Data unavailable');
-    albums = (await response.json()).filter(a => a.ready).sort((a, b) => a.n - b.n);
+    const catalog = (await response.json()).sort((a, b) => a.n - b.n);
+    markDecades(catalog);
+    albums = catalog.filter(a => a.ready);
     if (!albums.length) throw new Error('No albums');
     await loadAlbum(albums[0]);
     $('loading').hidden = true; $('album-view').hidden = false;
