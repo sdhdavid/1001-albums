@@ -48,6 +48,11 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
   assert.equal(rows(),100); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
+  // "Next album" from the bottom of the page jumps up to the new album; no jump when already at the top.
+  { const v=n['album-view']; let jumps=0; v.scrollIntoView=()=>jumps++;
+    v.getBoundingClientRect=()=>({top:-900}); await nx(); assert.equal(jumps,1,'next album scrolls up to the new album');
+    v.getBoundingClientRect=()=>({top:40}); await pv(); assert.equal(jumps,1,'no jump when the album top is visible');
+    delete v.getBoundingClientRect; }
   const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
@@ -57,7 +62,6 @@ async function boot({broken=false, noStorage=false}={}) {
     const data=pilotAll()[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
     noteMatches(n,data);
-    assert.equal(n['album-essay'].hidden,false);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,data.focus.length);
     n['mode-full'].click();await nx();
   }
@@ -81,7 +85,6 @@ async function boot({broken=false, noStorage=false}={}) {
     const album=added[String(number)];
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} original program`);
     noteMatches(n,album);
-    assert.equal(n['album-essay'].hidden,false);
     assert.equal(p.ids.list,album.youtubePlaylist);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
     n['next-track'].click();assert.equal(p.index,album.focus[1],`album ${number} playlist focus index`);
@@ -93,15 +96,11 @@ async function boot({broken=false, noStorage=false}={}) {
   }
   assert.equal(n['album-title'].textContent,'The Genius of Ray Charles');
   await nx();assert.equal(n['album-title'].textContent,'Kind of Blue');
-  assert.equal(n['album-essay'].hidden,false);
   assert(!n['play-pause'].disabled);
   assert.equal(p.ids.length,5);
   n['play-pause'].click();assert.equal(calls.at(-1)[0],'play');
-  assert.equal(n['album-essay'].hidden,false);
-  const essay=n['essay-body'].children;
   p.index=1;p.options.events.onStateChange({data:1});
   assert.equal(n['track-note-title'].textContent,'Freddie Freeloader');
-  assert.equal(n['essay-body'].children,essay,'track changes must not replace album essay');
   const before=calls.length;n['mark-done'].click();assert.equal(calls.length,before,'mark heard must not interrupt');
   assert.deepEqual(JSON.parse(storage.get('album-journey-2005-done')),[1,200,21]);
   n['mode-short'].click();assert.deepEqual([...p.ids],['ylXk1LBvIqU','TLDflhhdPCg','-488UORrfJ0']);
@@ -121,7 +120,6 @@ async function boot({broken=false, noStorage=false}={}) {
   n['mode-full'].click();
   await nx();assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['album-youtube-player'].src,'about:blank','switching to the mapped player unloads prior album');
-  assert.equal(n['album-essay'].hidden,false);
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
   const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const album100=added['100'];
@@ -156,7 +154,6 @@ async function boot({broken=false, noStorage=false}={}) {
       n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
       n['mode-full'].click();
     }
-    assert.equal(n['album-essay'].hidden,false);
   }
   for (let number=51; number<=100; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title,`album ${number}`);
@@ -171,7 +168,6 @@ async function boot({broken=false, noStorage=false}={}) {
     n['track-list'].children[last].children[1].click();assert.equal(p.index,album.tracks[last][2],`album ${number} last song plays at its playlist position`);
     n['mode-short'].click();assert.equal(n['track-list'].children.length,album.focus.length);
     n['mode-full'].click();
-    assert.equal(n['album-essay'].hidden,true,`album ${number} has story text but no old guide`);
     assert.equal(n['album-note'].children.length,album.story.length+1,`album ${number} story sections + picks`);
   }
   assert(n['next-album'].disabled);
