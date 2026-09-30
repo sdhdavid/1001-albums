@@ -5,6 +5,7 @@ const FOCUS_KEY = 'album-journey-2005-focus-ids';
 const SERVICE_KEY = 'album-journey-2005-service';
 const COVERS_KEY = 'album-journey-2005-covers';
 const WELCOME_KEY = 'album-journey-2005-welcomed';
+const LAST_KEY = 'album-journey-2005-last-album';
 function readStore(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
@@ -219,18 +220,19 @@ function playPick(a, name) {
   if (!queue.includes(track)) { mode = 'full'; renderMode(); }
   playAt(queue.indexOf(track));
 }
-let genre = '';
+let genre = '', homeGenre = '', homeUnheard = false;
 // Genre menu: "כל הז'אנרים" plus every label in use, most common first. Filters the list only; the journey order is unchanged.
 function renderGenres() {
   const counts = {};
   for (const a of albums) for (const g of a.genres ?? []) counts[g] = (counts[g] ?? 0) + 1;
   const names = Object.keys(counts).sort((x, y) => counts[y] - counts[x] || x.localeCompare(y, 'he'));
-  const menu = $('genre-select');
-  menu.hidden = names.length === 0;
-  menu.replaceChildren(...['', ...names].map(g => {
-    const o = element('option', '', g ? `${g} · ${counts[g]}` : "כל הז'אנרים"); o.value = g; return o;
-  }));
-  menu.value = genre;
+  for (const [menu, value] of [[$('genre-select'), genre], [$('home-genre'), homeGenre]]) {
+    menu.hidden = names.length === 0;
+    menu.replaceChildren(...['', ...names].map(g => {
+      const o = element('option', '', g ? `${g} · ${counts[g]}` : "כל הז'אנרים"); o.value = g; return o;
+    }));
+    menu.value = value;
+  }
 }
 $('genre-select').addEventListener('change', () => { genre = $('genre-select').value; renderList(); });
 // The book groups albums by decade. A few entries carry a much later or earlier release year than their place in the book
@@ -330,6 +332,7 @@ async function selectAlbum(index) {
   if (ticket !== selecting) return; // a newer pick superseded this one while it loaded
   $('album-error').hidden = true;
   active = index; renderAlbum(); prefetchNeighbours();
+  if (view === 'album') rememberAlbum();
   if (catalogOpen) { setCatalogOpen(false); window.scrollTo?.({top: 0, behavior: 'smooth'}); }
   // Picking the next album from the bottom of the page: jump up to the new album's top.
   else if ($('album-view').getBoundingClientRect?.().top < 0) $('album-view').scrollIntoView?.({block: 'start'});
@@ -348,7 +351,7 @@ for (const b of document.querySelectorAll?.('.copy-button') ?? []) {
     setTimeout(() => { b.textContent = 'העתקה'; }, 2500);
   });
 }
-$('show-welcome').addEventListener('click', () => { $('welcome').hidden = false; window.scrollTo?.({top: 0, behavior: 'smooth'}); });
+$('show-welcome').addEventListener('click', async () => { $('welcome').hidden = false; await openHome(); window.scrollTo?.({top: 0, behavior: 'smooth'}); });
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
   const external = Boolean(a.externalAlbum);
@@ -650,6 +653,104 @@ $('mark-done').addEventListener('click', () => {
   const n = currentAlbum().n; done.has(n) ? done.delete(n) : done.add(n);
   writeStore(DONE_KEY, [...done]); renderDone(); renderList();
 });
+// Two views: the home page (the next album to hear + every album as a grid of covers, by decade) and the album page.
+// The address says which: "#/" (or nothing) is home, "#/album/N" is album N, so each album has its own link and the
+// browser's back button returns to the grid.
+let view = '', homeScroll = 0;
+const tileCovers = new WeakMap();
+const tileObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+  for (const entry of entries) if (entry.isIntersecting) { tileObserver.unobserve(entry.target); paintRowCover(entry.target, tileCovers.get(entry.target)); }
+}, {rootMargin: '400px 0px'}) : null;
+const nextAlbum = () => albums.find(a => !done.has(a.n));
+const albumHash = a => `#/album/${a.n}`;
+function rememberAlbum() {
+  const a = currentAlbum(); writeStore(LAST_KEY, a.n); $('nav-album').href = albumHash(a);
+  if (location.hash !== albumHash(a)) window.history?.replaceState?.(null, '', albumHash(a));
+}
+function placeholderCover(a, className) {
+  const box = element('span', className); box.style.setProperty?.('--hue', String(a.n * 47 % 360));
+  box.append(element('span', 'cover-number', String(a.n).padStart(3, '0'))); return box;
+}
+function renderHero() {
+  const next = nextAlbum(), a = next ?? albums[albums.length - 1], heard = albums.filter(x => done.has(x.n)).length;
+  const cover = placeholderCover(a, 'hero-cover'); paintRowCover(cover, a);
+  const body = element('div', 'hero-body');
+  const eyebrow = !next ? `שמעת את כל ${albums.length} האלבומים באתר. עוד בדרך!`
+    : heard ? `להמשיך במסע · אלבום ${albums.indexOf(a) + 1} מתוך ${albums.length}` : 'נקודת ההתחלה · אלבום 1';
+  const title = element('h2', 'hero-title', a.title); title.dir = 'auto';
+  const artist = element('p', 'hero-artist', `${a.artist} · ${a.year}`); artist.dir = 'auto';
+  const line = element('p', 'hero-line');
+  const go = element('button', 'hero-go', heard ? '▶ להאזנה' : '▶ להתחיל מכאן'); go.type = 'button';
+  go.addEventListener('click', () => openAlbum(a));
+  body.append(element('p', 'hero-eyebrow', eyebrow), title, artist, line, go);
+  loadAlbum(a).then(data => { const first = data.story?.[0]?.split(/(?<=[.!?])\s/)[0]; if (first) bidiText(line, first); }).catch(() => {});
+  const side = element('div', 'hero-side'), meter = element('progress', 'hero-meter');
+  meter.max = albums.length; meter.value = heard;
+  side.append(element('span', 'hero-heard-label', 'האזנת ל־'), element('b', 'hero-heard', `${heard} מתוך ${albums.length}`), meter,
+    element('span', 'hero-where', `אתה ב${decadeLabel(a.decade)}`));
+  $('home-hero').replaceChildren(cover, body, side);
+}
+function renderGrid() {
+  const search = $('home-search').value.trim().toLocaleLowerCase(), next = nextAlbum();
+  const visible = albums.filter(a => (!homeGenre || a.genres?.includes(homeGenre)) && (!homeUnheard || !done.has(a.n))
+    && `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
+  const sections = [];
+  for (const d of [...new Set(visible.map(a => a.decade))]) {
+    const inDecade = visible.filter(a => a.decade === d), all = albums.filter(a => a.decade === d);
+    const head = element('div', 'grid-decade');
+    head.append(element('h3', '', decadeLabel(d)), element('span', '', `${all.length} אלבומים באתר · שמעת ${all.filter(a => done.has(a.n)).length}`));
+    const grid = element('div', 'tile-grid');
+    grid.append(...inDecade.map(a => {
+      const tile = element('button', 'tile' + (a === next ? ' next' : '')); tile.type = 'button'; tile.dataset.n = a.n;
+      tile.setAttribute('aria-label', `${a.n}. ${a.title} — ${a.artist}${done.has(a.n) ? ' (שמעת)' : ''}`);
+      const cover = placeholderCover(a, 'tile-cover');
+      if (tileObserver) { tileCovers.set(cover, a); tileObserver.observe(cover); } else paintRowCover(cover, a);
+      const badge = element('span', 'tile-number', String(a.n).padStart(3, '0'));
+      const text = element('span', 'tile-text'), t = element('span', 'tile-title', a.title), ar = element('span', 'tile-artist', a.artist);
+      t.dir = ar.dir = 'auto'; text.append(t, ar);
+      tile.append(cover, badge, ...(done.has(a.n) ? [element('span', 'tile-check', '✓')] : []), text);
+      tile.addEventListener('click', () => openAlbum(a)); return tile;
+    }));
+    sections.push(head, grid);
+  }
+  $('home-grid').replaceChildren(...sections);
+  $('home-empty').hidden = visible.length > 0;
+}
+function renderHome() { renderHero(); renderGrid(); }
+// Brings the current album into view in the side list (entering an album from the grid or from a link).
+function revealActiveRow() {
+  const list = $('album-list'), row = [...list.querySelectorAll('.album-row')].find(b => String(b.dataset.n) === String(currentAlbum().n));
+  if (row && list.clientHeight) list.scrollTop = Math.max(0, row.offsetTop - list.offsetTop - list.clientHeight / 3);
+  updateDecadeNow();
+}
+function setView(v) {
+  if (view === 'home' && v !== 'home') homeScroll = window.scrollY ?? 0;
+  view = v;
+  $('home').hidden = v !== 'home'; $('album-page').hidden = v !== 'album';
+  $('nav-home').classList.toggle('on', v === 'home'); $('nav-album').classList.toggle('on', v === 'album');
+  if (v === 'home') renderHome(); else { rememberAlbum(); requestAnimationFrame?.(revealActiveRow); }
+}
+function routeIndex() {
+  const m = /^#\/album\/(\d+)$/.exec(location.hash ?? '');
+  return m ? albums.findIndex(a => a.n === Number(m[1])) : -1;
+}
+async function route() {
+  const i = routeIndex();
+  if (i < 0) { if (view !== 'home') { const back = view === 'album' ? homeScroll : 0; setView('home'); window.scrollTo?.({top: back}); } return; }
+  if (i !== active) await selectAlbum(i);
+  if (active !== i) return;
+  if (view !== 'album') { setView('album'); window.scrollTo?.({top: 0}); }
+}
+function openAlbum(a) { if (location.hash !== albumHash(a)) location.hash = albumHash(a); route(); }
+function openHome() { if (routeIndex() >= 0) location.hash = '#/'; return route(); }
+window.addEventListener?.('hashchange', route);
+$('home-search').addEventListener('input', renderGrid);
+$('home-genre').addEventListener('change', () => { homeGenre = $('home-genre').value; renderGrid(); });
+for (const [id, unheard] of [['home-all', false], ['home-unheard', true]]) $(id).addEventListener('click', () => {
+  homeUnheard = unheard;
+  for (const [other, u] of [['home-all', false], ['home-unheard', true]]) { $(other).classList.toggle('on', u === unheard); $(other).setAttribute('aria-pressed', String(u === unheard)); }
+  renderGrid();
+});
 $('reset-focus').addEventListener('click', () => { delete focus[currentAlbum().n]; writeStore(FOCUS_KEY, focus); renderMode(); });
 // Data version: the deploy workflow stamps the commit here so browsers never mix old and new files.
 const V = '';
@@ -679,6 +780,8 @@ async function init() {
     await loadAlbum(albums[0]);
     $('loading').hidden = true; $('album-view').hidden = false;
     renderGenres(); renderAlbum(); loadPlayer(); prefetchNeighbours();
+    const last = albums.find(a => a.n === readStore(LAST_KEY, 0)) ?? nextAlbum() ?? albums[0]; $('nav-album').href = albumHash(last);
+    await route();
   } catch { $('loading').hidden = true; $('album-view').hidden = true; $('load-error').hidden = false; }
 }
 function prefetchNeighbours() {

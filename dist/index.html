@@ -27,10 +27,44 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>1001 אלבומים</span><span class="brand-sub">שחייבים לשמוע</span></div>
-      <button id="show-welcome" class="topbar-meta topbar-help" type="button">מה זה?<span class="help-more"> <span class="meta-separator">/</span> איך זה עובד</span></button>
+      <a class="brand" href="#/" aria-label="1001 אלבומים — לדף הבית"><span class="brand-mark" aria-hidden="true"></span><span>1001 אלבומים</span><span class="brand-sub">שחייבים לשמוע</span></a>
+      <div class="topbar-links">
+        <nav class="topnav" aria-label="ניווט">
+          <a id="nav-home" class="topnav-link" href="#/">כל האלבומים</a>
+          <a id="nav-album" class="topnav-link" href="#/album/1">האלבום הנוכחי</a>
+        </nav>
+        <button id="show-welcome" class="topbar-meta topbar-help" type="button">מה זה?<span class="help-more"> <span class="meta-separator">/</span> איך זה עובד</span></button>
+      </div>
     </header>
-    <main class="layout">
+    <section id="home" class="home" hidden aria-label="כל האלבומים">
+      <section id="welcome" class="welcome" hidden aria-labelledby="welcome-title">
+        <h2 id="welcome-title" class="welcome-title">1001 אלבומים, אחד אחרי השני</h2>
+        <p class="welcome-text">לפני כ־15 שנה קניתי בברזיל ספר בשם <i>1001 אלבומים לשמוע לפני שמתים</i>: אלבומים משנות ה־50 ועד שנות ה־2000, ועל כל אחד טקסט קצר שמספר מה הקטע שלו ולמה הוא חשוב. האתר הזה הוא הדרך שלי לעבור עליו סוף סוף, אלבום אחרי אלבום, ואתם מוזמנים להצטרף.</p>
+        <p class="book-en">📖 <span dir="ltr" lang="en">1001 Albums You Must Hear Before You Die</span> · מהדורת 2005</p>
+        <ol class="welcome-steps">
+          <li><b>בוחרים</b> אלבום מהרשימה</li>
+          <li><b>קוראים</b> את הסיפור שלו</li>
+          <li><b>מאזינים</b> ב־YouTube או ב־Spotify</li>
+          <li><b>מסמנים ✓</b> וממשיכים הלאה</li>
+        </ol>
+        <button id="close-welcome" class="welcome-button" type="button">יאללה, מתחילים</button>
+        </section>
+      <section id="home-hero" class="home-hero" aria-label="האלבום הבא במסע"></section>
+      <div class="home-tools">
+        <div class="search-wrap">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="10.7" cy="10.7" r="6.6"></circle><path d="m16 16 4.3 4.3"></path></svg>
+          <input id="home-search" type="search" placeholder="חיפוש לפי אלבום או אמן" autocomplete="off" aria-label="חיפוש לפי אלבום או אמן">
+        </div>
+        <select id="home-genre" class="genre-select home-genre" aria-label="סינון לפי ז'אנר" hidden></select>
+        <div class="home-chips" role="group" aria-label="מה להציג">
+          <button id="home-all" class="home-chip on" type="button" aria-pressed="true">הכול</button>
+          <button id="home-unheard" class="home-chip" type="button" aria-pressed="false">עוד לא שמעתי</button>
+        </div>
+      </div>
+      <div id="home-grid" class="home-grid"></div>
+      <p id="home-empty" class="list-empty" hidden>לא נמצאו אלבומים בחיפוש או בז'אנר הזה.</p>
+    </section>
+    <main id="album-page" class="layout">
       <aside id="catalog" class="catalog" aria-label="רשימת האלבומים">
         <button id="catalog-toggle" class="catalog-toggle" type="button" aria-expanded="false" aria-controls="catalog-body">
           <span class="toggle-label">כל האלבומים</span>
@@ -64,18 +98,6 @@
       </aside>
 
       <section class="detail" aria-label="האלבום הנבחר">
-        <section id="welcome" class="welcome" hidden aria-labelledby="welcome-title">
-          <h2 id="welcome-title" class="welcome-title">1001 אלבומים, אחד אחרי השני</h2>
-          <p class="welcome-text">לפני כ־15 שנה קניתי בברזיל ספר בשם <i>1001 אלבומים לשמוע לפני שמתים</i>: אלבומים משנות ה־50 ועד שנות ה־2000, ועל כל אחד טקסט קצר שמספר מה הקטע שלו ולמה הוא חשוב. האתר הזה הוא הדרך שלי לעבור עליו סוף סוף, אלבום אחרי אלבום, ואתם מוזמנים להצטרף.</p>
-          <p class="book-en">📖 <span dir="ltr" lang="en">1001 Albums You Must Hear Before You Die</span> · מהדורת 2005</p>
-          <ol class="welcome-steps">
-            <li><b>בוחרים</b> אלבום מהרשימה</li>
-            <li><b>קוראים</b> את הסיפור שלו</li>
-            <li><b>מאזינים</b> ב־YouTube או ב־Spotify</li>
-            <li><b>מסמנים ✓</b> וממשיכים הלאה</li>
-          </ol>
-          <button id="close-welcome" class="welcome-button" type="button">יאללה, מתחילים</button>
-        </section>
         <div id="loading" class="loading">טוען את רשימת האלבומים…</div>
         <div id="album-view" hidden>
           <div class="detail-topline">
@@ -168,12 +190,12 @@
                 <li>פותחים לשונית חדשה, מדביקים בשורת הכתובת ולוחצים Enter.</li>
                 <li>ב„אתרים שמורשים להשתמש בקובצי Cookie של צד שלישי” לוחצים „הוספה” ומדביקים את כתובת האתר: <code dir="ltr" class="site-host">sdhdavid.github.io</code> <button class="copy-button site-copy" type="button" data-copy="sdhdavid.github.io">העתקה</button></li>
                 <li>מוודאים שמחוברים ל־YouTube או ל־Spotify באותו דפדפן, ומרעננים את הדף.</li>
-              </ol>
+            </ol>
               <h5>באנדרואיד (Chrome)</h5>
               <ol>
                 <li>בתפריט ⋮ ← הגדרות ← הגדרות אתר ← קובצי Cookie של צד שלישי.</li>
                 <li>מוסיפים חריגה לאתר ומדביקים את כתובת האתר: <code dir="ltr" class="site-host">sdhdavid.github.io</code> <button class="copy-button site-copy" type="button" data-copy="sdhdavid.github.io">העתקה</button></li>
-              </ol>
+            </ol>
               <h5>באייפון ובאייפד</h5>
               <p>אפל חוסמת את זה בכל הדפדפנים. הכי פשוט ללחוץ „פתיחה ב־YouTube” או „פתיחה ב־Spotify”, והאלבום ייפתח באפליקציה עם המנוי.</p>
             </details>
