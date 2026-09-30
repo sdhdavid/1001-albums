@@ -361,19 +361,21 @@ for (const b of document.querySelectorAll?.('.copy-button') ?? []) {
 $('show-welcome').addEventListener('click', async () => { $('welcome').hidden = false; await openHome(); window.scrollTo?.({top: 0, behavior: 'smooth'}); });
 
 const FEEDBACK_TO = 'sdhdavid@gmail.com';
+const FEEDBACK_KEY = 'b328b525-d763-436b-a9b9-e75370a67e85';
 $('feedback-form').addEventListener('submit', async event => {
   event.preventDefault();
   const form = event.currentTarget, status = $('feedback-status'), send = $('feedback-send');
   const data = new FormData(form);
   if (data.get('_honey')) return;
-  data.set('_subject', 'משוב מהאתר 1001 אלבומים');
+  data.delete('_honey');
+  data.set('access_key', FEEDBACK_KEY);
+  data.set('subject', 'משוב מהאתר 1001 אלבומים');
   data.set('page', location.href);
-  if (data.get('email')) data.set('_replyto', data.get('email'));
   send.disabled = true; status.textContent = 'שולח…';
   try {
-    const response = await fetch(`https://formsubmit.co/ajax/${FEEDBACK_TO}`, {method: 'POST', headers: {Accept: 'application/json'}, body: data});
+    const response = await fetch('https://api.web3forms.com/submit', {method: 'POST', headers: {Accept: 'application/json'}, body: data});
     const result = await response.json().catch(() => ({}));
-    if (!response.ok || result.success === 'false' || result.success === false) throw new Error(result.message || `HTTP ${response.status}`);
+    if (!response.ok || !result.success) throw new Error(result.message || `HTTP ${response.status}`);
     form.reset(); status.textContent = 'תודה! ההודעה נשלחה.';
   } catch (error) {
     const mail = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent('משוב מהאתר 1001 אלבומים')}&body=${encodeURIComponent(data.get('message') || '')}`;
