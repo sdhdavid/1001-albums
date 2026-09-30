@@ -26,6 +26,10 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album'}
+# Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
+EXTRA_PLAYLISTS = {284: ['PL3FGumdAhSgZ83qlMQjc7HJSpMMMpekkE']}
+VIDEOS = {284: ['3m3qOD-hhrQ', 'em-AhgcNxEY'],
+          275: ['Td0_0mdZq9k', 'iNQpQzYS1qI', 'J8ZVRzj7bkU', 'LeYufjm71OI', 'HYAd0-ifNlM', 'DHY2AqG3KaA']}
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
 BAD = re.compile(r'deluxe|anniversary|expanded|sessions|collector|super|box|live|bonus|mono|stereo|demo|remix', re.I)
@@ -80,14 +84,21 @@ for n in wanted:
         names = [t for t, _ in edition]
         rec['tracks'] = names; rec['durations'] = [clock(ms) if ms else None for _, ms in edition]
         best = []
-        for pid, ptitle in yt_candidates(artist, title, n):
+        for pid, ptitle in yt_candidates(artist, title, n) + [(p, 'hand-picked') for p in EXTRA_PLAYLISTS.get(n, [])]:
             info = ydl.extract_info(f'https://www.youtube.com/playlist?list={pid}', download=False) or {}
             ents = [e.get('title') for e in info.get('entries', []) if e]
             pos = score(names, ents)
             found = sum(p >= 0 for p in pos)
             best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos})
         best.sort(key=lambda b: (b['found'] - abs(b['size'] - len(names)) * .5, b['id'].startswith('OLAK')), reverse=True)
-        rec['youtube'] = best[:3]
+        rec['youtube'] = best[:3] + [b for b in best[3:] if b['title'] == 'hand-picked']
+        vids = []
+        for vid in VIDEOS.get(n, []):
+            v = ydl.extract_info(f'https://www.youtube.com/watch?v={vid}', download=False) or {}
+            vids.append({'id': vid, 'title': v.get('title'), 'duration': v.get('duration'), 'channel': v.get('channel'),
+                         'chapters': [[c.get('title'), int(c.get('start_time') or 0)] for c in v.get('chapters') or []],
+                         'description': (v.get('description') or '')[:3000]})
+        if vids: rec['videos'] = vids
     result[n] = rec
     print(n, meta['title'], '| editions', counts, '| best', (rec.get('youtube') or [{}])[0].get('id'), (rec.get('youtube') or [{}])[0].get('found'), flush=True)
     json.dump(result, open(out_path, 'w'), ensure_ascii=False, indent=1)
