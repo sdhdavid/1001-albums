@@ -20,13 +20,21 @@ SPOTIFY = {
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
 PLAYLIST_CHOICE = {}
-RENAME = {}
-KEEP_FIRST = {}   # drop bonus tracks / outtakes after the original album
-DROP = {}         # songs added on later editions, not on the original LP
+RENAME = {"Intro / Ramblin' Rose": "Ramblin' Rose", 'Intro No. 2 / Kick Out the Jams': 'Kick Out the Jams', 'Tall / Rocket Reducer No. 62': 'Rocket Reducer No. 62',
+          'Bird On a Wire': 'Bird on the Wire', "The Old Man's Back Again (Dedicated To the Neo-Stalinist Regime)": "The Old Man's Back Again",
+          "War Pigs / Luke's Wall": 'War Pigs', 'Jack the Stripper / Fairies Wear Boots': 'Fairies Wear Boots'}
+KEEP_FIRST = {172: 12}   # drop bonus tracks / outtakes after the original album
+DROP = {192: {0, 1, 2, 3, 6, 7, 8, 9}}   # Live at Leeds: the six songs of the original LP only
 # Albums the automatic search got wrong, filled in by hand.
-MANUAL = {}
+MANUAL = {
+ # the track list found was the US edition with medley titles; the playlist follows the UK LP song by song
+ 178: {'youtubePlaylist': 'PLo2VF3ux4qcZtVqa2p5ICdOAyDZOPyUDp',
+       'names': ['Black Sabbath', 'The Wizard', 'Behind the Wall of Sleep', 'N.I.B.', 'Evil Woman', 'Sleeping Village', 'The Warning'],
+       'durations': ['6:20', '4:24', '3:37', '6:05', '3:25', '3:46', '10:32']},
+}
 
 def clean(s):
+    s = re.sub(r'\s*\(including [^)]*\)', '', s)
     s = re.sub(r'\s*[\(\[][^)\]]*(remaster|mono|stereo|version|edit|mix|bonus|single|live|\b(19|20)\d\d\b)[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s+-\s+(\d{4}\s+)?(remaster|mono|stereo|single|live).*$', '', s, flags=re.I)
     s = s.strip()
@@ -45,13 +53,14 @@ for n in sorted(int(k) for k in disc):
         extra = None
     yt = r['youtube'][PLAYLIST_CHOICE.get(n, 0)]
     names = [clean(t) for t in r['tracks']]
-    pos = yt['positions']
+    pos = yt['positions']; durs = list(r.get('durations') or [None] * len(names))
     if n in MANUAL and not extra:
-        yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names)))
+        yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names))); durs = MANUAL[n]['durations']
     keep = KEEP_FIRST.get(n, len(names))
-    names, pos = names[:keep], pos[:keep]
+    names, pos, durs = names[:keep], pos[:keep], durs[:keep]
     names = [x for i, x in enumerate(names) if i not in DROP.get(n, ())]
     pos = [x for i, x in enumerate(pos) if i not in DROP.get(n, ())]
+    durs = [x for i, x in enumerate(durs) if i not in DROP.get(n, ())]
     seen = {}
     for i, x in enumerate(names):   # the same song twice (e.g. an encore): keep both, name the second
         if x in seen: names[i] = x + ' (Encore)'
@@ -74,6 +83,7 @@ for n in sorted(int(k) for k in disc):
     focus = sorted({tnames.index(name) for name, _ in picks})
     assert len(SPOTIFY[n]) == 22
     rec = {'n': n, 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus, 'story': st['story'], 'picks': picks}
+    if not extra: rec['durations'] = durs
     rec.update(extra or {'youtubePlaylist': yt['id']})
     out.append(rec)
 json.dump(out, open('tools/batches/151-200.json', 'w'), ensure_ascii=False, indent=1)
