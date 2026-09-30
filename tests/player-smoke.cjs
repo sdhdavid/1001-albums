@@ -20,7 +20,7 @@ function noteMatches(n,data){
   if (data.story) assert.equal(n['album-note'].children.length,data.story.length+(data.picks?.length?1:0));
   else assert.equal(n['album-note'].children[0].children.map(c=>c.textContent).join(''),data.guide.intro.map(s=>s.text).join(' '));
 }
-async function boot({broken=false, noStorage=false, hash='', phone=false, lang='he'}={}) {
+async function boot({broken=false, noStorage=false, hash='', phone=false, lang='he', animations=false, reduceMotion=false, holdAnimation=false}={}) {
   const html=fs.readFileSync('dist/index.html','utf8'), nodes={};
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
   const storage=new Map([['album-journey-2005-done','[1,999]']]);
@@ -41,20 +41,27 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
       playVideo(){calls.push(['play']);this.options.events.onStateChange({data:1});}
       pauseVideo(){calls.push(['pause']);this.options.events.onStateChange({data:2});}
     }}
-  };ctx.history={replaceState:(_state,_title,hash)=>{ctx.location.hash=hash;}};ctx.innerWidth=phone?390:1200;ctx.matchMedia=()=>({matches:phone});ctx.document.documentElement={lang};ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync('dist/app.js','utf8'),ctx);
+  };const motion=[];
+  if (animations) nodes['album-view'].animate=(frames,options)=>{
+    let resolve,reject;const finished=holdAnimation?new Promise((yes,no)=>{resolve=yes;reject=no;}):Promise.resolve();
+    const animation={frames,options,finished,finish:()=>resolve?.(),cancel(){this.cancelled=true;reject?.(Error('cancelled'));}};motion.push(animation);return animation;
+  };
+  ctx.history={replaceState:(_state,_title,hash)=>{ctx.location.hash=hash;}};ctx.innerWidth=phone?390:1200;ctx.matchMedia=query=>({matches:query.includes('prefers-reduced-motion')?reduceMotion:phone});ctx.document.documentElement={lang};ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync('dist/app.js','utf8'),ctx);
   await new Promise(resolve=>setImmediate(resolve));
-  return {nodes,calls,fetched,storage,ctx,fail:n=>{failAlbum=n;},get player(){return mock;}};
+  return {nodes,calls,fetched,storage,ctx,motion,fail:n=>{failAlbum=n;},get player(){return mock;}};
 }
 (async()=>{
   // Swipes navigate only on phones in the album view, and respect RTL/LTR.
   for (const lang of ['he','en']) {
-    const s=await boot({phone:true,lang,hash:'#/album/2'});await flush();await flush();
+    const s=await boot({phone:true,lang,hash:'#/album/2',animations:true});await flush();await flush();
     const v=s.nodes['album-view'], target={closest:()=>null};
     const touch=(x,y=200,id=1)=>({clientX:x,clientY:y,identifier:id});
     const begin=(x=190,extra={})=>v.listeners.touchstart({touches:[touch(x)],target,...extra});
     const end=async(x,y=200)=>{v.listeners.touchend({touches:[],changedTouches:[touch(x,y)]});await flush();};
     const number=()=>s.ctx.location.hash;
-    begin();await end(lang==='he'?290:90);assert.equal(number(),'#/album/3','swipe next');
+    begin();v.listeners.touchmove({touches:[touch(lang==='he'?290:90)]});assert.equal(v.style.transform,`translateX(${lang==='he'?40:-40}px)`,'content follows finger');
+    await end(lang==='he'?290:90);assert.equal(number(),'#/album/3','swipe next');
+    assert.equal(s.motion.at(-2).frames[1].opacity,0,'old album fades out');assert.equal(s.motion.at(-1).frames[0].transform,`translateX(${lang==='he'?-64:64}px)`,'new album enters from opposite side');assert.equal(v.style.transform,'','motion cleaned up');
     begin();await end(lang==='he'?90:290);assert.equal(number(),'#/album/2','swipe previous');
     begin();await end(220);assert.equal(number(),'#/album/2','short swipe ignored');
     begin();v.listeners.touchmove({touches:[touch(195,240)]});await end(290,240);assert.equal(number(),'#/album/2','vertical scroll remains scroll even when ending horizontally');
@@ -68,6 +75,17 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     s.player.options.events.onReady();s.nodes['quick-play'].click();const before=s.calls.length;
     begin();await end(lang==='he'?290:90);assert.equal(number(),'#/album/4');assert.equal(s.calls.length,before,'swipe keeps current music playing');
     s.nodes['show-welcome'].click();await flush();begin();await end(290);assert.equal(number(),'#/','home does not swipe');
+  }
+  { const s=await boot({phone:true,hash:'#/album/2',animations:true,reduceMotion:true});await flush();await flush();const v=s.nodes['album-view'];
+    v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});
+    v.listeners.touchmove({touches:[{clientX:290,clientY:200,identifier:1}]});assert.equal(v.style.transform,'','reduced motion does not drag');
+    v.listeners.touchend({touches:[],changedTouches:[{clientX:290,clientY:200,identifier:1}]});await flush();assert.equal(s.ctx.location.hash,'#/album/3');assert.equal(s.motion.length,0,'reduced motion skips animations');
+  }
+  { const s=await boot({phone:true,hash:'#/album/2',animations:true,holdAnimation:true});await flush();await flush();const v=s.nodes['album-view'];
+    const swipe=()=>{v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});v.listeners.touchend({touches:[],changedTouches:[{clientX:290,clientY:200,identifier:1}]});};
+    swipe();await flush();assert.equal(s.motion.length,1);assert.equal(s.ctx.location.hash,'#/album/2','old album remains until exit finishes');
+    swipe();await flush();assert.equal(s.motion.length,1,'repeated swipes blocked during transition');
+    s.nodes['show-welcome'].click();await flush();s.motion[0].finish();await flush();assert.equal(s.ctx.location.hash,'#/','home navigation cancels animation');assert.equal(v.style.transform,'');
   }
   { const s=await boot({hash:'#/album/2'});await flush();await flush();const v=s.nodes['album-view'];
     v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});
