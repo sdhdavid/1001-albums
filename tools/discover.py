@@ -27,12 +27,20 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             326: ('Brian Eno', 'Another Green World'), 328: ('Neu!', "Neu! '75"), 339: ('R. D. Burman', 'Shalimar (Original Motion Picture Soundtrack)'),
             304: ('Stevie Wonder', "Fulfillingness' First Finale"), 307: ('Van Morrison', "It's Too Late to Stop Now"),
             340: ('Neil Young', "Tonight's the Night"), 346: ('Earth, Wind & Fire', "That's the Way of the World"),
-            347: ('Curtis Mayfield', "There's No Place Like America Today"), 330: ('Keith Jarrett', 'The Koln Concert')}
+            347: ('Curtis Mayfield', "There's No Place Like America Today"), 330: ('Keith Jarrett', 'The Koln Concert'),
+            357: ('Jorge Ben', 'Africa Brasil'), 360: ('Parliament', 'Mothership Connection'), 364: ('Fela Kuti', 'Zombie'),
+            369: ('Kraftwerk', 'Trans-Europe Express'), 381: ('Talking Heads', 'Talking Heads 77'), 383: ('David Bowie', 'Heroes'),
+            392: ('Ian Dury', 'New Boots and Panties'), 393: ('Sex Pistols', 'Never Mind the Bollocks'),
+            395: ('Kraftwerk', 'The Man-Machine'), 397: ('Elis Regina', 'Elis 1980'), 361: ('Penguin Cafe Orchestra', 'Music from the Penguin Cafe')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
             307: 'Van Morrison Its Too Late to Stop Now 1974 live album', 339: 'Shalimar 1978 R D Burman soundtrack songs',
-            301: 'Bad Company 1974 debut album full', 348: 'Tom Petty and the Heartbreakers 1976 debut album full'}
+            301: 'Bad Company 1974 debut album full', 348: 'Tom Petty and the Heartbreakers 1976 debut album full',
+            352: 'Boston 1976 debut album full', 358: 'Joan Armatrading 1976 album full', 363: 'Ramones 1976 debut album full',
+            376: 'The Clash 1977 debut album UK full', 381: 'Talking Heads 77 full album', 385: 'Suicide 1977 debut album full Alan Vega',
+            387: 'Peter Gabriel 1 Car 1977 full album', 399: 'The Only Ones 1978 debut album full', 397: 'Elis Regina Elis 1980 album',
+            383: 'David Bowie Heroes 1977 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
