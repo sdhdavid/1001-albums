@@ -448,7 +448,8 @@ function renderAlbum() {
   prepareGuide(); renderDone(); renderList(); renderMode(); renderCover();
 }
 let selecting = 0;
-async function selectAlbum(index) {
+async function selectAlbum(index, fromSwipe = false) {
+  if (!fromSwipe) cancelAlbumMotion();
   if (index === active || index < 0 || index >= albums.length) return;
   const ticket = ++selecting;
   try { await loadAlbum(albums[index]); } catch { if (ticket === selecting) $('album-error').hidden = false; return; }
@@ -848,10 +849,56 @@ $('next-album-top').addEventListener('click', () => selectAlbum(active + 1));
 // Phone-only swipes on album content. Leave scrolling, zoom and controls alone.
 const phoneSwipe = window.matchMedia?.('(max-width: 760px) and (pointer: coarse)');
 let albumSwipe = null;
+const reduceSwipeMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+let swipeAnimation = null, swipeTransition = 0, swipeBusy = false;
+function cancelAlbumMotion() {
+  ++swipeTransition; swipeBusy = false; albumSwipe = null;
+  swipeAnimation?.cancel(); swipeAnimation = null;
+  $('album-view').style.transform = '';
+}
+function settleAlbumDrag() {
+  const el = $('album-view'), from = el.style.transform;
+  swipeAnimation?.cancel(); swipeAnimation = null;
+  el.style.transform = '';
+  if (from && !reduceSwipeMotion?.matches && el.animate) {
+    const animation = swipeAnimation = el.animate([{transform: from}, {transform: 'translateX(0)'}], {duration: 180, easing: 'cubic-bezier(.2,.8,.2,1)'});
+    animation.finished.catch(() => {}).finally(() => { if (swipeAnimation === animation) { animation.cancel(); swipeAnimation = null; } });
+  }
+}
+async function slideToAlbum(index, direction) {
+  const el = $('album-view');
+  if (index < 0 || index >= albums.length) { settleAlbumDrag(); return; }
+  if (reduceSwipeMotion?.matches || !el.animate) { settleAlbumDrag(); await selectAlbum(index); return; }
+  const ticket = ++swipeTransition, previous = active;
+  swipeBusy = true;
+  const from = el.style.transform || 'translateX(0)';
+  swipeAnimation?.cancel();
+  try {
+    // Load before leaving the current album so a slow connection never leaves an empty page.
+    await loadAlbum(albums[index]);
+    if (ticket !== swipeTransition || !canSwipeAlbum() || active !== previous) return;
+    swipeAnimation = el.animate([{transform: from, opacity: 1}, {transform: `translateX(${direction * 80}px)`, opacity: 0}], {duration: 160, easing: 'ease-in', fill: 'forwards'});
+    el.style.transform = '';
+    await swipeAnimation.finished;
+    if (ticket !== swipeTransition || !canSwipeAlbum() || active !== previous) return;
+    await selectAlbum(index, true);
+    if (ticket !== swipeTransition || !canSwipeAlbum() || active !== index) return;
+    // Swap the content while faded out, then bring the new album in from the other side.
+    swipeAnimation.cancel();
+    swipeAnimation = el.animate([{transform: `translateX(${-direction * 64}px)`, opacity: 0}, {transform: 'translateX(0)', opacity: 1}], {duration: 240, easing: 'cubic-bezier(.2,.8,.2,1)'});
+    await swipeAnimation.finished;
+  } catch {
+    if (ticket === swipeTransition) $('album-error').hidden = false;
+  } finally {
+    if (ticket === swipeTransition) { swipeAnimation?.cancel(); swipeAnimation = null; swipeBusy = false; settleAlbumDrag(); }
+  }
+}
 const swipeBlocked = 'button, a, input, textarea, select, summary, iframe, [contenteditable], [role="slider"], .youtube-frame, #spotify-player';
 const canSwipeAlbum = () => phoneSwipe?.matches && view === 'album' && !catalogOpen && !$('album-view').hidden;
 $('album-view').addEventListener('touchstart', e => {
   albumSwipe = null;
+  if (swipeBusy) return;
+  settleAlbumDrag();
   if (!canSwipeAlbum() || e.touches.length !== 1 || e.target.closest?.(swipeBlocked)) return;
   const t = e.touches[0];
   // Keep browser back/forward gestures at the screen edges available.
@@ -860,23 +907,31 @@ $('album-view').addEventListener('touchstart', e => {
 }, {passive: true});
 $('album-view').addEventListener('touchmove', e => {
   if (!albumSwipe) return;
-  if (e.touches.length !== 1) { albumSwipe = null; return; }
+  if (e.touches.length !== 1) { albumSwipe = null; settleAlbumDrag(); return; }
   const t = e.touches[0];
   const dx = Math.abs(t.clientX - albumSwipe.x), dy = Math.abs(t.clientY - albumSwipe.y);
   // Once the user starts scrolling vertically, this gesture cannot change albums.
-  if (t.identifier !== albumSwipe.id || (dy > 12 && dy >= dx)) albumSwipe = null;
+  if (t.identifier !== albumSwipe.id || (dy > 12 && dy >= dx)) { albumSwipe = null; settleAlbumDrag(); return; }
+  if (dx > 12 && dx > dy * 2 && !reduceSwipeMotion?.matches) {
+    const delta = t.clientX - albumSwipe.x;
+    const next = LANG === 'en' ? delta < 0 : delta > 0;
+    const available = next ? active < albums.length - 1 : active > 0;
+    const offset = Math.sign(delta) * Math.min(available ? 64 : 18, dx * (available ? .4 : .15));
+    $('album-view').style.transform = `translateX(${offset}px)`;
+  }
 }, {passive: true});
-$('album-view').addEventListener('touchcancel', () => { albumSwipe = null; }, {passive: true});
+$('album-view').addEventListener('touchcancel', () => { albumSwipe = null; settleAlbumDrag(); }, {passive: true});
 $('album-view').addEventListener('touchend', e => {
   const start = albumSwipe; albumSwipe = null;
-  if (!start || !canSwipeAlbum() || active !== start.album || e.touches.length) return;
+  if (!start) return;
+  if (!canSwipeAlbum() || active !== start.album || e.touches.length) { settleAlbumDrag(); return; }
   const t = Array.from(e.changedTouches).find(t => t.identifier === start.id);
-  if (!t) return;
+  if (!t) { settleAlbumDrag(); return; }
   const dx = t.clientX - start.x, dy = t.clientY - start.y;
-  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) return;
+  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) { settleAlbumDrag(); return; }
   // Drag toward the previous page's arrow to reveal the next page (RTL mirrored).
   const next = LANG === 'en' ? dx < 0 : dx > 0;
-  selectAlbum(active + (next ? 1 : -1));
+  slideToAlbum(active + (next ? 1 : -1), Math.sign(dx));
 }, {passive: true});
 // Keyboard: in the right-to-left (Hebrew) site ← is the next album and → the previous one; in English it is the other way round
 // (not while typing in the search box or with modifier keys held).
@@ -967,6 +1022,7 @@ function revealActiveRow() {
   updateDecadeNow();
 }
 function setView(v) {
+  cancelAlbumMotion();
   if (view === 'home' && v !== 'home') homeScroll = window.scrollY ?? 0;
   view = v;
   $('home').hidden = v !== 'home'; $('album-page').hidden = v !== 'album';
