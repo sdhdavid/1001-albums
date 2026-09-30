@@ -25,7 +25,7 @@ RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt.
           'Rock and Roll P***y': 'Rock and Roll Pussy'}
 KEEP_FIRST = {286: 2}   # drop bonus tracks / outtakes after the original album
 DROP = {263: {3}}       # songs added on later editions, not on the original LP (#263: Virginia Plain, US edition only)
-POSITION = {263: {4: 3}}  # playlist position the title matching missed (#263: "2HB")
+POSITION = {263: {4: 3}, 251: {2: 2}}  # playlist positions the title matching missed (#263: "2HB", #251: "The Big Apple")
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {291: (0, [('Speak to Me', 0, '1:07'), ('Breathe', 1, '2:51')])}
 # Albums the automatic search got wrong, filled in by hand.
