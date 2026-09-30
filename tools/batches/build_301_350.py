@@ -19,16 +19,18 @@ SPOTIFY = {
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
+PLAYLIST_CHOICE = {303: 2, 336: 2}   # the playlists that hold exactly the original album
 RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
-          'Rock and Roll P***y': 'Rock and Roll Pussy'}
-KEEP_FIRST = {}   # drop bonus tracks / outtakes after the original album
+          'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
+          'Shine On You Crazy Diamond, Pts. 1-5': 'Shine On You Crazy Diamond (Parts I-V)',
+          'Shine On You Crazy Diamond, Pts. 6-9': 'Shine On You Crazy Diamond (Parts VI-IX)', 'Xl-30': 'XL-30', 'Alife': 'Alifie', 'H₂Ogate Blues': 'H2Ogate Blues'}
+KEEP_FIRST = {303: 9, 336: 8}   # #303: 2001 reissue bonus tracks, #336: the Streetheart album on the same CD; drop bonus tracks / outtakes after the original album
 DROP = {}         # songs added on later editions, not on the original LP
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
-SKIP = set()   # albums to hold back (none)
+SKIP = {310, 330, 339}   # waiting for hand-found playlists
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
 
@@ -64,8 +66,8 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
     pos = [x for i, x in enumerate(pos) if i not in DROP.get(n, ())]
     durs = [x for i, x in enumerate(durs) if i not in DROP.get(n, ())]
     seen = {}
-    for i, x in enumerate(names):   # the same song twice (e.g. an encore): keep both, name the second
-        if x in seen: names[i] = x + ' (Encore)'
+    for i, x in enumerate(names):   # the same piece twice (a reprise): keep both, name the second
+        if x in seen: names[i] = x + ' (Reprise)'
         seen[x] = 1
     used = {p for p in pos if p >= 0}; spare = max(used | {len(names)}) + 1
     fixed = []
