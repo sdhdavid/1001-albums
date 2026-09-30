@@ -382,7 +382,272 @@
   "n": 404,
   "artist": "Big Star",
   "title": "3rd",
-  "editionSizes": []
+  "editionSizes": [
+   50,
+   18,
+   18,
+   69,
+   70,
+   12,
+   17,
+   14,
+   19,
+   17
+  ],
+  "tracks": [
+   "Kizza Me",
+   "You Can’t Have Me",
+   "Jesus Christ",
+   "Downs",
+   "Whole Lotta Shaking Going On",
+   "Thank You Friends",
+   "O, Dana",
+   "Femme Fatale",
+   "Stroke It Noel",
+   "Holocaust",
+   "Night Time",
+   "Kangaroo",
+   "For You",
+   "Take Care",
+   "Blue Moon",
+   "Dream Lover",
+   "Big Black Car"
+  ],
+  "durations": [
+   "2:44",
+   "3:11",
+   "2:39",
+   "1:51",
+   "3:23",
+   "3:06",
+   "2:36",
+   "3:30",
+   "2:06",
+   "3:49",
+   "2:50",
+   "3:47",
+   "2:47",
+   "2:50",
+   "2:07",
+   "3:35",
+   "3:35"
+  ],
+  "youtube": [
+   {
+    "id": "OLAK5uy_nEfRmzliYZ8KP0g2PRBjmQdJ6kPSuU86g",
+    "title": "hand-picked",
+    "size": 18,
+    "found": 16,
+    "positions": [
+     0,
+     10,
+     3,
+     17,
+     -1,
+     1,
+     5,
+     4,
+     8,
+     6,
+     11,
+     7,
+     9,
+     13,
+     12,
+     16,
+     2
+    ],
+    "entries": [
+     "Kizza Me",
+     "Thank You Friends",
+     "Big Black Car",
+     "Jesus Christ",
+     "Femme Fatale",
+     "O, Dana",
+     "Holocaust",
+     "Kanga Roo",
+     "Stroke It Noel",
+     "For You",
+     "You Can't Have Me",
+     "Nightime",
+     "Blue Moon",
+     "Take Care",
+     "Nature Boy",
+     "Till The End Of The Day",
+     "Dream Lover",
+     "Downs"
+    ]
+   },
+   {
+    "id": "PLOJWuc3CN303QT7RnWuruRLJJxEnf6TUu",
+    "title": "Big Star - Third (full album)",
+    "size": 18,
+    "found": 16,
+    "positions": [
+     0,
+     10,
+     3,
+     17,
+     -1,
+     1,
+     5,
+     4,
+     8,
+     6,
+     11,
+     7,
+     9,
+     13,
+     12,
+     16,
+     2
+    ],
+    "entries": null
+   },
+   {
+    "id": "PLNPGM2D7aODc_IV0Ue1R_H2JxiS461tEL",
+    "title": "Big Star - Third (Full Album)",
+    "size": 18,
+    "found": 16,
+    "positions": [
+     0,
+     10,
+     3,
+     17,
+     -1,
+     1,
+     5,
+     4,
+     8,
+     6,
+     11,
+     7,
+     9,
+     13,
+     12,
+     16,
+     2
+    ],
+    "entries": null
+   },
+   {
+    "id": "PLOJWuc3CN303QT7RnWuruRLJJxEnf6TUu",
+    "title": "hand-picked",
+    "size": 18,
+    "found": 16,
+    "positions": [
+     0,
+     10,
+     3,
+     17,
+     -1,
+     1,
+     5,
+     4,
+     8,
+     6,
+     11,
+     7,
+     9,
+     13,
+     12,
+     16,
+     2
+    ],
+    "entries": [
+     "Kizza Me",
+     "Thank You Friends",
+     "Big Black Car",
+     "Jesus Christ",
+     "Femme Fatale",
+     "O, Dana",
+     "Holocaust",
+     "Kanga Roo",
+     "Stroke It Noel",
+     "For You",
+     "You Can't Have Me",
+     "Nightime",
+     "Blue Moon",
+     "Take Care",
+     "Nature Boy",
+     "Till The End Of The Day",
+     "Dream Lover",
+     "Downs"
+    ]
+   },
+   {
+    "id": "PLJvYa4hB_Ul-5gdY9UcBDXNbuLGhQKim_",
+    "title": "hand-picked",
+    "size": 14,
+    "found": 14,
+    "positions": [
+     2,
+     3,
+     7,
+     -1,
+     -1,
+     13,
+     9,
+     8,
+     0,
+     11,
+     4,
+     12,
+     1,
+     6,
+     5,
+     -1,
+     10
+    ],
+    "entries": [
+     "Big Star - Stroke it Noel",
+     "Big star - for you",
+     "Kizza Me",
+     "You Can't Have Me",
+     "Big Star - Nightime",
+     "Blue Moon",
+     "BIG STAR - Take Care",
+     "Big Star - Jesus Christ",
+     "Femme Fatale",
+     "O, Dana",
+     "Big Black Car",
+     "Holocaust",
+     "Big Star - Kangaroo",
+     "Big Star - Thank You Friends"
+    ]
+   },
+   {
+    "id": "PLEvr99j7ruPzc3YXLXOnxQGVMw4iWAA6c",
+    "title": "hand-picked",
+    "size": 4,
+    "found": 0,
+    "positions": [
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1
+    ],
+    "entries": [
+     "Big Star, \"Third/Sister Lovers,\" Part 1 of 4",
+     "Big Star, \"Third/Sister Lovers,\" Part 2 of 4",
+     "Big Star, \"Third/Sister Lovers,\" Part 3 of 4",
+     "Big Star, \"Third/Sister Lovers,\" Part 4 of 4"
+    ]
+   }
+  ]
  },
  "405": {
   "n": 405,
@@ -656,6 +921,62 @@
   ],
   "youtube": [
    {
+    "id": "OLAK5uy_m2PSh2Vw6s0PdINtbPCyv81N5nMX3yNac",
+    "title": "hand-picked",
+    "size": 10,
+    "found": 9,
+    "positions": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8
+    ],
+    "entries": [
+     "Theme",
+     "Religion I",
+     "Religion II",
+     "Annalisa",
+     "Public Image",
+     "Low Life",
+     "Attack",
+     "Fodderstompf",
+     "Cowboy Song (Bonus Track)",
+     "Interview with John Lydon (Bbc Radio 1, Rock on, Oct. 28 1978)"
+    ]
+   },
+   {
+    "id": "PLw31gx_Af1g-uYdvOjGTI3T1WieKas-51",
+    "title": "hand-picked",
+    "size": 8,
+    "found": 8,
+    "positions": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     -1
+    ],
+    "entries": [
+     "Theme (2011 Remaster)",
+     "Religion I (2011 Remaster)",
+     "Religion II (2011 Remaster)",
+     "Annalisa (2011 Remaster)",
+     "Public Image (Remastered 2011)",
+     "Low Life (Studio Version / 2011 Remaster)",
+     "Attack (2011 Remaster)",
+     "Fodderstompf (2011 Remaster)"
+    ]
+   },
+   {
     "id": "PL54305507986C182C",
     "title": "Public Image Ltd.- First Issue",
     "size": 8,
@@ -674,40 +995,22 @@
     "entries": null
    },
    {
-    "id": "PLMycGAgbkNszfqU398BElH2e4J0WsOKVF",
-    "title": "PIL First Issue",
-    "size": 11,
-    "found": 1,
+    "id": "OLAK5uy_l8aOiSeHdlBuY6Uiiz2__J280s7Yh8o6k",
+    "title": "hand-picked",
+    "size": 0,
+    "found": 0,
     "positions": [
      -1,
      -1,
      -1,
      -1,
-     0,
+     -1,
      -1,
      -1,
      -1,
      -1
     ],
-    "entries": null
-   },
-   {
-    "id": "PL11JMYM51mWVyEi7MZcHrEG0PQz-3pG4L",
-    "title": "Public Image limited",
-    "size": 11,
-    "found": 1,
-    "positions": [
-     -1,
-     -1,
-     -1,
-     -1,
-     6,
-     -1,
-     -1,
-     -1,
-     -1
-    ],
-    "entries": null
+    "entries": []
    }
   ]
  },
@@ -3179,6 +3482,24 @@
   ],
   "youtube": [
    {
+    "id": "OLAK5uy_niijN27zTnrqADCiWObap5-AK22HsC7qI",
+    "title": "hand-picked",
+    "size": 4,
+    "found": 1,
+    "positions": [
+     -1,
+     -1,
+     -1,
+     3
+    ],
+    "entries": [
+     "Holger Czukay - Movie! - Cool In The Pool",
+     "Holger Czukay - Movie! - Oh Lord, Give Us Money",
+     "Holger Czukay - Movie! - Persian Love",
+     "Hollywood Symphony"
+    ]
+   },
+   {
     "id": "PLK9pqGSuAjHCnfZrultOMTnW7m1MewlAf",
     "title": "Rock progressif",
     "size": 8,
@@ -3192,30 +3513,22 @@
     "entries": null
    },
    {
-    "id": "PLW-DcMhpSlHDqF1Dj9fhWLdzIppiISXbA",
-    "title": "Holger Czukay",
-    "size": 14,
-    "found": 0,
-    "positions": [
-     -1,
-     -1,
-     -1,
-     -1
-    ],
-    "entries": null
-   },
-   {
-    "id": "PLyN0zz7djOkyq-RhJ8wmU1PsizT4HpUTP",
-    "title": "***HOLGER CZUKAY*** FULL ALBUM",
-    "size": 17,
+    "id": "PLDCQnAwuT7e-oi-BQrVV8o5DrCiOVKZV1",
+    "title": "hand-picked",
+    "size": 4,
     "found": 1,
     "positions": [
+     0,
      -1,
      -1,
-     2,
      -1
     ],
-    "entries": null
+    "entries": [
+     "Holger Czukay - Cool In The Pool",
+     "Holger Czukay - Movie! - Persian Love",
+     "Holger Czukay - Movie! - Oh Lord, Give Us Money",
+     "Holger Czukay - Movie! - Hollywood Symphony"
+    ]
    }
   ]
  },
@@ -4210,6 +4523,40 @@
   ],
   "youtube": [
    {
+    "id": "PLOJWuc3CN301YxZG_I_ZniHGfb4tl7vug",
+    "title": "hand-picked",
+    "size": 12,
+    "found": 12,
+    "positions": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11
+    ],
+    "entries": [
+     "Instant Hit",
+     "So Tough",
+     "Spend, Spend, Spend",
+     "Shoplifting",
+     "FM",
+     "Newtown",
+     "Ping Pong Affair",
+     "Love Und Romance",
+     "Typical Girls",
+     "Adventures Close To Home",
+     "I Heard It Through The Grapevine",
+     "Liebe And Romanze (Slow Version)"
+    ]
+   },
+   {
     "id": "PLD7aDwRSa5nm9uY9ZBtXb41YhZTOXXzxr",
     "title": "The Slits - Live at the Gibus Club (Full Album)",
     "size": 13,
@@ -4231,37 +4578,66 @@
     "entries": null
    },
    {
-    "id": "PLniUh5Rof6rtTdqffT82c_S7XrC_m6mUK",
-    "title": "The Slits - In The Beginning (Full Album)",
-    "size": 17,
-    "found": 5,
+    "id": "PLo2aaBamFnLTj8Ad0ymIx81CavqxNcjnB",
+    "title": "hand-picked",
+    "size": 28,
+    "found": 12,
     "positions": [
-     -1,
-     -1,
-     -1,
      7,
-     -1,
-     4,
-     -1,
+     8,
+     2,
+     3,
+     0,
+     6,
      5,
-     14,
-     -1,
-     13,
-     -1
+     10,
+     1,
+     4,
+     9,
+     11
     ],
-    "entries": null
+    "entries": [
+     "FM",
+     "Typical Girls",
+     "Spend, Spend, Spend",
+     "Shoplifting",
+     "Adventures Close To Home",
+     "Ping Pong Affair",
+     "Newtown",
+     "Instant Hit",
+     "So Tough",
+     "I Heard It Through The Grapevine",
+     "Love Und Romance",
+     "Liebe And Romanze (Slow Version)",
+     "Begin Again Rhthm",
+     "Walk About",
+     "Difficult Fun",
+     "Animal Space",
+     "Earthbeat",
+     "Face Place",
+     "Or What Is It",
+     "Improperly Dressed",
+     "Life On Earth",
+     "Face Dub",
+     "Deutsche",
+     "Dub Beat",
+     "Earthbeat Japan",
+     "Earthbeat 12\"",
+     "Earthbet Extra",
+     "WORT FM USA Interview"
+    ]
    },
    {
-    "id": "PLtsXZTHERb_biwj2GiWvunUZkheNNROy7",
-    "title": "Return Of The Giant Slits - The Slits",
-    "size": 16,
-    "found": 1,
+    "id": "PLmna7oCNK2MmgBrbPZPciNsXxAMQEjUao",
+    "title": "hand-picked",
+    "size": 9,
+    "found": 0,
     "positions": [
      -1,
      -1,
      -1,
      -1,
-     15,
+     -1,
      -1,
      -1,
      -1,
@@ -4270,7 +4646,17 @@
      -1,
      -1
     ],
-    "entries": null
+    "entries": [
+     "The Slits - Earthbeat (Official Video)",
+     "The Slits - Or What Is It? (Audio)",
+     "Unreleased",
+     "The Slits - Face Place (Audio)",
+     "The Slits - Walkabout (Audio)",
+     "The Slits - Difficult Fun (Audio)",
+     "The Slits - Animal Space / Spacier (Audio)",
+     "The Slits - Improperly Dressed (Audio)",
+     "The Slits - Life on Earth (Audio)"
+    ]
    }
   ]
  },

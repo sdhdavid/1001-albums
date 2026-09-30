@@ -20,7 +20,7 @@ SPOTIFY = {
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
 PLAYLIST_CHOICE = {}
-RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
+RENAME = {'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
           'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
           'Shine On You Crazy Diamond, Pts. 1-5': 'Shine On You Crazy Diamond (Parts I-V)',
@@ -33,11 +33,12 @@ RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt.
           'Aprendendo a jogar': 'Aprendendo a Jogar', 'Só Deus é quem sabe': 'Só Deus É Quem Sabe', 'O trem azul': 'O Trem Azul',
           'Vento de maio (Música Incidental: Um Girassol Da Cor Do Seu Cabelo)': 'Vento de Maio', 'Calcanhar de Aquilles': 'Calcanhar de Aquiles', 'Köln, January 24, 1975, Pt. I': 'Part I', 'Köln, January 24, 1975, Pt. II A': 'Part IIa',
           'Köln, January 24, 1975, Pt. II B': 'Part IIb', 'Köln, January 24, 1975, Pt. II C': 'Part IIc', 'H₂Ogate Blues': 'H2Ogate Blues'}
-KEEP_FIRST = {}
-DROP = {}         # songs added on later editions, not on the original LP
-POSITION = {}     # playlist positions the title matching missed
+KEEP_FIRST = {403: 13, 405: 14, 406: 8, 409: 6, 419: 13, 427: 8, 441: 10, 442: 12}   # bonus tracks cut; #442: UK LP
+DROP = {419: [10], 404: [4]}         # #419 untitled snippet (not in the playlist); #404 bonus cover; songs added on later editions, not on the original LP
+POSITION = {431: {0: 0, 1: 1, 2: 2, 3: 3}}     # #431: official 4-track playlist in album order; playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
+BY_PLAYLIST = {404}   # no fixed track order (#404): follow the official playlist
 SKIP = set()   # albums to hold back (none)
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
@@ -73,6 +74,9 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
     names = [x for i, x in enumerate(names) if i not in DROP.get(n, ())]
     pos = [x for i, x in enumerate(pos) if i not in DROP.get(n, ())]
     durs = [x for i, x in enumerate(durs) if i not in DROP.get(n, ())]
+    if n in BY_PLAYLIST:
+        order = sorted(range(len(names)), key=lambda i: pos[i])
+        names, pos, durs = [names[i] for i in order], [pos[i] for i in order], [durs[i] for i in order]
     seen = {}
     for i, x in enumerate(names):   # the same piece twice (a reprise): keep both, name the second
         if x in seen: names[i] = x + ' (Reprise)'
