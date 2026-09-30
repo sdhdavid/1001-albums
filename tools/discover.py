@@ -21,7 +21,11 @@ import yt_dlp, store
 wanted = [int(x) for x in args[0].split(',')] if ',' in args[0] or args[1] == '0' else list(range(int(args[0]), int(args[1]) + 1))
 out_path = args[2]
 # Titles the automatic clean-up gets wrong: n -> (artist, title) to search for.
-OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fifth Dimension')}
+OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fifth Dimension'),
+            251: ('Hugh Masekela', 'Home Is Where the Music Is'), 270: ('Lynyrd Skynyrd', 'Pronounced Leh-Nerd Skin-Nerd')}
+# Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
+YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
+            297: 'Iggy and the Stooges Raw Power 1973 full album'}
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
 BAD = re.compile(r'deluxe|anniversary|expanded|sessions|collector|super|box|live|bonus|mono|stereo|demo|remix', re.I)
@@ -40,8 +44,8 @@ def simple(s): return norm(re.sub(r'\(.*?\)|\[.*?\]|- .*$', '', s))
 
 ydl = yt_dlp.YoutubeDL({'quiet': True, 'extract_flat': 'in_playlist', 'skip_download': True, 'ignoreerrors': True, 'socket_timeout': 30})
 
-def yt_candidates(artist, title):
-    q = urllib.parse.quote(f'{artist} {title} album')
+def yt_candidates(artist, title, n=None):
+    q = urllib.parse.quote(YT_QUERY.get(n) or f'{artist} {title} album')
     info = ydl.extract_info(f'https://www.youtube.com/results?search_query={q}&sp=EgIQAw%253D%253D', download=False) or {}
     return [(e.get('id'), e.get('title')) for e in info.get('entries', []) if e and e.get('id') and str(e['id']).startswith(('PL', 'OLAK'))][:6]
 
@@ -76,7 +80,7 @@ for n in wanted:
         names = [t for t, _ in edition]
         rec['tracks'] = names; rec['durations'] = [clock(ms) if ms else None for _, ms in edition]
         best = []
-        for pid, ptitle in yt_candidates(artist, title):
+        for pid, ptitle in yt_candidates(artist, title, n):
             info = ydl.extract_info(f'https://www.youtube.com/playlist?list={pid}', download=False) or {}
             ents = [e.get('title') for e in info.get('entries', []) if e]
             pos = score(names, ents)
