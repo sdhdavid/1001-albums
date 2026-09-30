@@ -34,6 +34,8 @@ async function boot({broken=false, noStorage=false, hash=''}={}) {
       getIframe(){return this.frame;} getPlaylistIndex(){return this.index;}
       stopVideo(){calls.push(['stop']);} cuePlaylist(ids,index){this.ids=ids;this.index=Array.isArray(ids)?index:ids.index;calls.push(['cue',...(Array.isArray(ids)?ids:[ids.list,ids.index])]);}
       cueVideoById(o){this.ids=[o.videoId];calls.push(['cueVideo',o.videoId,o.startSeconds]);}
+      loadPlaylist(ids,index){this.ids=ids;this.index=Array.isArray(ids)?index:ids.index;calls.push(['load',...(Array.isArray(ids)?ids:[ids.list,ids.index])]);this.options.events.onStateChange({data:1});}
+      loadVideoById(o){this.ids=[o.videoId];this.time=o.startSeconds;calls.push(['loadVideo',o.videoId,o.startSeconds]);this.options.events.onStateChange({data:1});}
       setLoop(){} setShuffle(){} destroy(){} getPlaylist(){return this.playlist||[];} getCurrentTime(){return this.time||0;} seekTo(s){this.time=s;calls.push(['seek',s]);}
       playVideoAt(index){this.index=index;calls.push(['playAt',index]);this.options.events.onStateChange({data:1});}
       playVideo(){calls.push(['play']);this.options.events.onStateChange({data:1});}
@@ -46,7 +48,7 @@ async function boot({broken=false, noStorage=false, hash=''}={}) {
 (async()=>{
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
   const rows=()=>n['album-list'].children.filter(c=>c.tag==='button').length;
-  const nx=async()=>{n['next-album'].click();await flush();}, pv=async()=>{n['previous-album'].click();await flush();};
+  const nx=async()=>{p.options.events.onStateChange({data:5});n['next-album'].click();await flush();}, pv=async()=>{p.options.events.onStateChange({data:5});n['previous-album'].click();await flush();};
   assert.deepEqual(n['album-list'].children.filter(c=>c.tag==='div').map(c=>c.textContent),['שנות ה־50','שנות ה־60'],'decade markers in book order');
   // Decade line above the list and the decade rail beside it.
   assert.equal(n['list-now'].children[0].textContent,'שנות ה־50','decade of the album at the top of the list');
@@ -143,7 +145,27 @@ async function boot({broken=false, noStorage=false, hash=''}={}) {
   }
   n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
   n['mode-full'].click();
-  await nx();assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
+  // Browsing to another album keeps the music playing; starting the shown album moves the player over to it.
+  { const quiet=()=>calls.filter(c=>['cue','cueVideo','stop','load','loadVideo'].includes(c[0])).length;
+    n['track-list'].children[6].children[1].click();const before=quiet();
+    n['next-album'].click();await flush();assert.equal(n['album-title'].textContent,'Time Out');
+    assert.equal(quiet(),before,'switching albums does not stop the music');assert.equal(p.ids.list,added['22'].youtubePlaylist);
+    assert.equal(n['mini-player'].hidden,false,'bar shows the other album while its player is in view');assert.match(n['mini-album'].textContent,/Gunfighter/);
+    assert.match(n['player-status'].textContent,/ממשיך להתנגן/);assert.equal(n['track-note'].hidden,true);
+    assert.equal(n['play-pause'].textContent,'הפעלת הרצף ▶');assert.equal(n['quick-play'].textContent,'▶ להאזנה');
+    assert.equal(n['next-track'].disabled,true);assert(!n['track-list'].children.some(li=>li.attributes['aria-current']==='true'));
+    n['mini-next'].click();assert.equal(p.index,added['22'].tracks[7][2],'bar still controls the playing album');
+    n['mini-open'].click();await flush();await flush();assert.equal(n['album-title'].textContent,'Gunfighter Ballads and Trail Songs','bar returns to the playing album');
+    assert.equal(quiet(),before,'coming back keeps playing');assert.equal(n['play-pause'].textContent,'השהיה ❚❚');
+    assert.equal(n['track-list'].children[7].attributes['aria-current'],'true');
+    n['next-album'].click();await flush();n['play-pause'].click();
+    assert.equal(calls.at(-1)[0],'load','starting the shown album loads it');assert.equal(p.ids.length,7);
+    assert.match(n['mini-album'].textContent,/Time Out/);assert.equal(n['play-pause'].textContent,'השהיה ❚❚');
+    n['previous-album'].click();await flush();n['track-list'].children[2].children[1].click();
+    assert.deepEqual(calls.at(-1),['load',added['22'].youtubePlaylist,added['22'].tracks[2][2]],'a song of the shown album moves the player to it');
+    await nx();
+  }
+  assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
   assert.equal(n['album-youtube-player'].src,'about:blank','switching to the mapped player unloads prior album');
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
