@@ -366,6 +366,7 @@ function renderMode() {
   $('embedded-listening').hidden = external || spotify;
   $('external-listening').hidden = !external || spotify;
   if (spotify) {
+    updateQuickPlay(); updateMiniPlayer();
     if (ready) player.stopVideo();
     clearInterval(chapterTimer); queue = []; queueIndex = 0; state = -1;
     if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
@@ -461,7 +462,44 @@ function updateControls() {
     li.querySelector('button').disabled = !ready || !playable(currentAlbum(), queue[i]);
     if (i === queueIndex) li.setAttribute('aria-current', 'true'); else li.removeAttribute('aria-current');
   });
+  updateQuickPlay(); updateMiniPlayer();
 }
+// Quick start at the top of the album page, and a small now-playing bar fixed to the bottom of the screen while the
+// real player is out of sight (further down the album page, or on the home page, where the music keeps playing).
+let panelVisible = false, miniCoverFor = 0;
+if ('IntersectionObserver' in window) new IntersectionObserver(entries => {
+  panelVisible = entries.some(e => e.isIntersecting); updateMiniPlayer();
+}).observe($('listening-panel'));
+function revealPlayer() { $('listening-panel').scrollIntoView?.({behavior: 'smooth', block: 'start'}); }
+function updateQuickPlay() {
+  const b = $('quick-play');
+  if (service === 'spotify') { b.textContent = '▶ להאזנה ב־Spotify'; b.disabled = false; return; }
+  b.textContent = state === 1 ? '❚❚ השהיה' : state === 2 ? '▶ המשך' : '▶ להאזנה';
+  b.disabled = !ready || !queue.length || firstPlayable() < 0;
+}
+$('quick-play').addEventListener('click', () => {
+  if (service === 'spotify' || !ready) { revealPlayer(); return; }
+  if (state === 1) { player.pauseVideo(); return; }
+  if (state === 2) player.playVideo(); else playAt(firstPlayable());
+  revealPlayer();
+});
+function updateMiniPlayer() {
+  const bar = $('mini-player'), a = currentAlbum();
+  const on = service === 'youtube' && ready && queue.length > 0 && [1, 2, 3].includes(state) && !(view === 'album' && panelVisible);
+  bar.hidden = !on; document.body?.classList?.toggle('has-mini-player', on);
+  if (!on || !a) return;
+  $('mini-song').textContent = queue[queueIndex]?.[0] ?? '';
+  $('mini-album').textContent = `${a.title} · ${a.artist}`;
+  $('mini-play').textContent = state === 1 ? '❚❚' : '▶';
+  $('mini-play').setAttribute('aria-label', state === 1 ? 'השהיה' : 'המשך');
+  $('mini-previous').disabled = firstPlayable(queueIndex - 1, -1) < 0;
+  $('mini-next').disabled = firstPlayable(queueIndex + 1) < 0;
+  if (miniCoverFor !== a.n) { miniCoverFor = a.n; const box = $('mini-cover'); box.replaceChildren(); paintRowCover(box, a); }
+}
+$('mini-play').addEventListener('click', () => { if (state === 1) player.pauseVideo(); else player.playVideo(); });
+$('mini-previous').addEventListener('click', () => playAt(firstPlayable(queueIndex - 1, -1)));
+$('mini-next').addEventListener('click', () => playAt(firstPlayable(queueIndex + 1)));
+$('mini-open').addEventListener('click', async () => { if (view !== 'album') await openAlbum(currentAlbum()); revealPlayer(); });
 function sourceLinks(ids) {
   const links = element('div', 'guide-sources');
   (ids || []).forEach(id => {
@@ -729,6 +767,7 @@ function setView(v) {
   $('home').hidden = v !== 'home'; $('album-page').hidden = v !== 'album';
   $('nav-home').classList.toggle('on', v === 'home'); $('nav-album').classList.toggle('on', v === 'album');
   if (v === 'home') renderHome(); else { rememberAlbum(); requestAnimationFrame?.(revealActiveRow); }
+  updateMiniPlayer();
 }
 function routeIndex() {
   const m = /^#\/album\/(\d+)$/.exec(location.hash ?? '');
@@ -741,7 +780,7 @@ async function route() {
   if (active !== i) return;
   if (view !== 'album') { setView('album'); window.scrollTo?.({top: 0}); }
 }
-function openAlbum(a) { if (location.hash !== albumHash(a)) location.hash = albumHash(a); route(); }
+function openAlbum(a) { if (location.hash !== albumHash(a)) location.hash = albumHash(a); return route(); }
 function openHome() { if (routeIndex() >= 0) location.hash = '#/'; return route(); }
 window.addEventListener?.('hashchange', route);
 $('home-search').addEventListener('input', renderGrid);

@@ -114,6 +114,7 @@
               <h2 id="album-title" dir="auto"></h2>
               <p id="album-artist" class="artist" dir="auto"></p>
               <ul id="album-genres" class="album-genres" aria-label="ז'אנרים" hidden></ul>
+              <button id="quick-play" class="quick-play" type="button">▶ להאזנה</button>
             </div>
             <div id="record-graphic" class="record-graphic" aria-hidden="true"><img id="album-cover" alt="" hidden><span id="record-number"></span></div>
           </div>
@@ -210,6 +211,17 @@
         <div id="load-error" class="load-error" hidden>לא הצלחנו לטעון את רשימת האלבומים. רענן את העמוד ונסה שוב.</div>
       </section>
     </main>
+    <div id="mini-player" class="mini-player" hidden role="region" aria-label="מה מתנגן עכשיו">
+      <button id="mini-open" class="mini-open" type="button" aria-label="מעבר לנגן של האלבום">
+        <span id="mini-cover" class="mini-cover"></span>
+        <span class="mini-text"><span id="mini-song" class="mini-song" dir="auto"></span><span id="mini-album" class="mini-album" dir="auto"></span></span>
+      </button>
+      <div class="mini-controls">
+        <button id="mini-previous" class="mini-button" type="button" aria-label="השיר הקודם">⏮</button>
+        <button id="mini-play" class="mini-button mini-main" type="button" aria-label="השהיה">❚❚</button>
+        <button id="mini-next" class="mini-button" type="button" aria-label="השיר הבא">⏭</button>
+      </div>
+    </div>
   </div>
 </body>
 </html>
