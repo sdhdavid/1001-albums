@@ -1,3 +1,4 @@
+html, body { overflow-x: clip; }
 :root {
   color-scheme: dark;
   font-family: "Rubik", Arial, "Noto Sans Hebrew", sans-serif;
@@ -407,5 +408,5 @@ body.has-mini-player { padding-bottom: 84px; }
 .feedback-form textarea { resize: vertical; min-height: 96px; }
 .feedback-form .welcome-button { justify-self: start; cursor: pointer; }
 .feedback-form .welcome-button:disabled { opacity: .6; cursor: default; }
-.feedback-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.feedback-honey { position: absolute; inset-inline-start: 0; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .feedback-status { margin: 0; min-height: 1.4em; }
