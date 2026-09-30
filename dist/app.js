@@ -17,6 +17,11 @@ function writeStore(key, value) {
 let albums = [], bookOrder = [], active = 0, mode = 'full', player = null, ready = false;
 let queue = [], queueIndex = 0, playerTimer = null, chapterTimer = null, state = -1;
 let guideRenderKey = ''; 
+// The player keeps playing one album (playingAlbum, with its queue) while another album is shown; the shown album's
+// track list is listQueue, and starting any of its songs moves the player over to it.
+let playingAlbum = null, playingMode = 'full', listQueue = [];
+const busy = () => ready && Boolean(playingAlbum) && [1, 2, 3].includes(state);
+const showingPlaying = () => playingAlbum === currentAlbum();
 let service = readStore(SERVICE_KEY, 'youtube') === 'spotify' ? 'spotify' : 'youtube';
 const TITLES_KEY = 'album-journey-2005-video-titles';
 const TITLE_CACHE_LIMIT = 1500;
@@ -100,7 +105,8 @@ async function resolvePlaylist(a) {
     try { localStorage.setItem(TITLES_KEY, JSON.stringify(titleCache)); } catch { /* cache is optional */ }
     resolved[a.n] = matchPlaylist(a, titles);
   } finally { resolving[a.n] = false; }
-  if (currentAlbum() === a) { renderQueue(); renderFocus(); if (![1, 2, 3].includes(state)) cueQueue(); }
+  if (currentAlbum() === a) { renderQueue(); renderFocus(); }
+  if (playingAlbum === a && ![1, 2, 3].includes(state)) cueQueue();
 }
 const defaultFocus = a => a.focus.map(i => trackKey(a, a.tracks[i]));
 function focusedIds(a) {
@@ -217,8 +223,8 @@ function playPick(a, name) {
   const track = a.tracks.find(t => t[0] === name);
   $('listening-panel').scrollIntoView?.({behavior: 'smooth', block: 'start'});
   if (!track || service === 'spotify') return;
-  if (!queue.includes(track)) { mode = 'full'; renderMode(); }
-  playAt(queue.indexOf(track));
+  if (!listQueue.includes(track)) { mode = 'full'; renderMode(); }
+  startShown(listQueue.indexOf(track));
 }
 let genre = '', homeGenre = '', homeUnheard = false;
 // Genre menu: "כל הז'אנרים" plus every label in use, most common first. Filters the list only; the journey order is unchanged.
@@ -331,6 +337,7 @@ async function selectAlbum(index) {
   try { await loadAlbum(albums[index]); } catch { if (ticket === selecting) $('album-error').hidden = false; return; }
   if (ticket !== selecting) return; // a newer pick superseded this one while it loaded
   $('album-error').hidden = true;
+  if (albums[index] === playingAlbum && busy()) mode = playingMode; // back to the album that is playing: keep its queue
   active = index; renderAlbum(); prefetchNeighbours();
   if (view === 'album') rememberAlbum();
   if (catalogOpen) { setCatalogOpen(false); window.scrollTo?.({top: 0, behavior: 'smooth'}); }
@@ -368,7 +375,7 @@ function renderMode() {
   if (spotify) {
     updateQuickPlay(); updateMiniPlayer();
     if (ready) player.stopVideo();
-    clearInterval(chapterTimer); queue = []; queueIndex = 0; state = -1;
+    clearInterval(chapterTimer); playingAlbum = null; listQueue = []; queue = []; queueIndex = 0; state = -1;
     if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
     $('listen-eyebrow').textContent = 'מנגנים כאן, בנגן של Spotify';
     const src = a.spotifyAlbum ? `https://open.spotify.com/embed/album/${a.spotifyAlbum}?utm_source=generator` : 'about:blank';
@@ -386,7 +393,7 @@ function renderMode() {
     ? `https://www.youtube.com/playlist?list=${a.youtubePlaylist}`
     : `https://www.youtube.com/watch?v=${a.tracks[0][1]}`;
   if (external) {
-    player?.stopVideo(); queue = []; queueIndex = 0; state = -1;
+    player?.stopVideo(); playingAlbum = null; listQueue = []; queue = []; queueIndex = 0; state = -1;
     const complete = a.youtubeAlbumComplete;
     $('mode-explain').textContent = complete ? 'נגן YouTube של האלבום. בפלייליסט אפשר לבחור קטע מתוך הנגן ולהמשיך להאזין ברצף.' : 'נגן YouTube עם קטע מתוך האלבום. עדיין לא נמצא מקור אמין לכל ההקלטות של מהדורת האלבום.';
     $('album-youtube-player').src = a.youtubeAlbumPlaylist
@@ -408,33 +415,38 @@ function renderMode() {
     return;
   }
   if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
-  queue = mode === 'full' ? a.tracks : a.tracks.filter(t => selected.includes(trackKey(a, t)));
-  queueIndex = 0; state = -1;
+  listQueue = mode === 'full' ? a.tracks : a.tracks.filter(t => selected.includes(trackKey(a, t)));
+  // Browsing to another album while music plays leaves the music alone (the same album keeps it too, unless its songs changed).
+  const keep = busy() && (playingAlbum !== a || (listQueue.length === queue.length && listQueue.every((t, i) => t === queue[i])));
+  if (keep && playingAlbum === a) listQueue = queue;
+  if (!keep) { playingAlbum = a; playingMode = mode; queue = listQueue; queueIndex = 0; state = -1; }
   for (const m of ['full', 'short']) {
     $('mode-' + m).classList.toggle('active', mode === m);
     $('mode-' + m).setAttribute('aria-pressed', String(mode === m));
   }
   $('mode-explain').textContent = mode === 'full'
     ? (a.fullAlbumVideo
-      ? `${queue.length} שירים לפי סדר האלבום, בתוך הקלטה רציפה אחת. לחיצה על שיר מדלגת אליו (זמני הפתיחה מחושבים לפי אורכי השירים וייתכן הפרש של שניות).`
-      : `${queue.length} שירים לפי סדר רשימת האלבום. בחרו שיר או הפעילו את הרצף.`)
-    : `${queue.length} שירים למסלול ממוקד. אלה המלצות האתר, לא סימוני הספר. אפשר לשנות את הבחירה למטה.`;
+      ? `${listQueue.length} שירים לפי סדר האלבום, בתוך הקלטה רציפה אחת. לחיצה על שיר מדלגת אליו (זמני הפתיחה מחושבים לפי אורכי השירים וייתכן הפרש של שניות).`
+      : `${listQueue.length} שירים לפי סדר רשימת האלבום. בחרו שיר או הפעילו את הרצף.`)
+    : `${listQueue.length} שירים למסלול ממוקד. אלה המלצות האתר, לא סימוני הספר. אפשר לשנות את הבחירה למטה.`;
   $('focus-editor').hidden = mode !== 'short';
   $('focus-error').hidden = true;
-  renderQueue(); renderFocus(); cueQueue(); syncGuide();
+  renderQueue(); renderFocus();
+  if (keep) { announce(); updateControls(); } else cueQueue();
+  syncGuide();
 }
 function renderQueue() {
   const a = currentAlbum();
-  const missing = queue.filter(t => !playable(a, t)).length;
-  $('queue-count').textContent = `${queue.length} שירים` + (a.fullAlbumVideo ? ' · הקלטה רציפה' : '') + (missing ? ` · ${missing} לא זמינים בנגן` : '');
-  $('track-list').replaceChildren(...queue.map((t, i) => {
+  const missing = listQueue.filter(t => !playable(a, t)).length;
+  $('queue-count').textContent = `${listQueue.length} שירים` + (a.fullAlbumVideo ? ' · הקלטה רציפה' : '') + (missing ? ` · ${missing} לא זמינים בנגן` : '');
+  $('track-list').replaceChildren(...listQueue.map((t, i) => {
     const li = element('li', playable(a, t) ? '' : 'track-missing');
     const name = element('span', 'track-name', t[0]); name.dir = 'auto';
     const length = a.durations?.[a.tracks.indexOf(t)];
     if (length) name.append(element('span', 'track-time', length));
     const b = element('button', 'track-play', playable(a, t) ? 'ניגון ▶' : 'לא זמין'); b.type = 'button';
     b.setAttribute('aria-label', playable(a, t) ? `ניגון ${t[0]}` : `${t[0]} אינו זמין ברשימת הניגון`);
-    b.addEventListener('click', () => playAt(i));
+    b.addEventListener('click', () => startShown(i));
     li.append(name, b); return li;
   }));
   updateControls();
@@ -453,14 +465,16 @@ function renderFocus() {
   }));
 }
 function updateControls() {
-  $('play-pause').disabled = !ready || !queue.length;
-  $('play-pause').textContent = state === 1 ? 'השהיה ❚❚' : state === 2 ? 'המשך ▶' : 'הפעלת הרצף ▶';
-  $('previous-track').disabled = !ready || firstPlayable(queueIndex - 1, -1) < 0;
-  $('next-track').disabled = !ready || firstPlayable(queueIndex + 1) < 0;
+  const same = showingPlaying();
+  $('play-pause').disabled = !ready || !listQueue.length;
+  $('play-pause').textContent = same && state === 1 ? 'השהיה ❚❚' : same && state === 2 ? 'המשך ▶' : 'הפעלת הרצף ▶';
+  $('previous-track').disabled = !ready || !same || firstPlayable(queueIndex - 1, -1) < 0;
+  $('next-track').disabled = !ready || !same || firstPlayable(queueIndex + 1) < 0;
   [...$('track-list').children].forEach((li, i) => {
-    li.classList.toggle('current-track', i === queueIndex);
-    li.querySelector('button').disabled = !ready || !playable(currentAlbum(), queue[i]);
-    if (i === queueIndex) li.setAttribute('aria-current', 'true'); else li.removeAttribute('aria-current');
+    const current = same && i === queueIndex;
+    li.classList.toggle('current-track', current);
+    li.querySelector('button').disabled = !ready || !listQueue[i] || !playable(currentAlbum(), listQueue[i]);
+    if (current) li.setAttribute('aria-current', 'true'); else li.removeAttribute('aria-current');
   });
   updateQuickPlay(); updateMiniPlayer();
 }
@@ -474,18 +488,34 @@ function revealPlayer() { $('listening-panel').scrollIntoView?.({behavior: 'smoo
 function updateQuickPlay() {
   const b = $('quick-play');
   if (service === 'spotify') { b.textContent = '▶ להאזנה ב־Spotify'; b.disabled = false; return; }
-  b.textContent = state === 1 ? '❚❚ השהיה' : state === 2 ? '▶ המשך' : '▶ להאזנה';
-  b.disabled = !ready || !queue.length || firstPlayable() < 0;
+  const same = showingPlaying();
+  b.textContent = same && state === 1 ? '❚❚ השהיה' : same && state === 2 ? '▶ המשך' : '▶ להאזנה';
+  b.disabled = !ready || firstPlayable(0, 1, currentAlbum(), listQueue) < 0;
 }
 $('quick-play').addEventListener('click', () => {
   if (service === 'spotify' || !ready) { revealPlayer(); return; }
-  if (state === 1) { player.pauseVideo(); return; }
-  if (state === 2) player.playVideo(); else playAt(firstPlayable());
+  if (!showingPlaying()) startShown(firstPlayable(0, 1, currentAlbum(), listQueue));
+  else if (state === 1) { player.pauseVideo(); return; }
+  else if (state === 2) player.playVideo(); else playAt(firstPlayable());
   revealPlayer();
 });
+// Starts a song of the shown album; if another album is in the player, the shown album takes its place.
+function startShown(index) {
+  const a = currentAlbum();
+  if (!ready || index < 0 || index >= listQueue.length || !playable(a, listQueue[index])) return;
+  if (playingAlbum === a && queue === listQueue) { playAt(index); return; }
+  playingAlbum = a; playingMode = mode; queue = listQueue; queueIndex = index;
+  clearError(); clearInterval(chapterTimer);
+  const t = queue[index];
+  if (a.youtubePlaylist) player.loadPlaylist({list: a.youtubePlaylist, listType: 'playlist', index: Math.max(0, playlistIndex(a, t)), startSeconds: 0});
+  else if (a.fullAlbumVideo) player.loadVideoById({videoId: a.tracks[0][1], startSeconds: t[3]});
+  else player.loadPlaylist(queue.map(x => x[1]), index, 0);
+  player.setLoop(false); player.setShuffle(false);
+  updateControls(); syncGuide();
+}
 function updateMiniPlayer() {
-  const bar = $('mini-player'), a = currentAlbum();
-  const on = service === 'youtube' && ready && queue.length > 0 && [1, 2, 3].includes(state) && !(view === 'album' && panelVisible);
+  const bar = $('mini-player'), a = playingAlbum;
+  const on = service === 'youtube' && busy() && queue.length > 0 && !(view === 'album' && panelVisible && showingPlaying());
   bar.hidden = !on; document.body?.classList?.toggle('has-mini-player', on);
   if (!on || !a) return;
   $('mini-song').textContent = queue[queueIndex]?.[0] ?? '';
@@ -499,7 +529,10 @@ function updateMiniPlayer() {
 $('mini-play').addEventListener('click', () => { if (state === 1) player.pauseVideo(); else player.playVideo(); });
 $('mini-previous').addEventListener('click', () => playAt(firstPlayable(queueIndex - 1, -1)));
 $('mini-next').addEventListener('click', () => playAt(firstPlayable(queueIndex + 1)));
-$('mini-open').addEventListener('click', async () => { if (view !== 'album') await openAlbum(currentAlbum()); revealPlayer(); });
+$('mini-open').addEventListener('click', async () => {
+  if (view !== 'album' || !showingPlaying()) await openAlbum(playingAlbum ?? currentAlbum());
+  revealPlayer();
+});
 function sourceLinks(ids) {
   const links = element('div', 'guide-sources');
   (ids || []).forEach(id => {
@@ -515,7 +548,7 @@ function prepareGuide() {
   guideRenderKey = '';
 }
 function syncGuide() {
-  const a = currentAlbum(), track = queue[queueIndex];
+  const a = currentAlbum(), track = showingPlaying() ? queue[queueIndex] : null;
   const note = a?.guide?.tracks?.[track?.[1]];
   $('track-note').hidden = !note?.text;
   if (!note?.text) return;
@@ -531,16 +564,15 @@ function showError(message) {
   $('player-error-text').textContent = message; $('player-error').hidden = false;
   $('player-status').textContent = 'ההאזנה נעצרה. אפשר לנסות שוב או לבחור קטע אחר.';
 }
-function firstPlayable(from = 0, step = 1) {
-  const a = currentAlbum();
-  for (let i = from; i >= 0 && i < queue.length; i += step) if (playable(a, queue[i])) return i;
+function firstPlayable(from = 0, step = 1, a = playingAlbum, q = queue) {
+  for (let i = from; i >= 0 && i < q.length; i += step) if (playable(a, q[i])) return i;
   return -1;
 }
 function cueQueue() {
   clearError(); clearInterval(chapterTimer);
   if (!ready || !queue.length) return;
   player.stopVideo();
-  const a = currentAlbum();
+  const a = playingAlbum;
   queueIndex = Math.max(0, firstPlayable());
   if (a.youtubePlaylist) player.cuePlaylist({list: a.youtubePlaylist, listType: 'playlist', index: Math.max(0, playlistIndex(a, queue[queueIndex])), startSeconds: 0});
   // A one-video "playlist" is not reliably swapped in by YouTube's player; cue the video itself.
@@ -557,7 +589,7 @@ function finishQueue() {
 }
 function playAt(index) {
   if (!ready || index < 0 || index >= queue.length) return;
-  const a = currentAlbum();
+  const a = playingAlbum;
   if (!playable(a, queue[index])) return;
   clearError(); queueIndex = index;
   if (a.fullAlbumVideo) { player.seekTo(queue[index][3], true); player.playVideo(); }
@@ -566,7 +598,7 @@ function playAt(index) {
 }
 // Continuous album videos: follow the song boundaries inside the recording.
 function followChapter() {
-  const a = currentAlbum();
+  const a = playingAlbum;
   if (!a?.fullAlbumVideo || state !== 1 || typeof player.getCurrentTime !== 'function') return;
   const time = player.getCurrentTime() + .5;
   let chapter = 0;
@@ -581,12 +613,16 @@ function followChapter() {
 }
 function announce() {
   const title = queue[queueIndex]?.[0] || '';
+  if (!showingPlaying() && busy()) {
+    $('player-status').textContent = `${state === 2 ? 'מושהה' : 'ממשיך להתנגן'}: ${title} (${playingAlbum.title}). לחיצה על הפעלה תעבור לאלבום הזה.`;
+    return;
+  }
   if (state === 1) { clearError(); $('player-status').textContent = `מתנגן ${queueIndex + 1} מתוך ${queue.length}: ${title}`; }
   if (state === 2 && $('player-error').hidden) $('player-status').textContent = `מושהה: ${title}`;
 }
 function onStateChange(event) {
   state = event.data;
-  const a = currentAlbum();
+  const a = playingAlbum;
   if (a?.youtubePlaylist && (state === 5 || state === 1)) resolvePlaylist(a);
   if (a?.fullAlbumVideo) {
     clearInterval(chapterTimer);
@@ -663,6 +699,7 @@ $('retry-player').addEventListener('click', () => {
 });
 $('play-pause').addEventListener('click', () => {
   if (!ready) return; clearError();
+  if (!showingPlaying()) { startShown(firstPlayable(0, 1, currentAlbum(), listQueue)); return; }
   if (state === 1) player.pauseVideo();
   else if (state === 0 && queueIndex >= firstPlayable(queue.length - 1, -1)) playAt(firstPlayable());
   else player.playVideo();
