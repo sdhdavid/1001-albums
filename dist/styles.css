@@ -273,11 +273,12 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .progress-text { margin-bottom: 7px; font-size: .84rem; }
 .list-topline { margin: 10px 5px 4px; }
 .catalog-body > * { flex-shrink: 0; }
-.catalog-body > .album-list { flex: 1 1 auto; flex-shrink: 1; }
+.catalog-body > .list-wrap { flex: 1 1 auto; flex-shrink: 1; min-height: 0; display: flex; gap: 6px; }
+.list-wrap > .album-list { flex: 1; }
 .album-row { min-height: 58px; padding-top: 9px; padding-bottom: 9px; }
 @media (min-width: 1051px) and (max-height: 720px) {
   .catalog { padding-top: 14px; }
-  .catalog .eyebrow, .list-topline { display: none; }
+  .catalog .eyebrow { display: none; }
   .catalog-heading { margin-bottom: 10px; }
   .catalog h1 { font-size: 1.25rem; }
   .genre-select { height: 34px; margin-top: 6px; }
@@ -287,3 +288,20 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .album-genres { direction: ltr; list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0 0; padding: 0; }
 .album-genres[hidden] { display: none; }
 .album-genre { direction: rtl; font-size: .8rem; color: #c3d3d5; border: 1px solid rgba(180, 227, 214, .35); border-radius: 999px; padding: 3px 11px; background: rgba(180, 227, 214, .07); }
+
+/* Current decade above the list + a decade rail beside it (desktop only). */
+.list-now { display: inline-flex; align-items: baseline; gap: 6px; color: #b4e3d6; font-weight: 600; min-height: 1.2em; }
+.list-now:not(:empty)::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #b4e3d6; align-self: center; }
+.list-now .now-year { color: #7f979d; font-weight: 400; font-variant-numeric: tabular-nums; }
+.decade-rail { width: 26px; flex: none; display: flex; flex-direction: column; gap: 3px; padding: 4px 0 28px; }
+.rail-part { flex-basis: 0; min-height: 14px; display: flex; gap: 3px; padding: 0; border: 0; background: none; color: #6f878d; cursor: pointer; }
+.rail-part:disabled { cursor: default; }
+.rail-label { width: 15px; font-size: .6rem; text-align: center; font-variant-numeric: tabular-nums; line-height: 1; }
+.rail-bar { position: relative; width: 5px; height: 100%; border-radius: 3px; background: #2e424c; overflow: visible; }
+.rail-fill { position: absolute; top: 0; right: 0; left: 0; border-radius: 3px; background: #3f5a63; }
+.rail-mark { position: absolute; left: -3px; width: 11px; height: 3px; margin-top: -1px; border-radius: 2px; background: #f0f5f2; box-shadow: 0 0 6px #b4e3d6; display: none; }
+.rail-part.current { color: #b4e3d6; font-weight: 700; }
+.rail-part.current .rail-fill { background: #b4e3d6; }
+.rail-part.current .rail-mark { display: block; }
+.rail-part:not(:disabled):hover .rail-label { color: #cdeee4; }
+@media (max-width: 760px) { .decade-rail { display: none; } }

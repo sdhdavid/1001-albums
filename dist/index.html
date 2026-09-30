@@ -54,8 +54,11 @@
           <p id="list-progress" class="progress-text">האזנת ל־0 מתוך 0 אלבומים</p>
           <progress id="progress-meter" class="progress-meter" max="1" value="0" aria-labelledby="list-progress"></progress>
         </div>
-        <div class="list-topline"><span>לפי סדר הספר</span></div>
-        <div id="album-list" class="album-list"></div>
+        <div class="list-topline"><span id="list-now" class="list-now" dir="rtl"></span></div>
+        <div class="list-wrap">
+          <div id="album-list" class="album-list"></div>
+          <div id="decade-rail" class="decade-rail" aria-label="העשורים במסע"></div>
+        </div>
         <p id="list-empty" class="list-empty" hidden>לא נמצאו אלבומים בחיפוש או בז'אנר הזה.</p>
         </div>
       </aside>
