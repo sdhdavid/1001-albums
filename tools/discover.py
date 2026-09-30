@@ -31,7 +31,12 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             357: ('Jorge Ben', 'Africa Brasil'), 360: ('Parliament', 'Mothership Connection'), 364: ('Fela Kuti', 'Zombie'),
             369: ('Kraftwerk', 'Trans-Europe Express'), 381: ('Talking Heads', 'Talking Heads 77'), 383: ('David Bowie', 'Heroes'),
             392: ('Ian Dury', 'New Boots and Panties'), 393: ('Sex Pistols', 'Never Mind the Bollocks'),
-            395: ('Kraftwerk', 'The Man-Machine'), 397: ('Elis Regina', 'Elis 1980'), 361: ('Penguin Cafe Orchestra', 'Music from the Penguin Cafe')}
+            395: ('Kraftwerk', 'The Man-Machine'), 397: ('Elis Regina', 'Elis 1980'), 361: ('Penguin Cafe Orchestra', 'Music from the Penguin Cafe'),
+            403: ('The Adverts', 'Crossing the Red Sea with the Adverts'), 405: ('The Residents', 'Duck Stab Buster & Glen'),
+            406: ('Public Image Ltd', 'Public Image First Issue'), 410: ('Throbbing Gristle', 'D.o.A. The Third and Final Report'),
+            415: ('Willie Colon', 'Siembra'), 417: ('Devo', 'Q: Are We Not Men? A: We Are Devo!'), 423: ('X-Ray Spex', 'Germfree Adolescents'),
+            424: ('Brian Eno', 'Ambient 1 Music for Airports'), 429: ('Germs', 'GI'), 430: ('The B-52s', 'The B-52s'),
+            445: ('Cheap Trick', 'Cheap Trick at Budokan'), 448: ('Public Image Ltd', 'Metal Box'), 404: ('Big Star', 'Third')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -40,7 +45,11 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             352: 'Boston 1976 debut album full', 358: 'Joan Armatrading 1976 album full', 363: 'Ramones 1976 debut album full',
             376: 'The Clash 1977 debut album UK full', 381: 'Talking Heads 77 full album', 385: 'Suicide 1977 debut album full Alan Vega',
             387: 'Peter Gabriel 1 Car 1977 full album', 399: 'The Only Ones 1978 debut album full', 397: 'Elis Regina Elis 1980 album',
-            383: 'David Bowie Heroes 1977 full album'}
+            383: 'David Bowie Heroes 1977 full album',
+            414: 'Van Halen 1978 debut album full', 416: 'The Cars 1978 debut album full', 418: 'Dire Straits 1978 debut album full',
+            430: 'The B-52s 1979 debut album full', 437: 'The Undertones 1979 debut album full', 429: 'Germs GI 1979 full album',
+            404: 'Big Star Third Sister Lovers full album', 406: 'Public Image Ltd First Issue 1978 full album', 431: 'Holger Czukay Movies 1979 full album',
+            433: 'The Fall Live at the Witch Trials full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -48,7 +57,11 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    330: ['PLlziogY0fk9phBIR0pGySlfV92DebcKrc', 'PLfdMKJMGPPtwRzlKi6bCI1_mSv0cJkm4r', 'PL8SFNbbOmAYMsaQSCbbv5oC4aY5o_4t6s', 'PL0766CFA4CBD669D6'],
                    339: ['OLAK5uy_kzduVKq3Un4mx4ssOCWgbvq5AMRBvvNv4', 'OLAK5uy_nrjFfBfmaNOYAL09VgoinGl5IW59qFw2U', 'PLw61iWYSKReevacFkh4SlEafze-k8qXn0'],
                    364: ['OLAK5uy_kz-CwckiMEJh2jW1jU0-j0e9mi4vXxGPY', 'PL4ZqKOqeg4cVrjNjVVfB8UU36iO4enFVJ'],
-                   376: ['PLHTo__bpnlYX4wXCfUXsk8atvR0zpbpPN'], 400: ['PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb']}
+                   376: ['PLHTo__bpnlYX4wXCfUXsk8atvR0zpbpPN'], 400: ['PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb'],
+                   404: ['OLAK5uy_nEfRmzliYZ8KP0g2PRBjmQdJ6kPSuU86g', 'PLEvr99j7ruPzc3YXLXOnxQGVMw4iWAA6c', 'PLOJWuc3CN303QT7RnWuruRLJJxEnf6TUu', 'PLJvYa4hB_Ul-5gdY9UcBDXNbuLGhQKim_'],
+                   406: ['OLAK5uy_m2PSh2Vw6s0PdINtbPCyv81N5nMX3yNac', 'OLAK5uy_l8aOiSeHdlBuY6Uiiz2__J280s7Yh8o6k', 'PLw31gx_Af1g-uYdvOjGTI3T1WieKas-51'],
+                   431: ['OLAK5uy_niijN27zTnrqADCiWObap5-AK22HsC7qI', 'PLDCQnAwuT7e-oi-BQrVV8o5DrCiOVKZV1'],
+                   441: ['PLOJWuc3CN301YxZG_I_ZniHGfb4tl7vug', 'PLo2aaBamFnLTj8Ad0ymIx81CavqxNcjnB', 'PLmna7oCNK2MmgBrbPZPciNsXxAMQEjUao']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
