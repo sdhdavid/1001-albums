@@ -845,6 +845,39 @@ $('previous-album').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album').addEventListener('click', () => selectAlbum(active + 1));
 $('previous-album-top').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album-top').addEventListener('click', () => selectAlbum(active + 1));
+// Phone-only swipes on album content. Leave scrolling, zoom and controls alone.
+const phoneSwipe = window.matchMedia?.('(max-width: 760px) and (pointer: coarse)');
+let albumSwipe = null;
+const swipeBlocked = 'button, a, input, textarea, select, summary, iframe, [contenteditable], [role="slider"], .youtube-frame, #spotify-player';
+const canSwipeAlbum = () => phoneSwipe?.matches && view === 'album' && !catalogOpen && !$('album-view').hidden;
+$('album-view').addEventListener('touchstart', e => {
+  albumSwipe = null;
+  if (!canSwipeAlbum() || e.touches.length !== 1 || e.target.closest?.(swipeBlocked)) return;
+  const t = e.touches[0];
+  // Keep browser back/forward gestures at the screen edges available.
+  if (t.clientX < 24 || t.clientX > window.innerWidth - 24) return;
+  albumSwipe = {x: t.clientX, y: t.clientY, id: t.identifier, album: active};
+}, {passive: true});
+$('album-view').addEventListener('touchmove', e => {
+  if (!albumSwipe) return;
+  if (e.touches.length !== 1) { albumSwipe = null; return; }
+  const t = e.touches[0];
+  const dx = Math.abs(t.clientX - albumSwipe.x), dy = Math.abs(t.clientY - albumSwipe.y);
+  // Once the user starts scrolling vertically, this gesture cannot change albums.
+  if (t.identifier !== albumSwipe.id || (dy > 12 && dy >= dx)) albumSwipe = null;
+}, {passive: true});
+$('album-view').addEventListener('touchcancel', () => { albumSwipe = null; }, {passive: true});
+$('album-view').addEventListener('touchend', e => {
+  const start = albumSwipe; albumSwipe = null;
+  if (!start || !canSwipeAlbum() || active !== start.album || e.touches.length) return;
+  const t = Array.from(e.changedTouches).find(t => t.identifier === start.id);
+  if (!t) return;
+  const dx = t.clientX - start.x, dy = t.clientY - start.y;
+  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) return;
+  // Drag toward the previous page's arrow to reveal the next page (RTL mirrored).
+  const next = LANG === 'en' ? dx < 0 : dx > 0;
+  selectAlbum(active + (next ? 1 : -1));
+}, {passive: true});
 // Keyboard: in the right-to-left (Hebrew) site ← is the next album and → the previous one; in English it is the other way round
 // (not while typing in the search box or with modifier keys held).
 document.addEventListener?.('keydown', e => {
