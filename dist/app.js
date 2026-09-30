@@ -758,7 +758,7 @@ function renderHero() {
   const go = element('button', 'hero-go', heard ? '▶ להאזנה' : '▶ להתחיל מכאן'); go.type = 'button';
   go.addEventListener('click', () => openAlbum(a));
   body.append(element('p', 'hero-eyebrow', eyebrow), title, artist, line, go);
-  loadAlbum(a).then(data => { const first = data.story?.[0]?.split(/(?<=[.!?])\s/)[0]; if (first) bidiText(line, first); }).catch(() => {});
+  loadAlbum(a).then(data => { const sents = data.story?.[0]?.split(/(?<=[.!?])\s/) || [], first = sents[0] && sents[0].length < 90 && sents[1] ? sents[0] + ' ' + sents[1] : sents[0]; if (first) bidiText(line, first); }).catch(() => {});
   const side = element('div', 'hero-side'), meter = element('progress', 'hero-meter');
   meter.max = albums.length; meter.value = heard;
   side.append(element('span', 'hero-heard-label', 'האזנת ל־'), element('b', 'hero-heard', `${heard} מתוך ${albums.length}`), meter,
