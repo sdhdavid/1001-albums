@@ -57,7 +57,7 @@ async function boot({broken=false, noStorage=false, hash=''}={}) {
   assert(rail[0].classSet.has('current'),'current decade highlighted');
   rail[1].click();assert(n['album-list'].scrolledTo,'clicking a decade scrolls the list');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
-  assert.equal(rows(),200); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
+  assert.equal(rows(),200);assert.equal(n['edition-label'].textContent,'200 האלבומים הראשונים','album count label follows the site'); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
   // "Next album" from the bottom of the page jumps up to the new album; no jump when already at the top.
   { const v=n['album-view']; let jumps=0; v.scrollIntoView=()=>jumps++;
