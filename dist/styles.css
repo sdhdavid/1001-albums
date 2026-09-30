@@ -398,3 +398,14 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .mini-main:hover:not(:disabled) { background: #cdeee4; }
 body.has-mini-player { padding-bottom: 84px; }
 @media (max-width: 760px) { .mini-player { bottom: 10px; } .quick-play { width: 100%; } }
+
+.feedback { max-width: 640px; margin: 40px auto 110px; padding: 0 24px; }
+.feedback-title { font-size: 1.15rem; margin: 0 0 6px; }
+.feedback-text { margin: 0 0 14px; opacity: .8; }
+.feedback-form { display: grid; gap: 10px; }
+.feedback-form textarea, .feedback-form input[type=text], .feedback-form input[type=email] { font: inherit; color: inherit; background: rgb(255 255 255 / .06); border: 1px solid rgb(255 255 255 / .18); border-radius: 8px; padding: 10px 12px; width: 100%; box-sizing: border-box; }
+.feedback-form textarea { resize: vertical; min-height: 96px; }
+.feedback-form .welcome-button { justify-self: start; cursor: pointer; }
+.feedback-form .welcome-button:disabled { opacity: .6; cursor: default; }
+.feedback-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.feedback-status { margin: 0; min-height: 1.4em; }
