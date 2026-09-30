@@ -33,14 +33,17 @@ RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt.
           'Aprendendo a jogar': 'Aprendendo a Jogar', 'Só Deus é quem sabe': 'Só Deus É Quem Sabe', 'O trem azul': 'O Trem Azul',
           'Vento de maio (Música Incidental: Um Girassol Da Cor Do Seu Cabelo)': 'Vento de Maio', 'Calcanhar de Aquilles': 'Calcanhar de Aquiles', 'Köln, January 24, 1975, Pt. I': 'Part I', 'Köln, January 24, 1975, Pt. II A': 'Part IIa',
           'Köln, January 24, 1975, Pt. II B': 'Part IIb', 'Köln, January 24, 1975, Pt. II C': 'Part IIc', 'H₂Ogate Blues': 'H2Ogate Blues'}
-KEEP_FIRST = {354: 10, 390: 12, 397: 9, 399: 10}   # bonus tracks cut; #390: UK LP (no Watching the Detectives)
+KEEP_FIRST = {354: 10, 390: 12, 397: 9, 399: 10, 364: 2, 400: 12}   # bonus tracks cut; #390/#400: UK LP; #364: the original two-track LP
 DROP = {}         # songs added on later editions, not on the original LP
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
-SKIP = {364, 376, 400}   # waiting for hand-found playlists / UK track lists
+SKIP = set()   # albums to hold back (none)
 # Albums the automatic search got wrong, filled in by hand.
-MANUAL = {}
+MANUAL = {376: {'youtubePlaylist': 'PLHTo__bpnlYX4wXCfUXsk8atvR0zpbpPN',   # UK LP (the discovered edition was the US one)
+               'names': ['Janie Jones', 'Remote Control', 'I’m So Bored with the U.S.A.', 'White Riot', 'Hate & War', 'What’s My Name', 'Deny',
+                         'London’s Burning', 'Career Opportunities', 'Cheat', 'Protex Blue', 'Police & Thieves', '48 Hours', 'Garageland'],
+               'durations': ['2:06', '3:02', '2:25', '2:00', '2:06', '1:41', '3:05', '2:11', '1:53', '2:06', '1:45', '6:00', '1:36', '3:12']}}
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)

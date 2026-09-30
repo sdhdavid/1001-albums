@@ -1286,43 +1286,22 @@
   ],
   "youtube": [
    {
-    "id": "PLvy5jih231daUHpRyCVgkpe7yRt08GEzQ",
-    "title": "Fela Kuti (Greatest Hits)",
-    "size": 15,
-    "found": 3,
-    "positions": [
-     5,
-     1,
-     2,
-     -1
-    ],
-    "entries": null
-   },
-   {
-    "id": "PLR3E097nTGE0mfKmTawIxA9LdeIvTwyJJ",
-    "title": "Fela Kuti - Instrumental",
-    "size": 18,
-    "found": 1,
-    "positions": [
-     -1,
-     13,
-     -1,
-     -1
-    ],
-    "entries": null
-   },
-   {
-    "id": "PL9ZEjGzyCdcHTR68DS-yClmUBzHKWcCyQ",
-    "title": "FELA KUTI - ALBUMS",
-    "size": 26,
-    "found": 1,
+    "id": "PL4ZqKOqeg4cVrjNjVVfB8UU36iO4enFVJ",
+    "title": "hand-picked",
+    "size": 4,
+    "found": 4,
     "positions": [
      0,
-     -1,
-     -1,
-     -1
+     1,
+     2,
+     3
     ],
-    "entries": null
+    "entries": [
+     "Fela Kuti - Zombie",
+     "Mr. Follow Follow",
+     "Fela Kuti - Observation No Crime",
+     "Fela Kuti - Mistake"
+    ]
    }
   ]
  },
@@ -4718,7 +4697,21 @@
     ],
     "entries": null
    }
-  ]
+  ],
+  "spotifyCheck": {
+   "3NOxICud3CE6svBnR9WqC7": [
+    "Elis"
+   ],
+   "4huMvebKxtKXAm51LCfOoC": [
+    "Elis Regina"
+   ],
+   "67UdOjU4vLZx8yoHgXkNes": [
+    "Elis"
+   ],
+   "21XmM8dZGAfwUXTnAPqxdC": [
+    "Elis"
+   ]
+  }
  },
  "398": {
   "n": 398,
@@ -4939,26 +4932,29 @@
    40,
    14,
    14,
+   14,
    11,
-   11,
-   18,
-   18,
    40,
-   25,
-   13
+   11,
+   13,
+   40,
+   25
   ],
   "tracks": [
-   "No Action",
-   "This Year’s Girl",
-   "The Beat",
-   "Pump It Up",
-   "Little Triggers",
-   "You Belong to Me",
-   "Hand in Hand",
-   "Lip Service",
-   "Living in Paradise",
-   "Lipstick Vogue",
-   "Radio, Radio"
+   "No Action (2021 Remaster)",
+   "This Year's Girl (2021 Remaster)",
+   "The Beat (2021 Remaster)",
+   "Pump It Up (2021 Remaster)",
+   "Little Triggers (2021 Remaster)",
+   "You Belong To Me (2021 Remaster)",
+   "Hand In Hand (2021 Remaster)",
+   "(I Don't Want To Go To) Chelsea (2021 Remaster)",
+   "Lip Service (2021 Remaster)",
+   "Living In Paradise (2021 Remaster)",
+   "Lipstick Vogue (2021 Remaster)",
+   "Night Rally (2021 Remaster)",
+   "Big Tears (2021 Remaster)",
+   "Radio, Radio (2021 Remaster)"
   ],
   "durations": [
    "2:02",
@@ -4966,19 +4962,22 @@
    "3:49",
    "3:18",
    "2:44",
-   "2:22",
-   "2:35",
+   "2:26",
+   "2:38",
+   "3:10",
    "2:40",
-   "3:48",
-   "3:36",
-   "3:06"
+   "3:47",
+   "3:34",
+   "2:46",
+   "3:12",
+   "3:07"
   ],
   "youtube": [
    {
-    "id": "PL56D6F502B446A2A7",
-    "title": "Elvis Costello - This Year's Model (1978)",
-    "size": 11,
-    "found": 11,
+    "id": "PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb",
+    "title": "Elvis Costello - This Year’s Model (Full Album)",
+    "size": 14,
+    "found": 14,
     "positions": [
      0,
      1,
@@ -4990,46 +4989,9 @@
      7,
      8,
      9,
-     10
-    ],
-    "entries": null
-   },
-   {
-    "id": "PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb",
-    "title": "Elvis Costello - This Year’s Model (Full Album)",
-    "size": 14,
-    "found": 11,
-    "positions": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5,
-     6,
-     8,
-     9,
      10,
-     13
-    ],
-    "entries": null
-   },
-   {
-    "id": "PLhrF4FY0qTgxKX8fQcNsUcO1msPhcvM6M",
-    "title": "Elvis Costello and the attractions this year's model remastered 2021",
-    "size": 14,
-    "found": 11,
-    "positions": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5,
-     6,
-     8,
-     9,
-     10,
+     11,
+     12,
      13
     ],
     "entries": null
