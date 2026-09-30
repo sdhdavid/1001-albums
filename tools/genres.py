@@ -5,6 +5,7 @@ LABELS = ["רוק'נרול", "רוק", "רוק אלטרנטיבי", "פרוגר�
           "סטנדרטים וקברט", "סול ופאנק", "בלוז", "ג'אז", "קאנטרי", "פולק", "היפ הופ", "אלקטרוני", "רגאיי", "מוזיקת עולם"]
 R, ROCK, POP, STD, SOUL, BLUES, JAZZ, COUNTRY, FOLK, WORLD = "רוק'נרול", "רוק", "פופ", "סטנדרטים וקברט", "סול ופאנק", "בלוז", "ג'אז", "קאנטרי", "פולק", "מוזיקת עולם"
 ALT, PSYCH, PUNK = "רוק אלטרנטיבי", "פרוגרסיב ופסיכדליה", "פאנק וניו וויב"
+EL, REGGAE = "אלקטרוני", "רגאיי"
 TAGS = {
   1: [STD], 2: [R], 3: [COUNTRY, FOLK], 4: [R, JAZZ], 5: [R], 6: [JAZZ], 7: [STD], 8: [R], 9: [JAZZ], 10: [JAZZ],
   11: [WORLD, JAZZ], 12: [JAZZ], 13: [WORLD, JAZZ], 14: [R], 15: [WORLD, JAZZ], 16: [JAZZ, STD], 17: [FOLK], 18: [JAZZ], 19: [JAZZ, STD], 20: [SOUL, JAZZ],
@@ -37,5 +38,10 @@ TAGS = {
   271: [SOUL, "היפ הופ"], 272: [ROCK, POP], 273: [PSYCH, ROCK], 274: ["רגאיי"], 275: [PSYCH, ROCK], 276: [ROCK, POP], 277: [PSYCH, ROCK], 278: [ROCK, ALT], 279: [PSYCH, ROCK], 280: [SOUL],
   281: [FOLK, JAZZ], 282: [ROCK, PUNK], 283: [PSYCH, ALT], 284: [JAZZ, SOUL], 285: [ROCK], 286: [PSYCH], 287: [POP, PSYCH], 288: [POP, ROCK], 289: [ROCK, JAZZ], 290: [COUNTRY],
   291: [PSYCH, ROCK], 292: [SOUL, POP], 293: [ROCK, BLUES], 294: [ROCK, POP], 295: [ROCK], 296: [ROCK, "מטאל"], 297: [ROCK, PUNK], 298: [SOUL, ROCK], 299: [ROCK, PUNK], 300: [ALT, POP],
+  301: [ROCK], 302: [PSYCH, ROCK], 303: [SOUL], 304: [SOUL, POP], 305: [ROCK, BLUES], 306: [EL], 307: [ROCK, SOUL], 308: [FOLK, POP, JAZZ], 309: [ROCK, PSYCH], 310: [ROCK, POP],
+  311: [EL, PSYCH], 312: [POP, ROCK], 313: [PSYCH, ROCK], 314: [FOLK, ROCK], 315: [SOUL, JAZZ], 316: [ROCK], 317: [POP, ROCK], 318: [ROCK, FOLK], 319: [COUNTRY], 320: [ROCK, COUNTRY, FOLK],
+  321: [ROCK, JAZZ], 322: [POP, STD], 323: [REGGAE], 324: [PSYCH, JAZZ], 325: [COUNTRY, ROCK], 326: [EL, ALT], 327: [PUNK, ROCK], 328: [PSYCH, EL], 329: [ROCK, BLUES], 330: [JAZZ],
+  331: [ROCK], 332: [SOUL, ROCK], 333: [REGGAE], 334: [ROCK], 335: [COUNTRY], 336: [POP, R], 337: [FOLK, JAZZ], 338: [JAZZ, STD], 339: [WORLD, SOUL], 340: [ROCK],
+  341: [FOLK, ROCK], 342: [PUNK, ROCK], 343: [PSYCH, ROCK], 344: [ROCK, POP], 345: [COUNTRY], 346: [SOUL], 347: [SOUL], 348: [ROCK], 349: [PUNK, ROCK], 350: [ROCK, SOUL],
 }
 assert all(l in LABELS for v in TAGS.values() for l in v)

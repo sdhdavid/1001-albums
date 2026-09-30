@@ -22,13 +22,23 @@ wanted = [int(x) for x in args[0].split(',')] if ',' in args[0] or args[1] == '0
 out_path = args[2]
 # Titles the automatic clean-up gets wrong: n -> (artist, title) to search for.
 OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fifth Dimension'),
-            251: ('Hugh Masekela', 'Home Is Where the Music Is'), 270: ('Lynyrd Skynyrd', 'Pronounced Leh-Nerd Skin-Nerd')}
+            251: ('Hugh Masekela', 'Home Is Where the Music Is'), 270: ('Lynyrd Skynyrd', 'Pronounced Leh-Nerd Skin-Nerd'),
+            314: ('Richard & Linda Thompson', 'I Want to See the Bright Lights Tonight'), 315: ('Gil Scott-Heron', 'Winter in America'),
+            326: ('Brian Eno', 'Another Green World'), 328: ('Neu!', "Neu! '75"), 339: ('R. D. Burman', 'Shalimar (Original Motion Picture Soundtrack)'),
+            304: ('Stevie Wonder', "Fulfillingness' First Finale"), 307: ('Van Morrison', "It's Too Late to Stop Now"),
+            340: ('Neil Young', "Tonight's the Night"), 346: ('Earth, Wind & Fire', "That's the Way of the World"),
+            347: ('Curtis Mayfield', "There's No Place Like America Today"), 330: ('Keith Jarrett', 'The Koln Concert')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
-            297: 'Iggy and the Stooges Raw Power 1973 full album'}
+            297: 'Iggy and the Stooges Raw Power 1973 full album',
+            307: 'Van Morrison Its Too Late to Stop Now 1974 live album', 339: 'Shalimar 1978 R D Burman soundtrack songs',
+            301: 'Bad Company 1974 debut album full', 348: 'Tom Petty and the Heartbreakers 1976 debut album full'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
-                   284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ']}
+                   284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
+                   310: ['OLAK5uy_lhwiy3qPEpBwBTOpyy-KK8Pmcn7x9fI2k', 'OLAK5uy_m0wBxaewH-lbo6eGyZQUbE-fzlUeug7fM', 'PL4wwexJLSb3mF35yaNEVCZiX68Lb9FnEm'],
+                   330: ['PLlziogY0fk9phBIR0pGySlfV92DebcKrc', 'PLfdMKJMGPPtwRzlKi6bCI1_mSv0cJkm4r', 'PL8SFNbbOmAYMsaQSCbbv5oC4aY5o_4t6s', 'PL0766CFA4CBD669D6'],
+                   339: ['OLAK5uy_kzduVKq3Un4mx4ssOCWgbvq5AMRBvvNv4', 'OLAK5uy_nrjFfBfmaNOYAL09VgoinGl5IW59qFw2U', 'PLw61iWYSKReevacFkh4SlEafze-k8qXn0']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
@@ -99,6 +109,13 @@ for n in wanted:
                          'chapters': [[c.get('title'), int(c.get('start_time') or 0)] for c in v.get('chapters') or []],
                          'description': (v.get('description') or '')[:3000]})
         if vids: rec['videos'] = vids
+    elif EXTRA_PLAYLISTS.get(n):
+        rec['youtube'] = []
+        for pid in EXTRA_PLAYLISTS[n]:
+            info = ydl.extract_info(f'https://www.youtube.com/playlist?list={pid}', download=False) or {}
+            ents = [e for e in info.get('entries', []) if e]
+            rec['youtube'].append({'id': pid, 'title': 'hand-picked', 'size': len(ents), 'entries': [e.get('title') for e in ents],
+                                   'durations': [e.get('duration') for e in ents]})
     result[n] = rec
     print(n, meta['title'], '| editions', counts, '| best', (rec.get('youtube') or [{}])[0].get('id'), (rec.get('youtube') or [{}])[0].get('found'), flush=True)
     json.dump(result, open(out_path, 'w'), ensure_ascii=False, indent=1)
