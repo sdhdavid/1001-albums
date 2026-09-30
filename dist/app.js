@@ -373,11 +373,11 @@ $('feedback-form').addEventListener('submit', async event => {
   try {
     const response = await fetch(`https://formsubmit.co/ajax/${FEEDBACK_TO}`, {method: 'POST', headers: {Accept: 'application/json'}, body: data});
     const result = await response.json().catch(() => ({}));
-    if (!response.ok || result.success === 'false' || result.success === false) throw new Error('send failed');
+    if (!response.ok || result.success === 'false' || result.success === false) throw new Error(result.message || `HTTP ${response.status}`);
     form.reset(); status.textContent = 'תודה! ההודעה נשלחה.';
-  } catch {
+  } catch (error) {
     const mail = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent('משוב מהאתר 1001 אלבומים')}&body=${encodeURIComponent(data.get('message') || '')}`;
-    status.replaceChildren('לא הצלחנו לשלוח. אפשר ', Object.assign(element('a', '', 'לשלוח במייל'), {href: mail}), '.');
+    status.replaceChildren(`לא הצלחנו לשלוח (${error.message}). אפשר `, Object.assign(element('a', '', 'לשלוח במייל'), {href: mail}), '.');
   }
   send.disabled = false;
 });
