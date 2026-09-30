@@ -28,6 +28,9 @@ DROP = {263: {3}}       # songs added on later editions, not on the original LP 
 POSITION = {263: {4: 3}, 251: {2: 2}}  # playlist positions the title matching missed (#263: "2HB", #251: "The Big Apple")
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {291: (0, [('Speak to Me', 0, '1:07'), ('Breathe', 1, '2:51')])}
+# Held back: no playlist of the original recording could be confirmed (only a 2015 live Space Ritual, and
+# Head Hunters playlists with unavailable or live tracks). Stories are ready in stories_251_300.
+SKIP = {275, 284}
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
 
@@ -43,7 +46,7 @@ def norm(s): return re.sub(r'[^a-z0-9]+', '', s.replace('’', "'").lower())
 
 disc = json.load(open('tools/batches/251-300.discovered.json'))
 out = []
-for n in sorted(int(k) for k in disc):
+for n in sorted(int(k) for k in disc if int(k) not in SKIP):
     r = disc[str(n)]
     if n in MANUAL and 'fullAlbumVideo' in MANUAL[n]:
         m = MANUAL[n]; tracks = [[name, m['fullAlbumVideo'], None, t] for name, t in zip(m['names'], m['starts'])]
