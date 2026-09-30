@@ -28,11 +28,10 @@ DROP = {263: {3}}       # songs added on later editions, not on the original LP 
 POSITION = {263: {4: 3}, 251: {2: 2}}  # playlist positions the title matching missed (#263: "2HB", #251: "The Big Apple")
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {291: (0, [('Speak to Me', 0, '1:07'), ('Breathe', 1, '2:51')])}
-# Held back: no playlist of the original recording could be confirmed (only a 2015 live Space Ritual, and
-# Head Hunters playlists with unavailable or live tracks). Stories are ready in stories_251_300.
-SKIP = {275, 284}
+SKIP = set()   # albums to hold back (none)
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
+# #275 and #284: the official album playlists (YouTube Music), found by web search and checked by discover.py.
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
