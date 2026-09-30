@@ -1,17 +1,133 @@
 'use strict';
 const $ = id => document.getElementById(id);
+
+// Interface language: the Hebrew site lives at the root, the English version in /en/ (its own page, catalog and album files).
+const LANG = document.documentElement?.lang === 'en' ? 'en' : 'he';
+const STR = {
+  he: {
+    storageBlocked: 'השמירה בדפדפן חסומה כרגע. הבחירה תישמר רק עד לרענון.',
+    headings: ['מי ומתי', 'מה שומעים כאן', 'למה זה חשוב', 'טיפ להאזנה'],
+    picks: 'שירים לשים לב אליהם',
+    playSong: n => `ניגון ${n}`,
+    allGenres: "כל הז'אנרים",
+    decade: d => `שנות ה־${d < 2000 ? d - 1900 : d}`,
+    railTitle: (label, on, all) => `${label} · ${on} מתוך ${all} אלבומים באתר`,
+    edition: n => `${n} האלבומים הראשונים`,
+    listProgress: (h, n) => `האזנת ל־${h} מתוך ${n} אלבומים`,
+    ofTotal: (h, n) => `${h} מתוך ${n}`,
+    doneYes: '✓ האזנתי לאלבום', doneNo: 'סימון שהאזנתי',
+    chapter: (i, n) => `אלבום ${i} מתוך ${n} במסע`,
+    copied: 'הועתק ✓', copyFailed: 'לא הצלחתי, סמנו והעתיקו ידנית', copy: 'העתקה',
+    feedbackSubject: 'משוב מהאתר 1001 אלבומים', sending: 'שולח…', thanks: 'תודה! ההודעה נשלחה.',
+    sendFailed: m => `לא הצלחנו לשלוח (${m}). אפשר `, sendMail: 'לשלוח במייל',
+    eyebrowSpotify: 'מנגנים כאן, בנגן של Spotify', eyebrowYoutubeExternal: 'האזנה ב־YouTube בתוך האתר', eyebrowHere: 'מנגנים כאן, בתוך האתר',
+    spotifyTitle: t => `נגן Spotify — ${t}`, youtubeTitle: t => `נגן YouTube — ${t}`, playerTitle: 'נגן YouTube — מסע באלבומים',
+    externalComplete: 'נגן YouTube של האלבום. בפלייליסט אפשר לבחור קטע מתוך הנגן ולהמשיך להאזין ברצף.',
+    externalPartial: 'נגן YouTube עם קטע מתוך האלבום. עדיין לא נמצא מקור אמין לכל ההקלטות של מהדורת האלבום.',
+    sourcePlaylist: 'בחרו קטע מתוך רשימת הניגון של YouTube. ייתכנו הבדלים בין המהדורה הזמינה למהדורת הספר.',
+    sourceVideo: 'ההקלטה הרציפה של האלבום זמינה בנגן YouTube. בחירת קטע נפרד אינה זמינה כאן כרגע.',
+    sourcePartial: 'הנגן מציג קטע זמין בלבד. שאר קטעי האלבום טרם אומתו לניגון בתוך האתר.',
+    explainVideo: n => `${n} שירים לפי סדר האלבום, בתוך הקלטה רציפה אחת. לחיצה על שיר מדלגת אליו (זמני הפתיחה מחושבים לפי אורכי השירים וייתכן הפרש של שניות).`,
+    explainFull: n => `${n} שירים לפי סדר רשימת האלבום. בחרו שיר או הפעילו את הרצף.`,
+    explainShort: n => `${n} שירים למסלול ממוקד. אלה המלצות האתר, לא סימוני הספר. אפשר לשנות את הבחירה למטה.`,
+    songs: n => `${n} שירים`, continuous: ' · הקלטה רציפה', unavailableCount: n => ` · ${n} לא זמינים בנגן`,
+    trackPlay: 'ניגון ▶', trackMissing: 'לא זמין', trackMissingAria: t => `${t} אינו זמין ברשימת הניגון`,
+    pauseLong: 'השהיה ❚❚', resumeLong: 'המשך ▶', startSequence: 'הפעלת הרצף ▶',
+    quickSpotify: '▶ להאזנה ב־Spotify', quickPause: '❚❚ השהיה', quickResume: '▶ המשך', quickPlay: '▶ להאזנה',
+    pause: 'השהיה', resume: 'המשך',
+    stopped: 'ההאזנה נעצרה. אפשר לנסות שוב או לבחור קטע אחר.',
+    cued: 'מוכן להאזנה. לחץ על הפעלה כאן או בנגן.',
+    ended: 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.',
+    otherPlaying: (paused, title, album) => `${paused ? 'מושהה' : 'ממשיך להתנגן'}: ${title} (${album}). לחיצה על הפעלה תעבור לאלבום הזה.`,
+    nowPlaying: (i, n, title) => `מתנגן ${i} מתוך ${n}: ${title}`, pausedTitle: t => `מושהה: ${t}`,
+    errors: {
+      2: 'YouTube לא הצליח לזהות את הקטע הזה.',
+      5: 'הדפדפן לא הצליח לנגן את הקטע. נסה שוב או רענן את העמוד.',
+      100: 'הקטע הזה אינו זמין כרגע ב־YouTube.',
+      101: 'בעל ההקלטה לא מאפשר להפעיל את הקטע בנגן מוטמע.',
+      150: 'בעל ההקלטה לא מאפשר להפעיל את הקטע בנגן מוטמע.',
+      153: 'YouTube לא הצליח לזהות את האתר. נסה לרענן; אם השגיאה נמשכת, יש לבדוק את הגדרות הפרטיות בדפדפן.'
+    },
+    errorDefault: 'YouTube לא הצליח להפעיל את הקטע כרגע.', errorCode: c => ` (קוד ${c})`,
+    autoplayBlocked: 'הדפדפן ממתין ללחיצה. לחץ על ▶ בתוך נגן YouTube כדי להתחיל.',
+    loadingPlayer: 'טוען את נגן YouTube…',
+    playerNotLoaded: 'הנגן לא נטען. בדוק את החיבור לרשת או אם חוסם תוכן מונע מ־YouTube להיטען, ונסה שוב.',
+    playerOffline: 'לא ניתן להתחבר ל־YouTube כרגע. בדוק את החיבור ונסה שוב.',
+    heroDone: n => `שמעת את כל ${n} האלבומים באתר. עוד בדרך!`,
+    heroContinue: (i, n) => `להמשיך במסע · אלבום ${i} מתוך ${n}`, heroStart: 'נקודת ההתחלה · אלבום 1',
+    heroListen: '▶ להאזנה', heroBegin: '▶ להתחיל מכאן', heardLabel: 'האזנת ל־', where: d => `אתה ב${d}`,
+    gridCount: (n, h) => `${n} אלבומים באתר · שמעת ${h}`, heardTag: ' (שמעת)',
+    sortLocale: 'he'
+  },
+  en: {
+    storageBlocked: 'Saving in this browser is blocked right now. Your choice will last only until you refresh.',
+    headings: ['Who & when', 'What you hear', 'Why it matters', 'Listening tip'],
+    picks: 'Songs to listen for',
+    playSong: n => `Play ${n}`,
+    allGenres: 'All genres',
+    decade: d => `${d}s`,
+    railTitle: (label, on, all) => `${label} · ${on} of ${all} albums on the site`,
+    edition: n => n === 1 ? 'The first album' : `The first ${n} albums`,
+    listProgress: (h, n) => `You've heard ${h} of ${n} albums`,
+    ofTotal: (h, n) => `${h} of ${n}`,
+    doneYes: '✓ I listened to this album', doneNo: 'Mark as listened',
+    chapter: (i, n) => `Album ${i} of ${n} on the journey`,
+    copied: 'Copied ✓', copyFailed: "Couldn't copy, select and copy by hand", copy: 'Copy',
+    feedbackSubject: 'Feedback from the 1001 Albums site (English)', sending: 'Sending…', thanks: 'Thank you! Your message was sent.',
+    sendFailed: m => `We couldn't send it (${m}). You can `, sendMail: 'send it by email',
+    eyebrowSpotify: 'Playing here, in the Spotify player', eyebrowYoutubeExternal: 'Listening on YouTube inside the site', eyebrowHere: 'Playing here, inside the site',
+    spotifyTitle: t => `Spotify player — ${t}`, youtubeTitle: t => `YouTube player — ${t}`, playerTitle: 'YouTube player — album journey',
+    externalComplete: "The album's YouTube player. In the playlist you can pick a track from the player and keep listening in sequence.",
+    externalPartial: "A YouTube player with one track from the album. We haven't found a reliable source for every recording on this edition.",
+    sourcePlaylist: "Pick a track from the YouTube playlist. The available edition may differ from the book's edition.",
+    sourceVideo: "The album's continuous recording is available in the YouTube player. Picking a single track isn't available here right now.",
+    sourcePartial: "The player shows one available track only. The rest of the album hasn't been verified for playback on the site yet.",
+    explainVideo: n => `${n} songs in album order, inside one continuous recording. Pressing a song jumps to it (start times are calculated from the track lengths, so they can be off by a few seconds).`,
+    explainFull: n => `${n} songs in album order. Pick a song or start the sequence.`,
+    explainShort: n => `${n} songs for the focused listen. These are the site's recommendations, not the book's. You can change the selection below.`,
+    songs: n => n === 1 ? '1 song' : `${n} songs`, continuous: ' · continuous recording', unavailableCount: n => ` · ${n} unavailable in the player`,
+    trackPlay: 'Play ▶', trackMissing: 'Unavailable', trackMissingAria: t => `${t} is not available in the playlist`,
+    pauseLong: 'Pause ❚❚', resumeLong: 'Resume ▶', startSequence: 'Play the sequence ▶',
+    quickSpotify: '▶ Listen on Spotify', quickPause: '❚❚ Pause', quickResume: '▶ Resume', quickPlay: '▶ Listen',
+    pause: 'Pause', resume: 'Resume',
+    stopped: 'Playback stopped. You can try again or pick another track.',
+    cued: 'Ready to listen. Press play here or in the player.',
+    ended: 'The sequence has ended. Listen again or move on to the next album.',
+    otherPlaying: (paused, title, album) => `${paused ? 'Paused' : 'Still playing'}: ${title} (${album}). Pressing play will switch to this album.`,
+    nowPlaying: (i, n, title) => `Playing ${i} of ${n}: ${title}`, pausedTitle: t => `Paused: ${t}`,
+    errors: {
+      2: "YouTube couldn't recognise this track.",
+      5: "The browser couldn't play this track. Try again or refresh the page.",
+      100: 'This track is not available on YouTube right now.',
+      101: "The owner of this recording doesn't allow it to play in an embedded player.",
+      150: "The owner of this recording doesn't allow it to play in an embedded player.",
+      153: "YouTube couldn't recognise the site. Try refreshing; if the error continues, check your browser's privacy settings."
+    },
+    errorDefault: "YouTube couldn't play this track right now.", errorCode: c => ` (code ${c})`,
+    autoplayBlocked: 'The browser is waiting for a click. Press ▶ inside the YouTube player to start.',
+    loadingPlayer: 'Loading the YouTube player…',
+    playerNotLoaded: "The player didn't load. Check your connection, or whether a content blocker is stopping YouTube from loading, and try again.",
+    playerOffline: "Can't reach YouTube right now. Check your connection and try again.",
+    heroDone: n => `You've heard all ${n} albums on the site. More are on the way!`,
+    heroContinue: (i, n) => `Continue the journey · album ${i} of ${n}`, heroStart: 'The starting point · album 1',
+    heroListen: '▶ Listen', heroBegin: '▶ Start here', heardLabel: "You've heard ", where: d => `You're in the ${d}`,
+    gridCount: (n, h) => `${n} on the site · you've heard ${h}`, heardTag: ' (heard)',
+    sortLocale: 'en'
+  }
+};
+const S = STR[LANG];
 const DONE_KEY = 'album-journey-2005-done';
 const FOCUS_KEY = 'album-journey-2005-focus-ids';
 const SERVICE_KEY = 'album-journey-2005-service';
 const COVERS_KEY = 'album-journey-2005-covers';
-const WELCOME_KEY = 'album-journey-2005-welcomed';
+const WELCOME_KEY = LANG === 'en' ? 'album-journey-2005-welcomed-en' : 'album-journey-2005-welcomed';
 const LAST_KEY = 'album-journey-2005-last-album';
 function readStore(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
 function writeStore(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch {
-    $('storage-note').textContent = 'השמירה בדפדפן חסומה כרגע. הבחירה תישמר רק עד לרענון.';
+    $('storage-note').textContent = S.storageBlocked;
   }
 }
 let albums = [], bookOrder = [], active = 0, mode = 'full', player = null, ready = false;
@@ -187,13 +303,14 @@ function setCatalogOpen(open) {
 // English names inside Hebrew text: isolate each Latin run so it keeps its own
 // order, and keep short ones on one line so a title never splits mid-phrase.
 function bidiText(el, text) {
+  if (LANG === 'en') { el.textContent = text; return; }
   const parts = text.split(/([A-Za-z][A-Za-z0-9’'.,&!?()\- ]*[A-Za-z0-9!?.)’'])/);
   el.replaceChildren(...parts.map((part, i) => {
     if (i % 2 === 0) return document.createTextNode(part);
     const run = element('bdi', part.length <= 28 ? 'latin nowrap' : 'latin', part); run.dir = 'ltr'; return run;
   }));
 }
-const STORY_HEADINGS = ['מי ומתי', 'מה שומעים כאן', 'למה זה חשוב', 'טיפ להאזנה'];
+const STORY_HEADINGS = S.headings;
 function renderStory(a) {
   if (!a.story) {
     const p = element('p', ''); bidiText(p, a.guide ? a.guide.intro.map(section => section.text).join(' ') : a.note);
@@ -207,12 +324,12 @@ function renderStory(a) {
     const section = element('section', 'story-section story-picks'), list = element('ul', 'picks');
     for (const [name, text] of a.picks) {
       const li = element('li', ''), head = element('div', 'pick-head'), p = element('p', '');
-      const play = element('button', 'pick-play', '▶'); play.type = 'button'; play.setAttribute('aria-label', `ניגון ${name}`);
+      const play = element('button', 'pick-play', '▶'); play.type = 'button'; play.setAttribute('aria-label', S.playSong(name));
       play.addEventListener('click', () => playPick(a, name));
       const title = element('bdi', 'pick-name', name); title.dir = 'ltr';
       bidiText(p, text); head.append(play, title); li.append(head, p); list.append(li);
     }
-    section.append(element('h4', '', 'שירים לשים לב אליהם'), list); sections.push(section);
+    section.append(element('h4', '', S.picks), list); sections.push(section);
   }
   $('album-note').replaceChildren(...sections);
 }
@@ -231,11 +348,11 @@ let genre = '', homeGenre = '', homeUnheard = false;
 function renderGenres() {
   const counts = {};
   for (const a of albums) for (const g of a.genres ?? []) counts[g] = (counts[g] ?? 0) + 1;
-  const names = Object.keys(counts).sort((x, y) => counts[y] - counts[x] || x.localeCompare(y, 'he'));
+  const names = Object.keys(counts).sort((x, y) => counts[y] - counts[x] || x.localeCompare(y, S.sortLocale));
   for (const [menu, value] of [[$('genre-select'), genre], [$('home-genre'), homeGenre]]) {
     menu.hidden = names.length === 0;
     menu.replaceChildren(...['', ...names].map(g => {
-      const o = element('option', '', g ? `${g} · ${counts[g]}` : "כל הז'אנרים"); o.value = g; return o;
+      const o = element('option', '', g ? `${g} · ${counts[g]}` : S.allGenres); o.value = g; return o;
     }));
     menu.value = value;
   }
@@ -249,7 +366,7 @@ function markDecades(list) {
     a.decade = Math.floor(years[years.length >> 1] / 10) * 10;
   });
 }
-const decadeLabel = d => `שנות ה־${d < 2000 ? d - 1900 : d}`;
+const decadeLabel = S.decade;
 function renderList() {
   const search = $('album-search').value.trim().toLocaleLowerCase();
   const visible = albums.filter(a => (!genre || a.genres?.includes(genre)) && `${a.title} ${a.artist} ${a.n}`.toLocaleLowerCase().includes(search));
@@ -270,11 +387,11 @@ function renderList() {
     b.addEventListener('click', () => selectAlbum(albums.indexOf(a))); return [...marker, b];
   }));
   $('list-empty').hidden = visible.length > 0;
-  $('catalog-count').textContent = albums.length; $('edition-label').textContent = `${albums.length} האלבומים הראשונים`;
+  $('catalog-count').textContent = albums.length; $('edition-label').textContent = S.edition(albums.length);
   const heard = albums.filter(a => done.has(a.n)).length;
-  $('list-progress').textContent = `האזנת ל־${heard} מתוך ${albums.length} אלבומים`;
+  $('list-progress').textContent = S.listProgress(heard, albums.length);
   $('progress-meter').max = albums.length; $('progress-meter').value = heard;
-  $('toggle-progress').textContent = `${heard} מתוך ${albums.length}`;
+  $('toggle-progress').textContent = S.ofTotal(heard, albums.length);
   updateDecadeNow();
 }
 // Where am I in the book? The line above the list names the decade (and year) of the album at the top of the list,
@@ -286,7 +403,7 @@ function buildDecadeRail() {
   rail.replaceChildren(...decades.map(d => {
     const inBook = bookOrder.filter(a => a.decade === d), onSite = inBook.filter(a => a.ready);
     const part = element('button', 'rail-part'); part.type = 'button'; part.style.flexGrow = inBook.length;
-    part.title = `${decadeLabel(d)} · ${onSite.length} מתוך ${inBook.length} אלבומים באתר`;
+    part.title = S.railTitle(decadeLabel(d), onSite.length, inBook.length);
     part.setAttribute('aria-label', part.title); part.disabled = !onSite.length;
     const bar = element('span', 'rail-bar'), fill = element('span', 'rail-fill'), mark = element('span', 'rail-mark');
     fill.style.height = `${onSite.length / inBook.length * 100}%`; bar.append(fill, mark);
@@ -315,7 +432,7 @@ $('album-list').addEventListener('scroll', () => { if (!decadeFrame) decadeFrame
 function renderDone() {
   const yes = done.has(currentAlbum().n);
   $('mark-done').setAttribute('aria-pressed', String(yes));
-  $('mark-done').textContent = yes ? '✓ האזנתי לאלבום' : 'סימון שהאזנתי';
+  $('mark-done').textContent = yes ? S.doneYes : S.doneNo;
 }
 function renderAlbum() {
   const a = currentAlbum();
@@ -323,7 +440,7 @@ function renderAlbum() {
   $('album-genres').replaceChildren(...(a.genres ?? []).map(g => element('li', 'album-genre', g))); $('album-genres').hidden = !a.genres?.length;
   $('album-year').textContent = a.year; $('album-number').textContent = `#${String(a.n).padStart(3, '0')}`;
   $('record-number').textContent = String(a.n).padStart(3, '0');
-  $('chapter').textContent = `אלבום ${active + 1} מתוך ${albums.length} במסע`;
+  $('chapter').textContent = S.chapter(active + 1, albums.length);
   renderStory(a);
   $('previous-album').disabled = $('previous-album-top').disabled = active === 0;
   $('next-album').disabled = $('next-album-top').disabled = active === albums.length - 1;
@@ -353,9 +470,9 @@ for (const el of document.querySelectorAll?.('.site-host') ?? []) el.textContent
 for (const b of document.querySelectorAll?.('.copy-button') ?? []) {
   if (b.classList.contains('site-copy') && location.host) b.dataset.copy = location.host;
   b.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'הועתק ✓'; }
-    catch { b.textContent = 'לא הצלחתי, סמנו והעתיקו ידנית'; }
-    setTimeout(() => { b.textContent = 'העתקה'; }, 2500);
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = S.copied; }
+    catch { b.textContent = S.copyFailed; }
+    setTimeout(() => { b.textContent = S.copy; }, 2500);
   });
 }
 $('show-welcome').addEventListener('click', async () => { $('welcome').hidden = false; await openHome(); window.scrollTo?.({top: 0, behavior: 'smooth'}); });
@@ -369,17 +486,17 @@ $('feedback-form').addEventListener('submit', async event => {
   if (data.get('_honey')) return;
   data.delete('_honey');
   data.set('access_key', FEEDBACK_KEY);
-  data.set('subject', 'משוב מהאתר 1001 אלבומים');
+  data.set('subject', S.feedbackSubject);
   data.set('page', location.href);
-  send.disabled = true; status.textContent = 'שולח…';
+  send.disabled = true; status.textContent = S.sending;
   try {
     const response = await fetch('https://api.web3forms.com/submit', {method: 'POST', headers: {Accept: 'application/json'}, body: data});
     const result = await response.json().catch(() => ({}));
     if (!response.ok || !result.success) throw new Error(result.message || `HTTP ${response.status}`);
-    form.reset(); status.textContent = 'תודה! ההודעה נשלחה.';
+    form.reset(); status.textContent = S.thanks;
   } catch (error) {
-    const mail = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent('משוב מהאתר 1001 אלבומים')}&body=${encodeURIComponent(data.get('message') || '')}`;
-    status.replaceChildren(`לא הצלחנו לשלוח (${error.message}). אפשר `, Object.assign(element('a', '', 'לשלוח במייל'), {href: mail}), '.');
+    const mail = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent(S.feedbackSubject)}&body=${encodeURIComponent(data.get('message') || '')}`;
+    status.replaceChildren(S.sendFailed(error.message), Object.assign(element('a', '', S.sendMail), {href: mail}), '.');
   }
   send.disabled = false;
 });
@@ -401,35 +518,35 @@ function renderMode() {
     if (ready) player.stopVideo();
     clearInterval(chapterTimer); playingAlbum = null; listQueue = []; queue = []; queueIndex = 0; state = -1;
     if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
-    $('listen-eyebrow').textContent = 'מנגנים כאן, בנגן של Spotify';
+    $('listen-eyebrow').textContent = S.eyebrowSpotify;
     const src = a.spotifyAlbum ? `https://open.spotify.com/embed/album/${a.spotifyAlbum}?utm_source=generator` : 'about:blank';
     if ($('spotify-player').src !== src) $('spotify-player').src = src;
     $('spotify-player').hidden = !a.spotifyAlbum;
-    $('spotify-player').title = `נגן Spotify — ${a.title}`;
+    $('spotify-player').title = S.spotifyTitle(a.title);
     $('spotify-direct').hidden = !a.spotifyAlbum;
     $('spotify-direct').href = a.spotifyAlbum ? `https://open.spotify.com/album/${a.spotifyAlbum}` : '#';
     $('spotify-search').href = `https://open.spotify.com/search/${encodeURIComponent(`${a.artist} ${a.title}`)}/albums`;
     return;
   }
   if ($('spotify-player').src && $('spotify-player').src !== 'about:blank') $('spotify-player').src = 'about:blank';
-  $('listen-eyebrow').textContent = external ? 'האזנה ב־YouTube בתוך האתר' : 'מנגנים כאן, בתוך האתר';
+  $('listen-eyebrow').textContent = external ? S.eyebrowYoutubeExternal : S.eyebrowHere;
   $('youtube-direct').href = a.youtubePlaylist
     ? `https://www.youtube.com/playlist?list=${a.youtubePlaylist}`
     : `https://www.youtube.com/watch?v=${a.tracks[0][1]}`;
   if (external) {
     player?.stopVideo(); playingAlbum = null; listQueue = []; queue = []; queueIndex = 0; state = -1;
     const complete = a.youtubeAlbumComplete;
-    $('mode-explain').textContent = complete ? 'נגן YouTube של האלבום. בפלייליסט אפשר לבחור קטע מתוך הנגן ולהמשיך להאזין ברצף.' : 'נגן YouTube עם קטע מתוך האלבום. עדיין לא נמצא מקור אמין לכל ההקלטות של מהדורת האלבום.';
+    $('mode-explain').textContent = complete ? S.externalComplete : S.externalPartial;
     $('album-youtube-player').src = a.youtubeAlbumPlaylist
       ? `https://www.youtube.com/embed/videoseries?list=${a.youtubeAlbumPlaylist}`
       : `https://www.youtube.com/embed/${a.youtubeAlbumVideo}`;
-    $('album-youtube-player').title = `נגן YouTube — ${a.title}`;
+    $('album-youtube-player').title = S.youtubeTitle(a.title);
     $('album-youtube-direct').href = a.youtubeAlbumPlaylist
       ? `https://www.youtube.com/playlist?list=${a.youtubeAlbumPlaylist}`
       : `https://www.youtube.com/watch?v=${a.youtubeAlbumVideo}`;
     $('album-source-note').textContent = complete
-      ? (a.youtubeAlbumPlaylist ? 'בחרו קטע מתוך רשימת הניגון של YouTube. ייתכנו הבדלים בין המהדורה הזמינה למהדורת הספר.' : 'ההקלטה הרציפה של האלבום זמינה בנגן YouTube. בחירת קטע נפרד אינה זמינה כאן כרגע.')
-      : 'הנגן מציג קטע זמין בלבד. שאר קטעי האלבום טרם אומתו לניגון בתוך האתר.';
+      ? (a.youtubeAlbumPlaylist ? S.sourcePlaylist : S.sourceVideo)
+      : S.sourcePartial;
     $('external-album-link').href = a.externalAlbum;
     $('external-highlights').replaceChildren(...a.guide.highlights.map(title => {
       const li = element('li', '');
@@ -450,9 +567,9 @@ function renderMode() {
   }
   $('mode-explain').textContent = mode === 'full'
     ? (a.fullAlbumVideo
-      ? `${listQueue.length} שירים לפי סדר האלבום, בתוך הקלטה רציפה אחת. לחיצה על שיר מדלגת אליו (זמני הפתיחה מחושבים לפי אורכי השירים וייתכן הפרש של שניות).`
-      : `${listQueue.length} שירים לפי סדר רשימת האלבום. בחרו שיר או הפעילו את הרצף.`)
-    : `${listQueue.length} שירים למסלול ממוקד. אלה המלצות האתר, לא סימוני הספר. אפשר לשנות את הבחירה למטה.`;
+      ? S.explainVideo(listQueue.length)
+      : S.explainFull(listQueue.length))
+    : S.explainShort(listQueue.length);
   $('focus-editor').hidden = mode !== 'short';
   $('focus-error').hidden = true;
   renderQueue(); renderFocus();
@@ -462,14 +579,14 @@ function renderMode() {
 function renderQueue() {
   const a = currentAlbum();
   const missing = listQueue.filter(t => !playable(a, t)).length;
-  $('queue-count').textContent = `${listQueue.length} שירים` + (a.fullAlbumVideo ? ' · הקלטה רציפה' : '') + (missing ? ` · ${missing} לא זמינים בנגן` : '');
+  $('queue-count').textContent = S.songs(listQueue.length) + (a.fullAlbumVideo ? S.continuous : '') + (missing ? S.unavailableCount(missing) : '');
   $('track-list').replaceChildren(...listQueue.map((t, i) => {
     const li = element('li', playable(a, t) ? '' : 'track-missing');
     const name = element('span', 'track-name', t[0]); name.dir = 'auto';
     const length = a.durations?.[a.tracks.indexOf(t)];
     if (length) name.append(element('span', 'track-time', length));
-    const b = element('button', 'track-play', playable(a, t) ? 'ניגון ▶' : 'לא זמין'); b.type = 'button';
-    b.setAttribute('aria-label', playable(a, t) ? `ניגון ${t[0]}` : `${t[0]} אינו זמין ברשימת הניגון`);
+    const b = element('button', 'track-play', playable(a, t) ? S.trackPlay : S.trackMissing); b.type = 'button';
+    b.setAttribute('aria-label', playable(a, t) ? S.playSong(t[0]) : S.trackMissingAria(t[0]));
     b.addEventListener('click', () => startShown(i));
     li.append(name, b); return li;
   }));
@@ -491,7 +608,7 @@ function renderFocus() {
 function updateControls() {
   const same = showingPlaying();
   $('play-pause').disabled = !ready || !listQueue.length;
-  $('play-pause').textContent = same && state === 1 ? 'השהיה ❚❚' : same && state === 2 ? 'המשך ▶' : 'הפעלת הרצף ▶';
+  $('play-pause').textContent = same && state === 1 ? S.pauseLong : same && state === 2 ? S.resumeLong : S.startSequence;
   $('previous-track').disabled = !ready || !same || firstPlayable(queueIndex - 1, -1) < 0;
   $('next-track').disabled = !ready || !same || firstPlayable(queueIndex + 1) < 0;
   [...$('track-list').children].forEach((li, i) => {
@@ -511,9 +628,9 @@ if ('IntersectionObserver' in window) new IntersectionObserver(entries => {
 function revealPlayer() { $('listening-panel').scrollIntoView?.({behavior: 'smooth', block: 'start'}); }
 function updateQuickPlay() {
   const b = $('quick-play');
-  if (service === 'spotify') { b.textContent = '▶ להאזנה ב־Spotify'; b.disabled = false; return; }
+  if (service === 'spotify') { b.textContent = S.quickSpotify; b.disabled = false; return; }
   const same = showingPlaying();
-  b.textContent = same && state === 1 ? '❚❚ השהיה' : same && state === 2 ? '▶ המשך' : '▶ להאזנה';
+  b.textContent = same && state === 1 ? S.quickPause : same && state === 2 ? S.quickResume : S.quickPlay;
   b.disabled = !ready || firstPlayable(0, 1, currentAlbum(), listQueue) < 0;
 }
 $('quick-play').addEventListener('click', () => {
@@ -545,7 +662,7 @@ function updateMiniPlayer() {
   $('mini-song').textContent = queue[queueIndex]?.[0] ?? '';
   $('mini-album').textContent = `${a.title} · ${a.artist}`;
   $('mini-play').textContent = state === 1 ? '❚❚' : '▶';
-  $('mini-play').setAttribute('aria-label', state === 1 ? 'השהיה' : 'המשך');
+  $('mini-play').setAttribute('aria-label', state === 1 ? S.pause : S.resume);
   $('mini-previous').disabled = firstPlayable(queueIndex - 1, -1) < 0;
   $('mini-next').disabled = firstPlayable(queueIndex + 1) < 0;
   if (miniCoverFor !== a.n) { miniCoverFor = a.n; const box = $('mini-cover'); box.replaceChildren(); paintRowCover(box, a); }
@@ -586,7 +703,7 @@ function syncGuide() {
 function clearError() { $('player-error').hidden = true; }
 function showError(message) {
   $('player-error-text').textContent = message; $('player-error').hidden = false;
-  $('player-status').textContent = 'ההאזנה נעצרה. אפשר לנסות שוב או לבחור קטע אחר.';
+  $('player-status').textContent = S.stopped;
 }
 function firstPlayable(from = 0, step = 1, a = playingAlbum, q = queue) {
   for (let i = from; i >= 0 && i < q.length; i += step) if (playable(a, q[i])) return i;
@@ -603,12 +720,12 @@ function cueQueue() {
   else if (a.fullAlbumVideo) player.cueVideoById({videoId: a.tracks[0][1], startSeconds: queue[0][3]});
   else player.cuePlaylist(queue.map(t => t[1]), 0, 0);
   player.setLoop(false); player.setShuffle(false);
-  $('player-status').textContent = 'מוכן להאזנה. לחץ על הפעלה כאן או בנגן.';
+  $('player-status').textContent = S.cued;
   updateControls();
 }
 function finishQueue() {
   player.stopVideo(); state = 0; clearInterval(chapterTimer);
-  $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.';
+  $('player-status').textContent = S.ended;
   updateControls();
 }
 function playAt(index) {
@@ -638,11 +755,11 @@ function followChapter() {
 function announce() {
   const title = queue[queueIndex]?.[0] || '';
   if (!showingPlaying() && busy()) {
-    $('player-status').textContent = `${state === 2 ? 'מושהה' : 'ממשיך להתנגן'}: ${title} (${playingAlbum.title}). לחיצה על הפעלה תעבור לאלבום הזה.`;
+    $('player-status').textContent = S.otherPlaying(state === 2, title, playingAlbum.title);
     return;
   }
-  if (state === 1) { clearError(); $('player-status').textContent = `מתנגן ${queueIndex + 1} מתוך ${queue.length}: ${title}`; }
-  if (state === 2 && $('player-error').hidden) $('player-status').textContent = `מושהה: ${title}`;
+  if (state === 1) { clearError(); $('player-status').textContent = S.nowPlaying(queueIndex + 1, queue.length, title); }
+  if (state === 2 && $('player-error').hidden) $('player-status').textContent = S.pausedTitle(title);
 }
 function onStateChange(event) {
   state = event.data;
@@ -651,7 +768,7 @@ function onStateChange(event) {
   if (a?.fullAlbumVideo) {
     clearInterval(chapterTimer);
     if (state === 1) { chapterTimer = setInterval(followChapter, 1000); followChapter(); if (state !== 1) return; }
-    if (state === 0) { queueIndex = queue.length - 1; $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.'; updateControls(); return; }
+    if (state === 0) { queueIndex = queue.length - 1; $('player-status').textContent = S.ended; updateControls(); return; }
     announce(); updateControls(); syncGuide(); return;
   }
   const index = player.getPlaylistIndex();
@@ -670,21 +787,14 @@ function onStateChange(event) {
     const next = a?.youtubePlaylist ? firstPlayable(queueIndex + 1) : -1;
     if (next >= 0) { playAt(next); return; }
     if (a?.youtubePlaylist) player.stopVideo();
-    $('player-status').textContent = 'הרצף הסתיים. אפשר להאזין שוב או לעבור לאלבום הבא.';
+    $('player-status').textContent = S.ended;
   }
   updateControls(); syncGuide();
 }
 function playerError(event) {
-  const messages = {
-    2: 'YouTube לא הצליח לזהות את הקטע הזה.',
-    5: 'הדפדפן לא הצליח לנגן את הקטע. נסה שוב או רענן את העמוד.',
-    100: 'הקטע הזה אינו זמין כרגע ב־YouTube.',
-    101: 'בעל ההקלטה לא מאפשר להפעיל את הקטע בנגן מוטמע.',
-    150: 'בעל ההקלטה לא מאפשר להפעיל את הקטע בנגן מוטמע.',
-    153: 'YouTube לא הצליח לזהות את האתר. נסה לרענן; אם השגיאה נמשכת, יש לבדוק את הגדרות הפרטיות בדפדפן.'
-  };
+  const messages = S.errors;
   player.pauseVideo(); state = 2;
-  showError((messages[event.data] || 'YouTube לא הצליח להפעיל את הקטע כרגע.') + ` (קוד ${event.data})`);
+  showError((messages[event.data] || S.errorDefault) + S.errorCode(event.data));
   updateControls();
 }
 function createPlayer() {
@@ -695,23 +805,23 @@ function createPlayer() {
     events: {
       onReady: () => { clearTimeout(playerTimer); ready = true; cueQueue(); },
       onStateChange, onError: playerError,
-      onAutoplayBlocked: () => { $('player-status').textContent = 'הדפדפן ממתין ללחיצה. לחץ על ▶ בתוך נגן YouTube כדי להתחיל.'; }
+      onAutoplayBlocked: () => { $('player-status').textContent = S.autoplayBlocked; }
     }
   });
-  const frame = player.getIframe(); frame.title = 'נגן YouTube — מסע באלבומים';
+  const frame = player.getIframe(); frame.title = S.playerTitle;
   frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
   frame.setAttribute('allow', 'autoplay; encrypted-media; fullscreen; picture-in-picture');
 }
 window.onYouTubeIframeAPIReady = createPlayer;
 function loadPlayer() {
-  $('player-status').textContent = 'טוען את נגן YouTube…';
+  $('player-status').textContent = S.loadingPlayer;
   clearTimeout(playerTimer);
   playerTimer = setTimeout(() => {
-    if (!ready) showError('הנגן לא נטען. בדוק את החיבור לרשת או אם חוסם תוכן מונע מ־YouTube להיטען, ונסה שוב.');
+    if (!ready) showError(S.playerNotLoaded);
   }, 15000);
   if (window.YT?.Player) { createPlayer(); return; }
   const script = document.createElement('script'); script.id = 'youtube-api'; script.src = 'https://www.youtube.com/iframe_api';
-  script.onerror = () => { clearTimeout(playerTimer); showError('לא ניתן להתחבר ל־YouTube כרגע. בדוק את החיבור ונסה שוב.'); };
+  script.onerror = () => { clearTimeout(playerTimer); showError(S.playerOffline); };
   document.head.append(script);
 }
 $('retry-player').addEventListener('click', () => {
@@ -735,12 +845,13 @@ $('previous-album').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album').addEventListener('click', () => selectAlbum(active + 1));
 $('previous-album-top').addEventListener('click', () => selectAlbum(active - 1));
 $('next-album-top').addEventListener('click', () => selectAlbum(active + 1));
-// Keyboard: in this right-to-left site ← is the next album and → the previous one
+// Keyboard: in the right-to-left (Hebrew) site ← is the next album and → the previous one; in English it is the other way round
 // (not while typing in the search box or with modifier keys held).
 document.addEventListener?.('keydown', e => {
   if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName ?? '') || e.target?.isContentEditable) return;
-  if (e.key === 'ArrowLeft') selectAlbum(active + 1);
-  else if (e.key === 'ArrowRight') selectAlbum(active - 1);
+  const [nextKey, previousKey] = LANG === 'en' ? ['ArrowRight', 'ArrowLeft'] : ['ArrowLeft', 'ArrowRight'];
+  if (e.key === nextKey) selectAlbum(active + 1);
+  else if (e.key === previousKey) selectAlbum(active - 1);
 });
 for (const s of ['youtube', 'spotify']) $('service-' + s).addEventListener('click', () => {
   if (service !== s) { service = s; writeStore(SERVICE_KEY, s); renderMode(); }
@@ -774,19 +885,19 @@ function renderHero() {
   const next = nextAlbum(), a = next ?? albums[albums.length - 1], heard = albums.filter(x => done.has(x.n)).length;
   const cover = placeholderCover(a, 'hero-cover'); paintRowCover(cover, a);
   const body = element('div', 'hero-body');
-  const eyebrow = !next ? `שמעת את כל ${albums.length} האלבומים באתר. עוד בדרך!`
-    : heard ? `להמשיך במסע · אלבום ${albums.indexOf(a) + 1} מתוך ${albums.length}` : 'נקודת ההתחלה · אלבום 1';
+  const eyebrow = !next ? S.heroDone(albums.length)
+    : heard ? S.heroContinue(albums.indexOf(a) + 1, albums.length) : S.heroStart;
   const title = element('h2', 'hero-title', a.title); title.dir = 'auto';
   const artist = element('p', 'hero-artist', `${a.artist} · ${a.year}`); artist.dir = 'auto';
   const line = element('p', 'hero-line');
-  const go = element('button', 'hero-go', heard ? '▶ להאזנה' : '▶ להתחיל מכאן'); go.type = 'button';
+  const go = element('button', 'hero-go', heard ? S.heroListen : S.heroBegin); go.type = 'button';
   go.addEventListener('click', () => openAlbum(a));
   body.append(element('p', 'hero-eyebrow', eyebrow), title, artist, line, go);
   loadAlbum(a).then(data => { const sents = data.story?.[0]?.split(/(?<=[.!?])\s/) || [], first = sents[0] && sents[0].length < 90 && sents[1] ? sents[0] + ' ' + sents[1] : sents[0]; if (first) bidiText(line, first); }).catch(() => {});
   const side = element('div', 'hero-side'), meter = element('progress', 'hero-meter');
   meter.max = albums.length; meter.value = heard;
-  side.append(element('span', 'hero-heard-label', 'האזנת ל־'), element('b', 'hero-heard', `${heard} מתוך ${albums.length}`), meter,
-    element('span', 'hero-where', `אתה ב${decadeLabel(a.decade)}`));
+  side.append(element('span', 'hero-heard-label', S.heardLabel), element('b', 'hero-heard', S.ofTotal(heard, albums.length)), meter,
+    element('span', 'hero-where', S.where(decadeLabel(a.decade))));
   $('home-hero').replaceChildren(cover, body, side);
 }
 function renderGrid() {
@@ -797,11 +908,11 @@ function renderGrid() {
   for (const d of [...new Set(visible.map(a => a.decade))]) {
     const inDecade = visible.filter(a => a.decade === d), all = albums.filter(a => a.decade === d);
     const head = element('div', 'grid-decade');
-    head.append(element('h3', '', decadeLabel(d)), element('span', '', `${all.length} אלבומים באתר · שמעת ${all.filter(a => done.has(a.n)).length}`));
+    head.append(element('h3', '', decadeLabel(d)), element('span', '', S.gridCount(all.length, all.filter(a => done.has(a.n)).length)));
     const grid = element('div', 'tile-grid');
     grid.append(...inDecade.map(a => {
       const tile = element('button', 'tile' + (a === next ? ' next' : '')); tile.type = 'button'; tile.dataset.n = a.n;
-      tile.setAttribute('aria-label', `${a.n}. ${a.title} — ${a.artist}${done.has(a.n) ? ' (שמעת)' : ''}`);
+      tile.setAttribute('aria-label', `${a.n}. ${a.title} — ${a.artist}${done.has(a.n) ? S.heardTag : ''}`);
       const cover = placeholderCover(a, 'tile-cover');
       if (tileObserver) { tileCovers.set(cover, a); tileObserver.observe(cover); } else paintRowCover(cover, a);
       const badge = element('span', 'tile-number', String(a.n).padStart(3, '0'));

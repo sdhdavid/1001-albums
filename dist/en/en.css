@@ -1,0 +1,25 @@
+/* English (left-to-right) overrides on top of the shared, right-to-left-first styles. */
+.lang-switch { color: #b4e3d6; font-size: .85rem; text-decoration: none; border: 1px solid #40555a; border-radius: 999px; padding: 4px 12px; margin-inline-start: auto; white-space: nowrap; }
+.lang-switch:hover { background: #1f313b; }
+.welcome-title { direction: ltr; text-align: left; }
+.catalog { border-left: 0; border-right: 1px solid #30434e; padding: 34px 24px 20px 20px; }
+.search-wrap svg { right: auto; left: 13px; }
+.search-wrap input { padding: 12px 12px 12px 41px; }
+.album-list { padding: 0 5px 28px 0; }
+.album-row { text-align: left; }
+.album-genre { direction: ltr; }
+.track-note { border-right: 0; border-left: 3px solid #b4e3d6; }
+.hero-side { border-right: 0; border-left: 1px solid #3a5560; padding-right: 0; padding-left: 22px; }
+.tile-number { left: auto; right: 7px; }
+.tile-check { right: auto; left: 7px; }
+.record-graphic.has-cover span { left: auto; right: 8px; }
+.rail-mark { left: auto; right: -3px; }
+.rail-fill { left: 0; right: 0; }
+@media (max-width: 900px) {
+  .listening-action { text-align: left; }
+  .hero-side { border-left: 0; padding-left: 0; }
+}
+@media (max-width: 760px) {
+  .catalog { border-right: 0; }
+  .title-grid { align-items: flex-start; }
+}
