@@ -20,14 +20,20 @@ SPOTIFY = {
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
 PLAYLIST_CHOICE = {}
-RENAME = {}
-KEEP_FIRST = {}   # drop bonus tracks / outtakes after the original album
-DROP = {}         # songs added on later editions, not on the original LP
+RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
+          'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
+          'Rock and Roll P***y': 'Rock and Roll Pussy'}
+KEEP_FIRST = {286: 2}   # drop bonus tracks / outtakes after the original album
+DROP = {263: {3}}       # songs added on later editions, not on the original LP (#263: Virginia Plain, US edition only)
+POSITION = {263: {4: 3}}  # playlist position the title matching missed (#263: "2HB")
+# One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
+SPLIT = {291: (0, [('Speak to Me', 0, '1:07'), ('Breathe', 1, '2:51')])}
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
+    s = re.sub(r'\s*[\(\[]feat\.[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s*[\(\[][^)\]]*(remaster|mono|stereo|version|edit|mix|bonus|single|live|\b(19|20)\d\d\b)[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s+-\s+(\d{4}\s+)?(remaster|mono|stereo|single|live).*$', '', s, flags=re.I)
     s = s.strip()
@@ -49,6 +55,8 @@ for n in sorted(int(k) for k in disc):
     pos = yt['positions']; durs = list(r.get('durations') or [None] * len(names))
     if n in MANUAL and not extra:
         yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names))); durs = MANUAL[n]['durations']
+    pos = list(pos)
+    for i, p in POSITION.get(n, {}).items(): pos[i] = p
     keep = KEEP_FIRST.get(n, len(names))
     names, pos, durs = names[:keep], pos[:keep], durs[:keep]
     names = [x for i, x in enumerate(names) if i not in DROP.get(n, ())]
@@ -66,6 +74,9 @@ for n in sorted(int(k) for k in disc):
             if p == spare: spare += 1
             used.add(p)
         fixed.append(p)
+    if n in SPLIT:
+        i, parts = SPLIT[n]
+        names[i:i + 1] = [x[0] for x in parts]; fixed[i:i + 1] = [x[1] for x in parts]; durs[i:i + 1] = [x[2] for x in parts]
     if not extra: tracks = [[name, None, p] for name, p in zip(names, fixed)]
     st = STORIES[n]; tnames = [t[0] for t in tracks]
     picks = [list(p) for p in st['picks']]
