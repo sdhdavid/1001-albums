@@ -359,6 +359,28 @@ for (const b of document.querySelectorAll?.('.copy-button') ?? []) {
   });
 }
 $('show-welcome').addEventListener('click', async () => { $('welcome').hidden = false; await openHome(); window.scrollTo?.({top: 0, behavior: 'smooth'}); });
+
+const FEEDBACK_TO = 'sdhdavid@gmail.com';
+$('feedback-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.currentTarget, status = $('feedback-status'), send = $('feedback-send');
+  const data = new FormData(form);
+  if (data.get('_honey')) return;
+  data.set('_subject', 'משוב מהאתר 1001 אלבומים');
+  data.set('page', location.href);
+  if (data.get('email')) data.set('_replyto', data.get('email'));
+  send.disabled = true; status.textContent = 'שולח…';
+  try {
+    const response = await fetch(`https://formsubmit.co/ajax/${FEEDBACK_TO}`, {method: 'POST', headers: {Accept: 'application/json'}, body: data});
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.success === 'false' || result.success === false) throw new Error('send failed');
+    form.reset(); status.textContent = 'תודה! ההודעה נשלחה.';
+  } catch {
+    const mail = `mailto:${FEEDBACK_TO}?subject=${encodeURIComponent('משוב מהאתר 1001 אלבומים')}&body=${encodeURIComponent(data.get('message') || '')}`;
+    status.replaceChildren('לא הצלחנו לשלוח. אפשר ', Object.assign(element('a', '', 'לשלוח במייל'), {href: mail}), '.');
+  }
+  send.disabled = false;
+});
 function renderMode() {
   const a = currentAlbum(); const selected = focusedIds(a);
   const external = Boolean(a.externalAlbum);
