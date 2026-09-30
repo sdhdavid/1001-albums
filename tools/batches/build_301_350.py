@@ -19,20 +19,24 @@ SPOTIFY = {
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {303: 2, 336: 2}   # the playlists that hold exactly the original album
+PLAYLIST_CHOICE = {303: 2, 336: 2, 309: 1}   # playlists holding exactly the original album; #309: the top one has a malformed id
 RENAME = {'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
           'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
           'Shine On You Crazy Diamond, Pts. 1-5': 'Shine On You Crazy Diamond (Parts I-V)',
-          'Shine On You Crazy Diamond, Pts. 6-9': 'Shine On You Crazy Diamond (Parts VI-IX)', 'Xl-30': 'XL-30', 'Alife': 'Alifie', 'H₂Ogate Blues': 'H2Ogate Blues'}
+          'Shine On You Crazy Diamond, Pts. 6-9': 'Shine On You Crazy Diamond (Parts VI-IX)', 'Xl-30': 'XL-30', 'Alife': 'Alifie', 'Köln, January 24, 1975, Pt. I': 'Part I', 'Köln, January 24, 1975, Pt. II A': 'Part IIa',
+          'Köln, January 24, 1975, Pt. II B': 'Part IIb', 'Köln, January 24, 1975, Pt. II C': 'Part IIc', 'H₂Ogate Blues': 'H2Ogate Blues'}
 KEEP_FIRST = {303: 9, 336: 8}   # #303: 2001 reissue bonus tracks, #336: the Streetheart album on the same CD; drop bonus tracks / outtakes after the original album
 DROP = {}         # songs added on later editions, not on the original LP
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
-SKIP = {310, 330, 339}   # waiting for hand-found playlists
+SKIP = set()   # albums to hold back (none)
 # Albums the automatic search got wrong, filled in by hand.
-MANUAL = {}
+MANUAL = {339: {'youtubePlaylist': 'OLAK5uy_kzduVKq3Un4mx4ssOCWgbvq5AMRBvvNv4',   # official album playlist (web search)
+               'names': ['Title Music', 'One Two Cha Cha Cha', 'Hum Bewafa Hargiz Na Thay', 'Countess’ Caper / Shalimar', 'Naag Devta',
+                         'Aaina Wohi Rehta Hai', 'Baby Let’s Dance Together', 'Romantic Theme', 'Mera Pyar Shalimar', 'Hum Bewafa Hargiz Na Thay (Happy)'],
+               'durations': ['2:56', '5:42', '4:12', '3:55', '4:28', '6:39', '2:39', '2:37', '4:53', '2:08']}}
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
@@ -55,7 +59,7 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
         extra = None
     yt = (r.get('youtube') or [{'positions': []}])[PLAYLIST_CHOICE.get(n, 0)]
     names = [clean(t) for t in r.get('tracks', [])]
-    pos = yt['positions']; durs = list(r.get('durations') or [None] * len(names))
+    pos = yt.get('positions', []); durs = list(r.get('durations') or [None] * len(names))
     if n in MANUAL and not extra:
         yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names))); durs = MANUAL[n]['durations']
     pos = list(pos)

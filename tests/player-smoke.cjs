@@ -293,7 +293,7 @@ async function boot({broken=false, noStorage=false, hash=''}={}) {
     const tiles=sections.filter((c,i)=>i%2===1).flatMap(g=>g.children);assert.equal(tiles.length,350,'one tile per album on the site');
     assert(tiles[0].children.some(c=>c.className==='tile-check'),'heard album has a check');assert(!tiles[2].children.some(c=>c.className==='tile-check'));
     assert(tiles[1].className.includes('next'),'next album outlined');
-    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,299,'"not heard yet" hides heard albums');
+    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,349,'"not heard yet" hides heard albums');
     m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,4);
     m['home-search'].value='';m['home-search'].listeners.input();
     // Clicking a tile opens that album and puts it in the address; "מה זה?" returns home with the welcome box.
