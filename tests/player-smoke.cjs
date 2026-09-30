@@ -20,12 +20,12 @@ function noteMatches(n,data){
   if (data.story) assert.equal(n['album-note'].children.length,data.story.length+(data.picks?.length?1:0));
   else assert.equal(n['album-note'].children[0].children.map(c=>c.textContent).join(''),data.guide.intro.map(s=>s.text).join(' '));
 }
-async function boot({broken=false, noStorage=false}={}) {
+async function boot({broken=false, noStorage=false, hash=''}={}) {
   const html=fs.readFileSync('dist/index.html','utf8'), nodes={};
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
   const storage=new Map([['album-journey-2005-done','[1,200]']]);
   const calls=[], fetched=[]; let mock, failAlbum=null;
-  const ctx={console, requestAnimationFrame:f=>setImmediate(f), location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
+  const ctx={console, requestAnimationFrame:f=>setImmediate(f), location:{origin:'https://example.test',hash},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
     document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El(),addEventListener:(k,fn)=>{nodes['__'+k]=fn;}},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
     fetch:async url=>(fetched.push(url),{ok:!broken&&!(failAlbum&&url.includes(`/${failAlbum}.json`)),json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2).replace(/\?.*$/,''),'utf8'))}),
@@ -253,5 +253,28 @@ async function boot({broken=false, noStorage=false}={}) {
   assert.equal(l.nodes['album-title'].textContent,'Tragic Songs of Life');assert.equal(l.nodes['album-error'].hidden,true,'retry after a failed load works');
   const b=await boot({broken:true});assert.equal(b.nodes['load-error'].hidden,false);assert(!b.player);
   const s=await boot({noStorage:true});s.nodes['mark-done'].click();assert.match(s.nodes['storage-note'].textContent,/חסומה/);
-  console.log('PASS: book entries 1–150 (including the 51–100 and 101–150 batches with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
+  // Home page: without an album in the address the site opens on the grid; the hero offers the next unheard album.
+  { const h=await boot(), m=h.nodes; await flush();
+    assert.equal(m['home'].hidden,false,'home shown first');assert.equal(m['album-page'].hidden,true);
+    const hero=m['home-hero'].children;assert.equal(hero[1].children[1].textContent,'Elvis Presley','next unheard album (1 is heard)');
+    assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 150/);
+    const sections=m['home-grid'].children;assert.deepEqual(sections.filter((c,i)=>i%2===0).map(c=>c.children[0].textContent),['שנות ה־50','שנות ה־60']);
+    const tiles=sections.filter((c,i)=>i%2===1).flatMap(g=>g.children);assert.equal(tiles.length,150,'one tile per album on the site');
+    assert(tiles[0].children.some(c=>c.className==='tile-check'),'heard album has a check');assert(!tiles[2].children.some(c=>c.className==='tile-check'));
+    assert(tiles[1].className.includes('next'),'next album outlined');
+    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,149,'"not heard yet" hides heard albums');
+    m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,3);
+    m['home-search'].value='';m['home-search'].listeners.input();
+    // Clicking a tile opens that album and puts it in the address; "מה זה?" returns home with the welcome box.
+    const tile5=m['home-grid'].children[1].children[4];tile5.click();await flush();await flush();
+    assert.equal(h.ctx.location.hash,'#/album/5');assert.equal(m['album-title'].textContent,'This Is Fats Domino!');
+    assert.equal(m['album-page'].hidden,false);assert.equal(m['home'].hidden,true);assert.equal(m['nav-album'].href,'#/album/5');
+    assert.equal(h.storage.get('album-journey-2005-last-album'),'5','current album remembered');
+    m['next-album'].click();await flush();assert.equal(m['nav-album'].href,'#/album/6','album link follows next/previous');
+    m['show-welcome'].click();await flush();assert.equal(m['home'].hidden,false);assert.equal(m['welcome'].hidden,false);assert.equal(h.ctx.location.hash,'#/');
+  }
+  // A shared link to an album opens that album directly.
+  { const d=await boot({hash:'#/album/41'}); await flush();await flush();
+    assert.equal(d.nodes['album-page'].hidden,false);assert.equal(d.nodes['home'].hidden,true);assert.equal(d.nodes['album-title'].textContent,'Getz / Gilberto'); }
+  console.log('PASS: book entries 1–150 (including the 51–100 and 101–150 batches with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});
