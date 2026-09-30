@@ -19,12 +19,25 @@ SPOTIFY = {
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
-RENAME = {}
-KEEP_FIRST = {}   # drop bonus tracks / outtakes after the original album
+PLAYLIST_CHOICE = {223: 1, 225: 1, 241: 2}
+RENAME = {'The Clap (Live)': 'The Clap', 'Starship Trooper: A. Life Seeker, B. Disillusion, C. Würm': 'Starship Trooper',
+          "I've Seen All Good People: A. Your Move, B. All Good People": "I've Seen All Good People", '32-02': '32-20', 'Bang a Gong (Get It On)': 'Get It On', 'Freddie\'s Dead (Theme from "Superfly")': "Freddie's Dead",
+          'Tarkus: I. Eruption / II. Stones of Years / III. Iconoclast / IV. Mass / V. Manticore / VI. Battlefield / VII. Aquatarkus': 'Tarkus'}
+KEEP_FIRST = {223: 7, 227: 12}   # drop bonus tracks / outtakes after the original album
 DROP = {}         # songs added on later editions, not on the original LP
 # Albums the automatic search got wrong, filled in by hand.
-MANUAL = {}
+MANUAL = {
+ # no track list was found (the catalog title is in brackets); the band's official album playlist
+ 224: {'youtubePlaylist': 'PLMmd10177iHuglVcy9blANFopTddKtSV7',
+       'names': ['Black Dog', 'Rock and Roll', 'The Battle of Evermore', 'Stairway to Heaven', 'Misty Mountain Hop', 'Four Sticks', 'Going to California', 'When the Levee Breaks'],
+       'durations': ['4:55', '3:40', '5:52', '8:02', '4:38', '4:44', '3:31', '7:07']},
+ # the track list found belonged to a later expanded edition; the LP has three pieces
+ 249: {'youtubePlaylist': 'PLbIN9DHtOfK-uFl66kKxIw90fuRzPqxG6',
+       'names': ['Close to the Edge', 'And You and I', 'Siberian Khatru'], 'durations': ['18:43', '10:09', '8:57']},
+ # no playlist of this album was found; one full-album video with four chapters
+ 232: {'fullAlbumVideo': '20UbO62UJUg', 'names': ["Let's Start", "Black Man's Cry", 'Ye Ye De Smell', 'Egbe Mi O (Carry Me I Want to Die)'],
+       'starts': [0, 467, 1165, 1962], 'durations': ['7:47', '11:38', '13:17', '12:40']},
+}
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
@@ -44,8 +57,8 @@ for n in sorted(int(k) for k in disc):
         extra = {'fullAlbumVideo': True}
     else:
         extra = None
-    yt = r['youtube'][PLAYLIST_CHOICE.get(n, 0)]
-    names = [clean(t) for t in r['tracks']]
+    yt = (r.get('youtube') or [{'positions': []}])[PLAYLIST_CHOICE.get(n, 0)]
+    names = [clean(t) for t in r.get('tracks', [])]
     pos = yt['positions']; durs = list(r.get('durations') or [None] * len(names))
     if n in MANUAL and not extra:
         yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names))); durs = MANUAL[n]['durations']
@@ -76,7 +89,7 @@ for n in sorted(int(k) for k in disc):
     focus = sorted({tnames.index(name) for name, _ in picks})
     assert len(SPOTIFY[n]) == 22
     rec = {'n': n, 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus, 'story': st['story'], 'picks': picks}
-    if not extra: rec['durations'] = durs
+    rec['durations'] = durs if not extra else MANUAL[n]['durations']
     rec.update(extra or {'youtubePlaylist': yt['id']})
     out.append(rec)
 json.dump(out, open('tools/batches/201-250.json', 'w'), ensure_ascii=False, indent=1)
