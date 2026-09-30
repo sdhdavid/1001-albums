@@ -21,7 +21,15 @@ import yt_dlp, store
 wanted = [int(x) for x in args[0].split(',')] if ',' in args[0] or args[1] == '0' else list(range(int(args[0]), int(args[1]) + 1))
 out_path = args[2]
 # Titles the automatic clean-up gets wrong: n -> (artist, title) to search for.
-OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fifth Dimension')}
+OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fifth Dimension'),
+            251: ('Hugh Masekela', 'Home Is Where the Music Is'), 270: ('Lynyrd Skynyrd', 'Pronounced Leh-Nerd Skin-Nerd')}
+# Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
+YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
+            297: 'Iggy and the Stooges Raw Power 1973 full album'}
+# Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
+EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
+                   284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ']}
+VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
 BAD = re.compile(r'deluxe|anniversary|expanded|sessions|collector|super|box|live|bonus|mono|stereo|demo|remix', re.I)
@@ -40,8 +48,8 @@ def simple(s): return norm(re.sub(r'\(.*?\)|\[.*?\]|- .*$', '', s))
 
 ydl = yt_dlp.YoutubeDL({'quiet': True, 'extract_flat': 'in_playlist', 'skip_download': True, 'ignoreerrors': True, 'socket_timeout': 30})
 
-def yt_candidates(artist, title):
-    q = urllib.parse.quote(f'{artist} {title} album')
+def yt_candidates(artist, title, n=None):
+    q = urllib.parse.quote(YT_QUERY.get(n) or f'{artist} {title} album')
     info = ydl.extract_info(f'https://www.youtube.com/results?search_query={q}&sp=EgIQAw%253D%253D', download=False) or {}
     return [(e.get('id'), e.get('title')) for e in info.get('entries', []) if e and e.get('id') and str(e['id']).startswith(('PL', 'OLAK'))][:6]
 
@@ -76,14 +84,21 @@ for n in wanted:
         names = [t for t, _ in edition]
         rec['tracks'] = names; rec['durations'] = [clock(ms) if ms else None for _, ms in edition]
         best = []
-        for pid, ptitle in yt_candidates(artist, title):
+        for pid, ptitle in yt_candidates(artist, title, n) + [(p, 'hand-picked') for p in EXTRA_PLAYLISTS.get(n, [])]:
             info = ydl.extract_info(f'https://www.youtube.com/playlist?list={pid}', download=False) or {}
             ents = [e.get('title') for e in info.get('entries', []) if e]
             pos = score(names, ents)
             found = sum(p >= 0 for p in pos)
-            best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos})
+            best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos, 'entries': ents if ptitle == 'hand-picked' else None})
         best.sort(key=lambda b: (b['found'] - abs(b['size'] - len(names)) * .5, b['id'].startswith('OLAK')), reverse=True)
-        rec['youtube'] = best[:3]
+        rec['youtube'] = best[:3] + [b for b in best[3:] if b['title'] == 'hand-picked']
+        vids = []
+        for vid in VIDEOS.get(n, []):
+            v = ydl.extract_info(f'https://www.youtube.com/watch?v={vid}', download=False) or {}
+            vids.append({'id': vid, 'title': v.get('title'), 'duration': v.get('duration'), 'channel': v.get('channel'),
+                         'chapters': [[c.get('title'), int(c.get('start_time') or 0)] for c in v.get('chapters') or []],
+                         'description': (v.get('description') or '')[:3000]})
+        if vids: rec['videos'] = vids
     result[n] = rec
     print(n, meta['title'], '| editions', counts, '| best', (rec.get('youtube') or [{}])[0].get('id'), (rec.get('youtube') or [{}])[0].get('found'), flush=True)
     json.dump(result, open(out_path, 'w'), ensure_ascii=False, indent=1)

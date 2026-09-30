@@ -19,6 +19,7 @@ GENRES = {
     "ג'אז": 'Jazz', 'מוזיקת עולם': 'World Music', 'סול ופאנק': 'Soul & Funk', 'בלוז': 'Blues', 'רוק': 'Rock',
     'פופ': 'Pop', 'פרוגרסיב ופסיכדליה': 'Prog & Psychedelia', 'פאנק וניו וויב': 'Punk & New Wave',
     'רוק אלטרנטיבי': 'Alternative Rock', 'מטאל': 'Metal',
+    'היפ הופ': 'Hip Hop', 'רגאיי': 'Reggae', 'אלקטרוני': 'Electronic',
 }
 
 
