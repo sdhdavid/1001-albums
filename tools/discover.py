@@ -36,7 +36,7 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             406: ('Public Image Ltd', 'Public Image First Issue'), 410: ('Throbbing Gristle', 'D.o.A. The Third and Final Report'),
             415: ('Willie Colon', 'Siembra'), 417: ('Devo', 'Q: Are We Not Men? A: We Are Devo!'), 423: ('X-Ray Spex', 'Germfree Adolescents'),
             424: ('Brian Eno', 'Ambient 1 Music for Airports'), 429: ('Germs', 'GI'), 430: ('The B-52s', 'The B-52s'),
-            445: ('Cheap Trick', 'Cheap Trick at Budokan'), 448: ('Public Image Ltd', 'Metal Box'), 404: ('Big Star', 'Third Sister Lovers')}
+            445: ('Cheap Trick', 'Cheap Trick at Budokan'), 448: ('Public Image Ltd', 'Metal Box'), 404: ('Big Star', 'Third')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -57,7 +57,11 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    330: ['PLlziogY0fk9phBIR0pGySlfV92DebcKrc', 'PLfdMKJMGPPtwRzlKi6bCI1_mSv0cJkm4r', 'PL8SFNbbOmAYMsaQSCbbv5oC4aY5o_4t6s', 'PL0766CFA4CBD669D6'],
                    339: ['OLAK5uy_kzduVKq3Un4mx4ssOCWgbvq5AMRBvvNv4', 'OLAK5uy_nrjFfBfmaNOYAL09VgoinGl5IW59qFw2U', 'PLw61iWYSKReevacFkh4SlEafze-k8qXn0'],
                    364: ['OLAK5uy_kz-CwckiMEJh2jW1jU0-j0e9mi4vXxGPY', 'PL4ZqKOqeg4cVrjNjVVfB8UU36iO4enFVJ'],
-                   376: ['PLHTo__bpnlYX4wXCfUXsk8atvR0zpbpPN'], 400: ['PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb']}
+                   376: ['PLHTo__bpnlYX4wXCfUXsk8atvR0zpbpPN'], 400: ['PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb'],
+                   404: ['OLAK5uy_nEfRmzliYZ8KP0g2PRBjmQdJ6kPSuU86g', 'PLEvr99j7ruPzc3YXLXOnxQGVMw4iWAA6c', 'PLOJWuc3CN303QT7RnWuruRLJJxEnf6TUu', 'PLJvYa4hB_Ul-5gdY9UcBDXNbuLGhQKim_'],
+                   406: ['OLAK5uy_m2PSh2Vw6s0PdINtbPCyv81N5nMX3yNac', 'OLAK5uy_l8aOiSeHdlBuY6Uiiz2__J280s7Yh8o6k', 'PLw31gx_Af1g-uYdvOjGTI3T1WieKas-51'],
+                   431: ['OLAK5uy_niijN27zTnrqADCiWObap5-AK22HsC7qI', 'PLDCQnAwuT7e-oi-BQrVV8o5DrCiOVKZV1'],
+                   441: ['PLOJWuc3CN301YxZG_I_ZniHGfb4tl7vug', 'PLo2aaBamFnLTj8Ad0ymIx81CavqxNcjnB', 'PLmna7oCNK2MmgBrbPZPciNsXxAMQEjUao']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
