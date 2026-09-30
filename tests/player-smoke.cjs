@@ -132,6 +132,15 @@ async function boot({broken=false, noStorage=false, hash=''}={}) {
   assert.equal(n['track-list'].children.length,12);
   assert.equal(p.ids.list,added['22'].youtubePlaylist);
   n['track-list'].children[6].children[1].click();assert.equal(p.index,6);
+  // Quick play under the title and the now-playing bar while the player is out of sight.
+  { const data=added['22'];
+    assert.equal(n['quick-play'].textContent,'❚❚ השהיה','quick play follows the player');
+    assert.equal(n['mini-player'].hidden,false,'now-playing bar shows while playing');
+    assert.equal(n['mini-song'].textContent,data.tracks[6][0]);assert.match(n['mini-album'].textContent,/Gunfighter Ballads/);
+    n['mini-play'].click();assert.equal(n['mini-play'].textContent,'▶','bar pauses');assert.equal(n['quick-play'].textContent,'▶ המשך');
+    n['quick-play'].click();assert.equal(n['mini-play'].textContent,'❚❚','quick play resumes');
+    n['mini-next'].click();assert.equal(p.index,data.tracks[7][2],'bar skips to the next song');
+  }
   n['mode-short'].click();assert.equal(n['track-list'].children.length,3);
   n['mode-full'].click();
   await nx();assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
