@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a24">
+  <meta name="description" content="A listening journey through the albums of the 2005 edition, in book order, with a full and a focused listen.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="1001 Albums">
+  <meta property="og:title" content="1001 Albums You Must Hear">
+  <meta property="og:description" content="A listening journey, one album after another, in book order. Listen, read the story, tick it off.">
+  <meta property="og:url" content="https://sdhdavid.github.io/1001-albums/en/">
+  <meta property="og:image" content="https://sdhdavid.github.io/1001-albums/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>1001 Albums You Must Hear</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101a24'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%23b4e3d6' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23ff7958'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./en.css">
+  <script src="../app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#/" aria-label="1001 Albums — home"><span class="brand-mark" aria-hidden="true"></span><span>1001 Albums</span><span class="brand-sub">You Must Hear</span></a>
+      <a class="lang-switch" href="../" hreflang="he" lang="he">עברית</a>
+      <div class="topbar-links">
+        <nav class="topnav" aria-label="Navigation">
+          <a id="nav-home" class="topnav-link" href="#/">All albums</a>
+          <a id="nav-album" class="topnav-link" href="#/album/1">Current album</a>
+        </nav>
+        <button id="show-welcome" class="topbar-meta topbar-help" type="button">What is this?<span class="help-more"> <span class="meta-separator">/</span> How it works</span></button>
+      </div>
+    </header>
+    <section id="home" class="home" hidden aria-label="All albums">
+      <section id="welcome" class="welcome" hidden aria-labelledby="welcome-title">
+        <h2 id="welcome-title" class="welcome-title">1001 albums, one after another</h2>
+        <p class="welcome-text">About 15 years ago I bought a book in Brazil called <i>1001 Albums You Must Hear Before You Die</i>: albums from the 1950s through the 2000s, each with a short text about what makes it special and why it matters. This site is my way of finally working through it, one album at a time, and you are welcome to join me.</p>
+        <p class="book-en">📖 <span lang="en">1001 Albums You Must Hear Before You Die</span> · 2005 edition</p>
+        <ol class="welcome-steps">
+          <li><b>Pick</b> an album from the list</li>
+          <li><b>Read</b> its story</li>
+          <li><b>Listen</b> on YouTube or Spotify</li>
+          <li><b>Tick it ✓</b> and move on</li>
+        </ol>
+        <button id="close-welcome" class="welcome-button" type="button">Let’s start</button>
+        </section>
+      <section id="home-hero" class="home-hero" aria-label="The next album on the journey"></section>
+      <div class="home-tools">
+        <div class="search-wrap">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="10.7" cy="10.7" r="6.6"></circle><path d="m16 16 4.3 4.3"></path></svg>
+          <input id="home-search" type="search" placeholder="Search by album or artist" autocomplete="off" aria-label="Search by album or artist">
+        </div>
+        <select id="home-genre" class="genre-select home-genre" aria-label="Filter by genre" hidden></select>
+        <div class="home-chips" role="group" aria-label="What to show">
+          <button id="home-all" class="home-chip on" type="button" aria-pressed="true">All</button>
+          <button id="home-unheard" class="home-chip" type="button" aria-pressed="false">Not heard yet</button>
+        </div>
+      </div>
+      <div id="home-grid" class="home-grid"></div>
+      <p id="home-empty" class="list-empty" hidden>No albums match this search or genre.</p>
+    </section>
+    <main id="album-page" class="layout">
+      <aside id="catalog" class="catalog" aria-label="Album list">
+        <button id="catalog-toggle" class="catalog-toggle" type="button" aria-expanded="false" aria-controls="catalog-body">
+          <span class="toggle-label">All albums</span>
+          <span id="toggle-progress" class="toggle-progress"></span>
+        </button>
+        <div id="catalog-body" class="catalog-body">
+        <div class="catalog-heading">
+          <div>
+            <p class="eyebrow">The list</p>
+            <h1>The journey starts here</h1>
+          </div>
+          <span id="catalog-count" class="catalog-count">150</span>
+        </div>
+        <label class="search-label" for="album-search">Search by album or artist</label>
+        <div class="search-wrap">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="10.7" cy="10.7" r="6.6"></circle><path d="m16 16 4.3 4.3"></path></svg>
+          <input id="album-search" type="search" placeholder="e.g. Frank Sinatra" autocomplete="off">
+        </div>
+        <select id="genre-select" class="genre-select" aria-label="Filter by genre" hidden></select>
+        <div class="progress-block">
+          <p id="list-progress" class="progress-text">You've heard 0 of 0 albums</p>
+          <progress id="progress-meter" class="progress-meter" max="1" value="0" aria-labelledby="list-progress"></progress>
+        </div>
+        <div class="list-topline"><span id="list-now" class="list-now" dir="rtl"></span></div>
+        <div class="list-wrap">
+          <div id="album-list" class="album-list"></div>
+          <div id="decade-rail" class="decade-rail" aria-label="The decades of the journey"></div>
+        </div>
+        <p id="list-empty" class="list-empty" hidden>No albums match this search or genre.</p>
+        </div>
+      </aside>
+
+      <section class="detail" aria-label="The selected album">
+        <div id="loading" class="loading">Loading the album list…</div>
+        <div id="album-view" hidden>
+          <div class="detail-topline">
+            <div class="top-pager">
+              <button id="previous-album-top" class="top-pager-button" type="button" aria-label="Previous album" title="Previous album">←</button>
+              <span id="chapter" class="eyebrow"></span>
+              <button id="next-album-top" class="top-pager-button" type="button" aria-label="Next album" title="Next album">→</button>
+            </div>
+            <span id="edition-label" class="edition-label">The first albums</span>
+          </div>
+          <div class="title-grid">
+            <div class="title-copy">
+              <div class="position-row"><span id="album-number" class="album-number"></span><span id="album-year" class="album-year"></span></div>
+              <h2 id="album-title" dir="auto"></h2>
+              <p id="album-artist" class="artist" dir="auto"></p>
+              <ul id="album-genres" class="album-genres" aria-label="Genres" hidden></ul>
+              <button id="quick-play" class="quick-play" type="button">▶ Listen</button>
+            </div>
+            <div id="record-graphic" class="record-graphic" aria-hidden="true"><img id="album-cover" alt="" hidden><span id="record-number"></span></div>
+          </div>
+          <div class="detail-rule"></div>
+          <div class="note-grid">
+            <div>
+              <p class="eyebrow note-eyebrow">About the album</p>
+              <div id="album-note" class="album-note"></div>
+            </div>
+            <div class="listening-action">
+              <button id="mark-done" class="done-button" type="button" aria-pressed="false">Mark as listened</button>
+              <p id="storage-note">Your mark is saved in this browser.</p>
+            </div>
+          </div>
+          <div id="listening-panel" class="listen-panel">
+            <div class="panel-top">
+              <div><p id="listen-eyebrow" class="eyebrow">Playing here, inside the site</p><h3>What do you feel like hearing?</h3></div>
+              <div id="mode-switch" class="mode-switch" role="group" aria-label="Type of listen">
+                <button id="mode-full" class="mode-button active" type="button" aria-pressed="true">Full album</button>
+                <button id="mode-short" class="mode-button" type="button" aria-pressed="false">Focused listen</button>
+              </div>
+            </div>
+            <div id="service-switch" class="mode-switch service-switch" role="group" aria-label="Listening service">
+              <button id="service-youtube" class="mode-button active" type="button" aria-pressed="true">YouTube</button>
+              <button id="service-spotify" class="mode-button" type="button" aria-pressed="false">Spotify</button>
+            </div>
+            <p id="mode-explain" class="mode-explain player-intro"></p>
+            <div id="spotify-listening" class="spotify-listening" hidden>
+              <iframe id="spotify-player" title="Spotify album player" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+              <p class="embed-note">If you are signed in to Spotify in this browser with a subscription you hear the full songs; otherwise only short previews play. <a id="spotify-direct" target="_blank" rel="noopener noreferrer">Open in Spotify ↗</a> · <a id="spotify-search" target="_blank" rel="noopener noreferrer">Wrong edition? Search on Spotify ↗</a></p>
+            </div>
+            <div id="external-listening" class="external-listening" hidden>
+              <iframe id="album-youtube-player" title="YouTube album player" loading="lazy" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <p class="embed-note"><span id="album-source-note"></span> <a id="album-youtube-direct" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a></p>
+              <p>A good place to start:</p>
+              <ul id="external-highlights"></ul>
+              <a id="external-album-link" class="text-button" target="_blank" rel="noopener noreferrer">Search the album on YouTube Music ↗</a>
+            </div>
+            <div id="embedded-listening">
+            <div class="youtube-frame"><div id="youtube-player"></div></div>
+            <div class="transport" role="group" aria-label="Playback controls">
+              <button id="play-pause" class="save-button" type="button" disabled>Play the sequence ▶</button>
+              <button id="previous-track" class="cancel-button" type="button" disabled>Previous track</button>
+              <button id="next-track" class="cancel-button" type="button" disabled>Next track</button>
+            </div>
+            <p id="player-status" class="player-status" role="status">Loading the YouTube player…</p>
+            <div id="player-error" class="player-error" role="alert" hidden>
+              <p id="player-error-text"></p>
+              <button id="retry-player" type="button" class="cancel-button">Try again</button>
+            </div>
+            <section id="track-note" class="track-note" hidden aria-label="About the selected track">
+              <p class="eyebrow">About the track</p>
+              <h4 id="track-note-title" dir="auto"></h4>
+              <p id="track-note-text"></p>
+              <div id="track-note-sources"></div>
+            </section>
+            <div class="queue-heading"><h4>Up next</h4><span id="queue-count"></span></div>
+            <ol id="track-list" class="track-list"></ol>
+            <details id="focus-editor" hidden>
+              <summary>Choose the tracks for the focused listen</summary>
+              <p class="external-note">Pick at least one track. Tracks play in album order. Changing the selection stops playback and prepares a new sequence.</p>
+              <div id="focus-options" class="focus-options"></div>
+              <p id="focus-error" class="form-error" role="alert" hidden>Keep at least one track in the selection.</p>
+              <button id="reset-focus" type="button" class="text-button">Back to the site’s recommendations</button>
+            </details>
+            <p class="embed-note">The player is embedded from YouTube. Listening depends on YouTube’s availability and permissions; YouTube Music subscription benefits are not guaranteed inside the site. Keep this page open for continuous listening. <a id="youtube-direct" target="_blank" rel="noopener noreferrer">If the player doesn’t load, open on YouTube ↗</a></p>
+            </div>
+            <details id="premium-help" class="premium-help">
+              <summary>💡 Have a subscription but still hear ads or only short previews? <span class="help-link">How to fix it</span></summary>
+              <p>Your browser stops YouTube and Spotify from recognising your account inside another site. You allow it once, for this site only:</p>
+              <h5>On a computer (Chrome)</h5>
+              <ol>
+                <li>Copy the settings address: <code dir="ltr">chrome://settings/cookies</code> <button class="copy-button" type="button" data-copy="chrome://settings/cookies">Copy</button></li>
+                <li>Open a new tab, paste it into the address bar and press Enter.</li>
+                <li>Next to “Sites allowed to use third-party cookies” click “Add” and paste this site’s address: <code dir="ltr" class="site-host">sdhdavid.github.io</code> <button class="copy-button site-copy" type="button" data-copy="sdhdavid.github.io">Copy</button></li>
+                <li>Make sure you are signed in to YouTube or Spotify in the same browser, then refresh the page.</li>
+            </ol>
+              <h5>On Android (Chrome)</h5>
+              <ol>
+                <li>Menu ⋮ → Settings → Site settings → Third-party cookies.</li>
+                <li>Add an exception and paste this site’s address: <code dir="ltr" class="site-host">sdhdavid.github.io</code> <button class="copy-button site-copy" type="button" data-copy="sdhdavid.github.io">Copy</button></li>
+            </ol>
+              <h5>On iPhone and iPad</h5>
+              <p>Apple blocks this in every browser. The simplest thing is to press “Open on YouTube” or “Open in Spotify”, and the album opens in the app with your subscription.</p>
+            </details>
+          </div>
+          <div class="pager">
+            <button id="previous-album" type="button"><span aria-hidden="true">←</span> Previous album</button>
+            <button id="next-album" type="button">Next album <span aria-hidden="true">→</span></button>
+          </div>
+          <p class="scope-note">This is a demo of the English version: only the first 3 albums of the book are translated so far. Numbers and order follow the <a href="https://musicbrainz.org/series/4bc2a338-e1d8-4546-8a61-640da8aaf888" target="_blank" rel="noopener noreferrer">book’s list</a>. You can listen in the YouTube or the Spotify player; your choice is saved in the browser. For some albums the tracks are numbered by playlist order; for a few others the album is shown as one continuous recording. Availability of recordings may vary by region and YouTube permissions. The texts and listening recommendations are original to this site and are not the book’s text or track markings. Your listening marks are saved in the browser. An independent site, not affiliated with the book’s publisher or with YouTube.</p>
+        </div>
+        <div id="album-error" class="load-error" hidden>We couldn’t load this album. Check your connection and try again.</div>
+        <div id="load-error" class="load-error" hidden>We couldn’t load the album list. Refresh the page and try again.</div>
+      </section>
+    </main>
+    <footer class="feedback" aria-labelledby="feedback-title">
+      <h2 id="feedback-title" class="feedback-title">Feedback, suggestions and corrections</h2>
+      <p class="feedback-text">Something not working, a mistake in the text, an album you miss, or just a thought? Write to me here.</p>
+      <form id="feedback-form" class="feedback-form">
+        <textarea id="feedback-message" name="message" rows="4" required maxlength="3000" placeholder="Your message"></textarea>
+        <input id="feedback-name" name="name" type="text" maxlength="80" placeholder="Name (optional)" autocomplete="name">
+        <input id="feedback-reply" name="email" type="email" maxlength="120" placeholder="Email for a reply (optional)" autocomplete="email" dir="ltr">
+        <input name="_honey" type="text" tabindex="-1" autocomplete="off" class="feedback-honey" aria-hidden="true">
+        <button id="feedback-send" class="welcome-button" type="submit">Send</button>
+        <p id="feedback-status" class="feedback-status" role="status" aria-live="polite"></p>
+      </form>
+    </footer>
+    <div id="mini-player" class="mini-player" hidden role="region" aria-label="Now playing">
+      <button id="mini-open" class="mini-open" type="button" aria-label="Go to the album’s player">
+        <span id="mini-cover" class="mini-cover"></span>
+        <span class="mini-text"><span id="mini-song" class="mini-song" dir="auto"></span><span id="mini-album" class="mini-album" dir="auto"></span></span>
+      </button>
+      <div class="mini-controls">
+        <button id="mini-previous" class="mini-button" type="button" aria-label="Previous song">⏮</button>
+        <button id="mini-play" class="mini-button mini-main" type="button" aria-label="Pause">❚❚</button>
+        <button id="mini-next" class="mini-button" type="button" aria-label="Next song">⏭</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
