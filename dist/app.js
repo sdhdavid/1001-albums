@@ -13,7 +13,7 @@ function writeStore(key, value) {
     $('storage-note').textContent = 'השמירה בדפדפן חסומה כרגע. הבחירה תישמר רק עד לרענון.';
   }
 }
-let albums = [], active = 0, mode = 'full', player = null, ready = false;
+let albums = [], bookOrder = [], active = 0, mode = 'full', player = null, ready = false;
 let queue = [], queueIndex = 0, playerTimer = null, chapterTimer = null, state = -1;
 let guideRenderKey = ''; 
 let service = readStore(SERVICE_KEY, 'youtube') === 'spotify' ? 'spotify' : 'youtube';
@@ -250,6 +250,7 @@ function renderList() {
     const marker = a.decade !== lastDecade ? [element('div', 'decade-mark', decadeLabel(a.decade))] : [];
     lastDecade = a.decade;
     const b = element('button', 'album-row' + (a === currentAlbum() ? ' active' : ''));
+    b.dataset.n = a.n; b.dataset.decade = a.decade;
     b.type = 'button'; b.setAttribute('aria-current', String(a === currentAlbum()));
     const titles = element('span', 'row-titles');
     const title = element('span', 'row-title', a.title); title.dir = 'auto';
@@ -266,7 +267,43 @@ function renderList() {
   $('list-progress').textContent = `האזנת ל־${heard} מתוך ${albums.length} אלבומים`;
   $('progress-meter').max = albums.length; $('progress-meter').value = heard;
   $('toggle-progress').textContent = `${heard} מתוך ${albums.length}`;
+  updateDecadeNow();
 }
+// Where am I in the book? The line above the list names the decade (and year) of the album at the top of the list,
+// and a thin rail beside the list shows every decade of the whole book (sized by its number of albums), how much of
+// each decade is on the site so far, and a marker for the current position. Clicking a decade jumps the list to it.
+const railParts = [];
+function buildDecadeRail() {
+  const rail = $('decade-rail'), decades = [...new Set(bookOrder.map(a => a.decade))];
+  rail.replaceChildren(...decades.map(d => {
+    const inBook = bookOrder.filter(a => a.decade === d), onSite = inBook.filter(a => a.ready);
+    const part = element('button', 'rail-part'); part.type = 'button'; part.style.flexGrow = inBook.length;
+    part.title = `${decadeLabel(d)} · ${onSite.length} מתוך ${inBook.length} אלבומים באתר`;
+    part.setAttribute('aria-label', part.title); part.disabled = !onSite.length;
+    const bar = element('span', 'rail-bar'), fill = element('span', 'rail-fill'), mark = element('span', 'rail-mark');
+    fill.style.height = `${onSite.length / inBook.length * 100}%`; bar.append(fill, mark);
+    part.append(element('span', 'rail-label', d < 2000 ? String(d - 1900) : '00'), bar);
+    part.addEventListener('click', () => jumpToDecade(d));
+    railParts.push({d, part, mark, inBook}); return part;
+  }));
+}
+function jumpToDecade(d) {
+  const list = $('album-list'), row = [...list.querySelectorAll('.album-row')].find(b => String(b.dataset.decade) === String(d));
+  if (row) list.scrollTo({top: row.offsetTop - list.offsetTop - (row.previousElementSibling?.classList.contains('decade-mark') ? 30 : 0), behavior: 'smooth'});
+}
+function updateDecadeNow() {
+  const list = $('album-list'), box = list.getBoundingClientRect();
+  const row = [...list.querySelectorAll('.album-row')].find(b => b.getBoundingClientRect().bottom > box.top + 8);
+  const a = row && albums.find(x => String(x.n) === String(row.dataset.n));
+  $('list-now').replaceChildren(...(a ? [element('bdi', 'now-decade', decadeLabel(a.decade)), element('span', 'now-year', `· ${a.year}`)] : []));
+  for (const {d, part, mark, inBook} of railParts) {
+    const here = !!a && a.decade === d; part.classList.toggle('current', here);
+    if (here) mark.style.top = `${inBook.indexOf(a) / Math.max(1, inBook.length - 1) * 100}%`;
+  }
+}
+let decadeFrame = 0;
+$('album-list').addEventListener('scroll', () => { if (!decadeFrame) decadeFrame = requestAnimationFrame(() => { decadeFrame = 0; updateDecadeNow(); }); }, {passive: true});
+
 function renderDone() {
   const yes = done.has(currentAlbum().n);
   $('mark-done').setAttribute('aria-pressed', String(yes));
@@ -635,7 +672,9 @@ async function init() {
     if (!response.ok) throw new Error('Data unavailable');
     const catalog = (await response.json()).sort((a, b) => a.n - b.n);
     markDecades(catalog);
+    bookOrder = catalog;
     albums = catalog.filter(a => a.ready);
+    buildDecadeRail();
     if (!albums.length) throw new Error('No albums');
     await loadAlbum(albums[0]);
     $('loading').hidden = true; $('album-view').hidden = false;

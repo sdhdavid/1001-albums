@@ -1,7 +1,10 @@
 // Small DOM/YouTube contract harness. No external videos or browser are loaded.
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
 class El {
-  constructor(tag='div') { this.tag=tag; this.children=[]; this.listeners={}; this.attributes={}; this.hidden=false; this.disabled=false; this.value=''; this.classList={toggle(){}}; }
+  constructor(tag='div') { this.tag=tag; this.children=[]; this.listeners={}; this.attributes={}; this.hidden=false; this.disabled=false; this.value=''; this.dataset={}; this.style={setProperty(){}}; const cls=this.classSet=new Set(); this.classList={toggle(c,on){ if(on??!cls.has(c)) cls.add(c); else cls.delete(c); },contains:c=>cls.has(c)}; }
+  querySelectorAll(sel) { const c=sel.slice(1); return this.children.filter(x=>(x.className||'').split(' ').includes(c)); }
+  getBoundingClientRect() { return {top:0,bottom:100}; }
+  scrollTo(o) { this.scrolledTo=o; }
   append(...els) { this.children.push(...els); }
   replaceChildren(...els) { this.children=els; }
   setAttribute(k,v) { this.attributes[k]=v; }
@@ -22,7 +25,7 @@ async function boot({broken=false, noStorage=false}={}) {
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
   const storage=new Map([['album-journey-2005-done','[1,200]']]);
   const calls=[], fetched=[]; let mock, failAlbum=null;
-  const ctx={console, location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
+  const ctx={console, requestAnimationFrame:f=>setImmediate(f), location:{origin:'https://example.test'},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
     document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El(),addEventListener:(k,fn)=>{nodes['__'+k]=fn;}},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
     fetch:async url=>(fetched.push(url),{ok:!broken&&!(failAlbum&&url.includes(`/${failAlbum}.json`)),json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2).replace(/\?.*$/,''),'utf8'))}),
@@ -45,6 +48,12 @@ async function boot({broken=false, noStorage=false}={}) {
   const rows=()=>n['album-list'].children.filter(c=>c.tag==='button').length;
   const nx=async()=>{n['next-album'].click();await flush();}, pv=async()=>{n['previous-album'].click();await flush();};
   assert.deepEqual(n['album-list'].children.filter(c=>c.tag==='div').map(c=>c.textContent),['שנות ה־50','שנות ה־60'],'decade markers in book order');
+  // Decade line above the list and the decade rail beside it.
+  assert.equal(n['list-now'].children[0].textContent,'שנות ה־50','decade of the album at the top of the list');
+  const rail=n['decade-rail'].children;assert.equal(rail.length,6,'one rail part per decade of the book');
+  assert.equal(rail[0].disabled,false);assert.equal(rail[2].disabled,true,'decades not on the site yet cannot be clicked');
+  assert(rail[0].classSet.has('current'),'current decade highlighted');
+  rail[1].click();assert(n['album-list'].scrolledTo,'clicking a decade scrolls the list');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
   assert.equal(rows(),150); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
