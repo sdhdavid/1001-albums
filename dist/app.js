@@ -270,7 +270,7 @@ function renderList() {
     b.addEventListener('click', () => selectAlbum(albums.indexOf(a))); return [...marker, b];
   }));
   $('list-empty').hidden = visible.length > 0;
-  $('catalog-count').textContent = albums.length;
+  $('catalog-count').textContent = albums.length; $('edition-label').textContent = `${albums.length} האלבומים הראשונים`;
   const heard = albums.filter(a => done.has(a.n)).length;
   $('list-progress').textContent = `האזנת ל־${heard} מתוך ${albums.length} אלבומים`;
   $('progress-meter').max = albums.length; $('progress-meter').value = heard;
