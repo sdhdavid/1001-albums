@@ -46,7 +46,11 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
                    310: ['OLAK5uy_lhwiy3qPEpBwBTOpyy-KK8Pmcn7x9fI2k', 'OLAK5uy_m0wBxaewH-lbo6eGyZQUbE-fzlUeug7fM', 'PL4wwexJLSb3mF35yaNEVCZiX68Lb9FnEm'],
                    330: ['PLlziogY0fk9phBIR0pGySlfV92DebcKrc', 'PLfdMKJMGPPtwRzlKi6bCI1_mSv0cJkm4r', 'PL8SFNbbOmAYMsaQSCbbv5oC4aY5o_4t6s', 'PL0766CFA4CBD669D6'],
-                   339: ['OLAK5uy_kzduVKq3Un4mx4ssOCWgbvq5AMRBvvNv4', 'OLAK5uy_nrjFfBfmaNOYAL09VgoinGl5IW59qFw2U', 'PLw61iWYSKReevacFkh4SlEafze-k8qXn0']}
+                   339: ['OLAK5uy_kzduVKq3Un4mx4ssOCWgbvq5AMRBvvNv4', 'OLAK5uy_nrjFfBfmaNOYAL09VgoinGl5IW59qFw2U', 'PLw61iWYSKReevacFkh4SlEafze-k8qXn0'],
+                   364: ['OLAK5uy_kz-CwckiMEJh2jW1jU0-j0e9mi4vXxGPY', 'PL4ZqKOqeg4cVrjNjVVfB8UU36iO4enFVJ'],
+                   376: ['PLHTo__bpnlYX4wXCfUXsk8atvR0zpbpPN'], 400: ['PLNPGM2D7aODeIwtlLA51o7d-DAkqffyrb']}
+# Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
+SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
@@ -124,6 +128,13 @@ for n in wanted:
             ents = [e for e in info.get('entries', []) if e]
             rec['youtube'].append({'id': pid, 'title': 'hand-picked', 'size': len(ents), 'entries': [e.get('title') for e in ents],
                                    'durations': [e.get('duration') for e in ents]})
+    for sid in SPOTIFY_CHECK.get(n, []):
+        try:
+            import urllib.request as ur
+            page = ur.urlopen(ur.Request(f'https://open.spotify.com/embed/album/{sid}', headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
+            rec.setdefault('spotifyCheck', {})[sid] = re.findall(r'"name":"([^"]{1,80})"', page)[:25] + re.findall(r'"releaseDate":\{"isoString":"([^"]+)"', page)[:1]
+        except Exception as e:
+            rec.setdefault('spotifyCheck', {})[sid] = [str(e)]
     result[n] = rec
     print(n, meta['title'], '| editions', counts, '| best', (rec.get('youtube') or [{}])[0].get('id'), (rec.get('youtube') or [{}])[0].get('found'), flush=True)
     json.dump(result, open(out_path, 'w'), ensure_ascii=False, indent=1)
