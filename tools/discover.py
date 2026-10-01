@@ -162,6 +162,8 @@ WANT.update({
     750: ['Time Becomes', 'Planet of the Shapes', 'Lush 3-1', 'Lush 3-2', 'Impact (The Earth Is Burning)', 'Remind',
           'Walk Now...', 'Monday', 'Halcyon + On + On', 'Input Out']})
 # 751–800 second pass
+# 751–800 third pass
+EXTRA_PLAYLISTS.update({751: ['PLUEMihO9lT7_LFYYRqJ-3mYsTAsM8AUqi', 'PLQeroY7XkiFGixwefr9FdTtSgOTrb6NP-', 'PLabhUJtJ9ji-BajW4D2QLdOSx6ojorKL5', 'PLhE094uPOcyb3b7DPWiwi1jhledlqp9AP']})
 SPOTIFY_TRACKS.update({754: ['0SXXHxlC61nrSODzxjcEti', '64ceFPkKvlMxnVpGHdkmGU'], 775: ['39MevbqnkqtayGeHujte3n', '4YJoVxtIVoDL71wGwrqQ2j', '1XJ1LUBZDUFf5f6v38562R']})
 WANT.update({
     751: ['Bathtub', 'G Funk Intro', 'Gin and Juice', 'W Balls', 'Tha Shiznit', 'Lodi Dodi', 'Murder Was the Case', 'Serial Killa',

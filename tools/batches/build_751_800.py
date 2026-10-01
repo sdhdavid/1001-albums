@@ -6,11 +6,11 @@ sys.path.insert(0, 'tools')
 from stories_751_800 import STORIES
 
 SPOTIFY = {
- 751:'2QioUoh1jheynkUHP4XsCN', 752:'7GxooS45LFQZF53tECVnMV', 753:'1PtEKZ36z09npQmwYN9PUT', 754:'', 755:'46aDAIGFo18w04DFCaDCVi',
+ 751:'2QioUoh1jheynkUHP4XsCN', 752:'7GxooS45LFQZF53tECVnMV', 753:'1PtEKZ36z09npQmwYN9PUT', 754:'2tdJzRmoFwJME9skwrPGew', 755:'46aDAIGFo18w04DFCaDCVi',
  756:'2zRDp36FDBbOJDihTwQpKa', 757:'4YCztuSJdrQJyKh0JJ2QXJ', 758:'6WWAC3ZEROk0OlVsubRbbd', 759:'3F8CTobvWDa46GhS0WkXYh', 760:'3539EbNgIdEDGBKkUf4wno',
  761:'1fDvCeSUdfVvMhOxfcl8V0', 762:'0cszZwl0JRKHBdcFLfNX3T', 763:'6lfjbwFGzQ6aSNP1N3JlT8', 764:'5BZDMsWJJImD6r28jzNnYj', 765:'6f5NJs3LRq8IvKnAiHgdvk',
  766:'5eg56dCpFn32neJak2vk0f', 767:'7AfNzrLzBmnMb8BgeQjLDx', 768:'4ePl0meknOkJ892O9yszEY', 769:'5mDRsQeGyFC5tM3sVbvj5N', 770:'7AHbaRIYnilUwe981nZpmi',
- 771:'0YS25Dr3hMtMFlVTfuvzl4', 772:'6K6iycuUPM1HT5sxnwp6Ek', 773:'0pOL9eM3BPolgD5jjQInAk', 774:'2Rwf2nPYZQ9aIe4QXACTC7', 775:'',
+ 771:'0YS25Dr3hMtMFlVTfuvzl4', 772:'6K6iycuUPM1HT5sxnwp6Ek', 773:'0pOL9eM3BPolgD5jjQInAk', 774:'2Rwf2nPYZQ9aIe4QXACTC7', 775:'5CnZjFfPDmxOX7KnWLLqpC',
  776:'4ncSRTT0Ry4ARIvqirmInT', 777:'7nn1gmiiywBul10LxUppyb', 778:'5vzC8CgZMeaBubitu2rK6m', 779:'7yQtjAjhtNi76KRu05XWFS', 780:'2biXiNkJXdREKZwx4HrhZE',
  781:'1To7kv722A8SpZF789MZy7', 782:'3nJnyDV8fwFpffo0EyHQto', 783:'4qhJwKBr2ksxAUFjfJd3rb', 784:'4uG8q3GPuWHQlRbswMIRS6', 785:'3Xr3M24El1tcnxa0LQRr2o',
  786:'7FH4wo4ceRR39By76ONfuw', 787:'3stVzMomzhVGw0prDxLY0K', 788:'7Hj7jLvac1sBCDnvP6qBYd', 789:'7btiyhWzUfzxN3ijSiBpC8', 790:'09LdvC3k8ybEmyeiShUWw2',
@@ -22,7 +22,7 @@ SPOTIFY = {
 PLAYLIST_CHOICE = {}
 # #553: iTunes has no lengths, so they come from the hand-picked playlist (seconds)
 LENGTHS_FROM_PLAYLIST = {}
-RENAME = {'Papa Bohnheur': 'Papa Bonheur', 'Koweit Rive Gauches': 'Koweït Rive Gauche', 'Desespoir': 'Désespoir', 'Conte De Fees': 'Conte de fées', 'Passing Me By': "Passin' Me By", 'When You Gonna Learn? (Digeridoo)': 'When You Gonna Learn?', 'Go West [Hidden Track]': 'Go West', 'Chemical World (Including "Intermission")': 'Chemical World', 'Resigned (Includes "Commercial Break")': 'Resigned', 'Im Going To Spain': "I'm Going to Spain", 'Ladybird': 'Ladybird (Green Grass)', 'Mr Wendal': 'Mr. Wendal', 'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
+RENAME = {'Hell Is Around the Corner': 'Hell Is Round the Corner', 'Papa Bohnheur': 'Papa Bonheur', 'Koweit Rive Gauches': 'Koweït Rive Gauche', 'Desespoir': 'Désespoir', 'Conte De Fees': 'Conte de fées', 'Passing Me By': "Passin' Me By", 'When You Gonna Learn? (Digeridoo)': 'When You Gonna Learn?', 'Go West [Hidden Track]': 'Go West', 'Chemical World (Including "Intermission")': 'Chemical World', 'Resigned (Includes "Commercial Break")': 'Resigned', 'Im Going To Spain': "I'm Going to Spain", 'Ladybird': 'Ladybird (Green Grass)', 'Mr Wendal': 'Mr. Wendal', 'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
           "Honky Tonk Angels' Medley: In the Evening (When the Sun Goes Down) / You Nearly Lose Your Mind / Blues Stay Away from Me": "Honky Tonk Angels' Medley",
           'Buenos Noches From a Lonely Room (She Wore Red Dresses)': 'Buenas Noches from a Lonely Room (She Wore Red Dresses)', 'Pig’s in Zen': 'Pigs in Zen',
           'Bye Bye Bad Man': 'Bye Bye Badman', 'Trilogy: a) The Wonder / B) Hyperstation / Z) Eliminator Jr.': 'Trilogy',
@@ -48,9 +48,9 @@ RENAME = {'Papa Bohnheur': 'Papa Bonheur', 'Koweit Rive Gauches': 'Koweït Rive 
           'She Is Like Heroin to Me': "She's Like Heroin to Me", 'Abstieg and Zerfall': 'Abstieg & Zerfall', 'Schmerzen hören': 'Hören mit Schmerzen',
           'Jet`m': "Jet'm", 'California über alles': 'California Über Alles', 'I was a Teenage Werewolf': 'I Was a Teenage Werewolf',
           'Rock On the Moon': 'Rock on the Moon', 'Steh Auf Berlin': 'Steh auf Berlin', 'Draussen Ist Feindlich': 'Draußen ist feindlich', 'The Queen of Eyes': 'Queen of Eyes', 'Kick in the Eye 2': 'Kick in the Eye', 'Of Lillies and Remains': 'Of Lilies and Remains'}
-KEEP_FIRST = {}   # bonus tracks cut
-DROP = {}   # songs not on the original LP
-POSITION = {}     # playlist positions the title matching missed
+KEEP_FIRST = {755: 13, 770: 11, 794: 15}   # bonus tracks cut
+DROP = {778: [0, 7]}   # songs not on the original LP
+POSITION = {774: {11: 11}, 796: {5: 5}, 799: {11: 11}}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
 BY_PLAYLIST = set()
@@ -66,6 +66,7 @@ VIDEOS = {}
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
     s = re.sub(r'\s*\(with [^)]*\)', '', s)
+    s = re.sub(r'\s*\[with [^\]]*\]', '', s)
     s = re.sub(r'\s*[\(\[]feat\.[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s*[\(\[][^)\]]*(remaster|mono|stereo|version|edit|mix|bonus|single|live|\b(19|20)\d\d\b)[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s+-\s+(\d{4}\s+)?(remaster|mono|stereo|single|live).*$', '', s, flags=re.I)
