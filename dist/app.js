@@ -232,27 +232,43 @@ function focusedIds(a) {
 function element(tag, className, text) {
   const el = document.createElement(tag); el.className = className; if (text !== undefined) el.textContent = text; return el;
 }
-// Album covers come from Spotify's public oEmbed endpoint and are cached per
-// browser. Anything that fails simply leaves the numbered placeholder in place.
+// Album covers: the catalog carries each cover's image address (fetched ahead of time by the "Fetch covers"
+// workflow). Albums without one fall back to Spotify's public oEmbed endpoint, a few requests at a time and
+// pausing when Spotify answers "too many requests"; results are cached per browser. Anything that fails
+// simply leaves the numbered placeholder in place.
 const storedCovers = readStore(COVERS_KEY, {});
 const coverCache = storedCovers && typeof storedCovers === 'object' && !Array.isArray(storedCovers) ? storedCovers : {};
-const coverPending = new Map(), coverRows = new WeakMap();
+const coverPending = new Map(), coverRows = new WeakMap(), coverWaiting = [];
+let coverActive = 0, coverPausedUntil = 0;
 let catalogOpen = false;
+function nextCoverRequest() {
+  const wait = coverPausedUntil - Date.now();
+  if (wait > 0) { setTimeout(nextCoverRequest, wait); return; }
+  while (coverActive < 3 && coverWaiting.length) {
+    const job = coverWaiting.shift(); coverActive++;
+    job().finally(() => { coverActive--; nextCoverRequest(); });
+  }
+}
 function coverFor(a) {
   const id = a.spotifyAlbum;
+  if (typeof a.cover === 'string' && a.cover.startsWith('https://')) return Promise.resolve(a.cover);
   if (!id) return Promise.resolve(null);
   if (typeof coverCache[id] === 'string') return Promise.resolve(coverCache[id]);
-  if (!coverPending.has(id)) coverPending.set(id, (async () => {
-    try {
-      const response = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(`https://open.spotify.com/album/${id}`)}`);
-      if (!response.ok) return null;
-      const url = (await response.json()).thumbnail_url;
-      if (typeof url !== 'string' || !url.startsWith('https://')) return null;
-      coverCache[id] = url;
-      try { localStorage.setItem(COVERS_KEY, JSON.stringify(coverCache)); } catch { /* cache is optional */ }
-      return url;
-    } catch { return null; }
-  })());
+  if (!coverPending.has(id)) coverPending.set(id, new Promise(resolve => {
+    coverWaiting.push(async () => {
+      try {
+        const response = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(`https://open.spotify.com/album/${id}`)}`);
+        if (response.status === 429) { coverPausedUntil = Date.now() + 60000; coverPending.delete(id); return resolve(null); }
+        if (!response.ok) return resolve(null);
+        const url = (await response.json()).thumbnail_url;
+        if (typeof url !== 'string' || !url.startsWith('https://')) return resolve(null);
+        coverCache[id] = url;
+        try { localStorage.setItem(COVERS_KEY, JSON.stringify(coverCache)); } catch { /* cache is optional */ }
+        resolve(url);
+      } catch { resolve(null); }
+    });
+    nextCoverRequest();
+  }));
   return coverPending.get(id);
 }
 function paintRowCover(box, a) {
