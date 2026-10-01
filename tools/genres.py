@@ -83,5 +83,10 @@ TAGS = {
   721: [ALT, PUNK], 722: [ALT, BLUES], 723: [ALT, PUNK], 724: ["היפ הופ", EL], 725: ["מטאל", EL], 726: [POP, ALT], 727: ["היפ הופ"], 728: ["מטאל"], 729: ["מטאל", ALT], 730: [ALT, ROCK],
   731: [WORLD], 732: [ALT, PUNK], 733: [ALT, ROCK], 734: [ROCK, FOLK], 735: [ALT, ROCK], 736: [ALT, POP], 737: [ALT], 738: [ALT, SOUL], 739: [POP, ROCK], 740: [ALT, FOLK],
   741: [ALT, PUNK], 742: [SOUL, JAZZ], 743: [POP, EL], 744: [ALT, PUNK], 745: [ALT, POP], 746: [ROCK, POP], 747: [PUNK, ALT], 748: ["היפ הופ"], 749: [POP, EL], 750: [EL],
+  751: ["היפ הופ"], 752: [ALT], 753: [ALT, PSYCH], 754: [EL], 755: ["היפ הופ"], 756: [ALT, ROCK], 757: [ALT, PUNK], 758: ["היפ הופ"], 759: [ALT], 760: [EL, "היפ הופ"],
+  761: [EL], 762: ["היפ הופ"], 763: ["היפ הופ", PUNK], 764: [ROCK, POP], 765: [ALT, POP], 766: [SOUL, "היפ הופ"], 767: [ROCK, ALT], 768: ["מטאל", ALT], 769: [PUNK], 770: [PUNK, ALT],
+  771: [ALT, POP], 772: [BLUES, "היפ הופ"], 773: [WORLD, BLUES], 774: [ALT, PUNK], 775: [EL, "היפ הופ"], 776: [ALT, PUNK], 777: [ALT, ROCK], 778: ["היפ הופ"], 779: [ROCK, FOLK], 780: [EL],
+  781: [ALT, FOLK], 782: [ALT, EL], 783: [EL], 784: [PUNK, POP], 785: [ALT, ROCK], 786: [ALT, EL], 787: [EL, "היפ הופ"], 788: [EL, "היפ הופ"], 789: ["היפ הופ"], 790: [ALT, ROCK],
+  791: [PUNK, ROCK], 792: [EL], 793: ["היפ הופ"], 794: [PUNK, ALT], 795: [ROCK, POP], 796: [ALT, ROCK], 797: [ALT], 798: [WORLD, JAZZ], 799: [ALT, PSYCH], 800: ["היפ הופ"],
 }
 assert all(l in LABELS for v in TAGS.values() for l in v)
