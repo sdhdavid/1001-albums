@@ -5,7 +5,7 @@ const {chromium} = require('playwright');
 const A = Number(process.env.ALBUM || 101);
 const wait = ms => new Promise(r => setTimeout(r, ms));
 (async () => {
-  const browser = await chromium.launch({args: ['--autoplay-policy=no-user-gesture-required']});
+  const browser = await chromium.launch({channel: process.env.CHANNEL || undefined, headless: !process.env.CHANNEL, args: ['--autoplay-policy=no-user-gesture-required']});
   const page = await browser.newPage();
   page.on('console', m => { if (m.type() === 'error') console.log('console error:', m.text().slice(0, 200)); });
   page.on('pageerror', e => console.log('page error:', e.message));
@@ -14,7 +14,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
       try {
         const d = player?.getVideoData?.() || {};
         return {shown: currentAlbum().n, playing: playingAlbum?.n, state, ytState: player?.getPlayerState?.(), video: d.title, videoId: d.video_id,
-          ytList: (player?.getPlaylist?.() || []).slice(0, 3), ytIndex: player?.getPlaylistIndex?.(), status: document.getElementById('player-status').textContent,
+          ytList: (player?.getPlaylist?.() || []).slice(0, 3), ytIndex: player?.getPlaylistIndex?.(), status: document.getElementById('player-status').textContent, error: document.getElementById('player-error').hidden ? '' : document.getElementById('player-error-text').textContent,
           shownList: currentAlbum().youtubePlaylist, playingList: playingAlbum?.youtubePlaylist};
       } catch (e) { return {error: String(e)}; }
     });
