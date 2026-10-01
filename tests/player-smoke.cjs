@@ -100,6 +100,17 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     v.listeners.touchend({touches:[],changedTouches:[{clientX:190+dx,clientY:200,identifier:1}]});await flush();
     assert.equal(s.ctx.location.hash,`#/album/${n}`,'swipe stops at catalog boundaries');
   }
+  // Album X playing, album Y on screen: ▶ in the video frame must not bring X back once Y is meant to play.
+  { const s=await boot({hash:'#/album/2'});await flush();await flush();s.player.options.events.onReady();
+    const listOf=n=>JSON.parse(fs.readFileSync(`dist/albums/${n}.json`,'utf8')).tracks[0][1], last=()=>s.calls.filter(c=>c[0]==='load'||c[0]==='cue').at(-1);
+    s.nodes['quick-play'].click();assert.deepEqual(last().slice(0,2),['cue',listOf(2)]);assert.equal(s.calls.at(-1)[0],'playAt');
+    s.nodes['next-album'].click();await flush();assert.deepEqual(last().slice(0,2),['cue',listOf(2)],'browsing keeps the playing album');
+    s.nodes['mini-play'].click();assert.deepEqual(last().slice(0,2),['cue',listOf(2)],'pausing from the bottom bar keeps it');
+    s.nodes['mini-play'].click();s.player.options.events.onStateChange({data:2});
+    assert.deepEqual(last().slice(0,2),['cue',listOf(3)],'pausing inside the video frame hands the player to the album on screen');
+    s.nodes['quick-play'].click();assert.equal(s.calls.at(-1)[0],'playAt','then ▶ plays the album on screen');
+    s.nodes['play-pause'].click();s.nodes['next-album'].click();await flush();
+    assert.deepEqual(last().slice(0,2),['cue',listOf(4)],'a paused album does not hold the player when moving on'); }
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
   const rows=()=>n['album-list'].children.filter(c=>c.tag==='button').length;
   const nx=async()=>{p.options.events.onStateChange({data:5});n['next-album'].click();await flush();}, pv=async()=>{p.options.events.onStateChange({data:5});n['previous-album'].click();await flush();};

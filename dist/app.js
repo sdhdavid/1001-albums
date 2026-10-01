@@ -575,7 +575,9 @@ function renderMode() {
   if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
   listQueue = mode === 'full' ? a.tracks : a.tracks.filter(t => selected.includes(trackKey(a, t)));
   // Browsing to another album while music plays leaves the music alone (the same album keeps it too, unless its songs changed).
-  const keep = busy() && (playingAlbum !== a || (listQueue.length === queue.length && listQueue.every((t, i) => t === queue[i])));
+  // A paused album doesn't hold the player: the shown album takes it, so ▶ in the video itself plays what is on screen.
+  const keep = busy() && (playingAlbum !== a ? [1, 3].includes(state)
+    : listQueue.length === queue.length && listQueue.every((t, i) => t === queue[i]));
   if (keep && playingAlbum === a) listQueue = queue;
   if (!keep) { playingAlbum = a; playingMode = mode; queue = listQueue; queueIndex = 0; state = -1; }
   for (const m of ['full', 'short']) {
@@ -653,7 +655,7 @@ function updateQuickPlay() {
 $('quick-play').addEventListener('click', () => {
   if (service === 'spotify' || !ready) { revealPlayer(); return; }
   if (!showingPlaying()) startShown(firstPlayable(0, 1, currentAlbum(), listQueue));
-  else if (state === 1) { player.pauseVideo(); return; }
+  else if (state === 1) { pauseOwn(); return; }
   else if (state === 2) player.playVideo(); else playAt(firstPlayable());
   revealPlayer();
 });
@@ -684,7 +686,7 @@ function updateMiniPlayer() {
   $('mini-next').disabled = firstPlayable(queueIndex + 1) < 0;
   if (miniCoverFor !== a.n) { miniCoverFor = a.n; const box = $('mini-cover'); box.replaceChildren(); paintRowCover(box, a); }
 }
-$('mini-play').addEventListener('click', () => { if (state === 1) player.pauseVideo(); else player.playVideo(); });
+$('mini-play').addEventListener('click', () => { if (state === 1) pauseOwn(); else player.playVideo(); });
 $('mini-previous').addEventListener('click', () => playAt(firstPlayable(queueIndex - 1, -1)));
 $('mini-next').addEventListener('click', () => playAt(firstPlayable(queueIndex + 1)));
 $('mini-open').addEventListener('click', async () => {
@@ -778,8 +780,23 @@ function announce() {
   if (state === 1) { clearError(); $('player-status').textContent = S.nowPlaying(queueIndex + 1, queue.length, title); }
   if (state === 2 && $('player-error').hidden) $('player-status').textContent = S.pausedTitle(title);
 }
+// Pauses the site asks for itself (its buttons, the bottom bar, errors); any other pause came from the video
+// frame or the phone's media controls.
+let ownPause = false;
+function pauseOwn() { ownPause = true; player.pauseVideo(); }
+// The video frame shows the album that is playing even while another album is on screen. Pausing it there
+// (from inside the frame) hands the player to the album on screen, so pressing ▶ again plays that one.
+function handOverToShown() {
+  if (service !== 'youtube' || view !== 'album' || showingPlaying() || currentAlbum().externalAlbum) return false;
+  // Only a pause someone could have made in the frame: the page is in front and the frame is on screen
+  // (phones pause the video by themselves when the browser goes to the background).
+  if (document.visibilityState === 'hidden' || (!panelVisible && 'IntersectionObserver' in window)) return false;
+  playingAlbum = currentAlbum(); playingMode = mode; queue = listQueue; queueIndex = 0; state = -1;
+  cueQueue(); announce(); updateMiniPlayer(); return true;
+}
 function onStateChange(event) {
   state = event.data;
+  if (state === 2) { const own = ownPause; ownPause = false; if (!own && handOverToShown()) return; }
   const a = playingAlbum;
   if (a?.youtubePlaylist && (state === 5 || state === 1)) resolvePlaylist(a);
   if (a?.fullAlbumVideo) {
@@ -810,7 +827,7 @@ function onStateChange(event) {
 }
 function playerError(event) {
   const messages = S.errors;
-  player.pauseVideo(); state = 2;
+  ownPause = true; player.pauseVideo(); state = 2;
   showError((messages[event.data] || S.errorDefault) + S.errorCode(event.data));
   updateControls();
 }
@@ -851,7 +868,7 @@ $('retry-player').addEventListener('click', () => {
 $('play-pause').addEventListener('click', () => {
   if (!ready) return; clearError();
   if (!showingPlaying()) { startShown(firstPlayable(0, 1, currentAlbum(), listQueue)); return; }
-  if (state === 1) player.pauseVideo();
+  if (state === 1) pauseOwn();
   else if (state === 0 && queueIndex >= firstPlayable(queue.length - 1, -1)) playAt(firstPlayable());
   else player.playVideo();
 });
