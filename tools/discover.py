@@ -184,8 +184,9 @@ for n in wanted:
     for tid in SPOTIFY_TRACKS.get(n, []):
         try:
             import urllib.request as ur
-            page = ur.urlopen(ur.Request(f'https://open.spotify.com/embed/track/{tid}', headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
-            rec.setdefault('spotifyTracks', {})[tid] = sorted(set(re.findall(r'spotify:album:([A-Za-z0-9]{22})', page) + re.findall(r'/album/([A-Za-z0-9]{22})', page)))
+            page = ''.join(ur.urlopen(ur.Request(f'https://open.spotify.com/{kind}/track/{tid}'.replace('//track', '/track'), headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
+                           for kind in ('', 'embed'))
+            rec.setdefault('spotifyTracks', {})[tid] = sorted(set(re.findall(r'spotify:album:([A-Za-z0-9]{22})', page) + re.findall(r'/album/([A-Za-z0-9]{22})', page) + re.findall(r'album%3A([A-Za-z0-9]{22})', page)))
         except Exception as e:
             rec.setdefault('spotifyTracks', {})[tid] = [str(e)]
     result[n] = rec
