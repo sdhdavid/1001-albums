@@ -54,7 +54,7 @@ POSITION = {774: {11: 11}, 796: {5: 5}, 799: {11: 11}}     # playlist positions 
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
 BY_PLAYLIST = set()
-SKIP = set()
+SKIP = {751}
 # Track lengths given by hand when discovery found none (#697 Ten, original CD)
 DURATIONS = {}   # track lengths given by hand when discovery found none
 NO_SPOTIFY = set()
