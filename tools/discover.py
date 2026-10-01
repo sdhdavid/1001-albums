@@ -84,7 +84,7 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['22mcOt74IVtCeR5hoIfveO', '2fgQN85UzwZMRIBTs06FjX', '3zeDrhkNv8872fC7CsOCpI', '4xrUp1M9XmKHFzRRyXIx71', '53fzZMZ3ENBY0BpLFOMy9p', '6GjMcck9c4i6cQo194xKl6', '7lCEnPYYkUuvnkrCbA6RCa', '7lGDjzmvAcNl6kEtn1rTaJ', '7qLJ8bzny3tynTPW2U2Anv'], 498: ['0LSWSMW0LVJX3fmSgDnk2A', '0rhmwOflgYrPntNuEe8chN', '1aucGNKimhgARC7iO2xLt2', '1pK8MLyjgvt8pNVkQCBnSg', '27qrMWYugzTnAvn2mtZdcx', '2B6i9ZY0NF8UkESEIL0taZ', '2srC8Ls3xXdRUH3n7jvHQD', '4HWzj6tf8nXvH7GzXAl1ld', '5h4pJfrTGROIhFJpTHa1Cu', '65Al3RSB7zeQeYcinysMxJ', '6A4MecoyRjnDtYeAZ7JGQf', '6Iyeo7CPHen8QEW4x31TpI', '6zwFIyWKbdHi9mwrQcrEY1']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {}  # done for 471/483/498 (the page lists the artist's albums; candidates checked via SPOTIFY_CHECK)
+SPOTIFY_TRACKS = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN']}  # the page lists the artist's albums; each is named via its embed page
 _SPOTIFY_TRACKS_USED = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
@@ -194,6 +194,14 @@ for n in wanted:
             page = ''.join(ur.urlopen(ur.Request(f'https://open.spotify.com/{kind}/track/{tid}'.replace('//track', '/track'), headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
                            for kind in ('', 'embed'))
             rec.setdefault('spotifyTracks', {})[tid] = sorted(set(re.findall(r'spotify:album:([A-Za-z0-9]{22})', page) + re.findall(r'/album/([A-Za-z0-9]{22})', page) + re.findall(r'album%3A([A-Za-z0-9]{22})', page)))
+            # name each candidate album (its embed page starts with the album name)
+            for aid in rec['spotifyTracks'][tid]:
+                if aid in rec.setdefault('spotifyNames', {}): continue
+                try:
+                    apage = ur.urlopen(ur.Request(f'https://open.spotify.com/embed/album/{aid}', headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
+                    rec['spotifyNames'][aid] = (re.findall(r'"name":"([^"]{1,80})"', apage) or [''])[0]
+                except Exception as e:
+                    rec['spotifyNames'][aid] = str(e)
         except Exception as e:
             rec.setdefault('spotifyTracks', {})[tid] = [str(e)]
     result[n] = rec
