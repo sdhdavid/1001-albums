@@ -13,8 +13,8 @@ SPOTIFY = {
  671:'1qUuOtsaAWlD6D83AebzD0', 672:'3QKOefqeoWmK67Fv6ToyJa', 673:'0Gu0z7Agm0kSDhpX55dttF', 674:'4lGS8HxU3NYaQxfU0wx2r1', 675:'4YHIfZ986IFFp7OiO9D9Qt',
  676:'3AI5kAUjgNtZBwFRi6opDc', 677:'7acrrQejzV4ybWWTM8TmPf', 678:'6dfYmbgWeJCgqJhnR4TfKb', 679:'0QNPblZ1LIHTKja8pvHauW', 680:'0fV9DAddjwNZcmCP1Q8b01',
  681:'4Qt1ZvWZ3DoKDimDMesZd5', 682:'4G1YVElmzCn3QkVFQyuxkt', 683:'2Psn9p8O8w5MMoqAuM0PIU', 684:'0Nm5h20xUZB56nA7U2p6eN', 685:'2guirTSEqLizK7j9i1MTTZ',
- 686:'1QSoW668F9DVj8Rk9azF7h', 687:'4tQSV1ZGpwlo3dBiTRuKvM', 688:'7GJ2y2we8EjzdgavH2Jt3S', 689:'05wcY4zcfSawCyoutTTxda', 690:'',
- 691:'', 692:'1DCI2yWmV4UI7Aga71yx9B', 693:'08Bjvwbg1cFsFfXSdhG23I', 694:'4HJavRkzA8bYyGt7ireR4J', 695:'2OUT5225hEywJ5sKeOWvs1',
+ 686:'1QSoW668F9DVj8Rk9azF7h', 687:'4tQSV1ZGpwlo3dBiTRuKvM', 688:'7GJ2y2we8EjzdgavH2Jt3S', 689:'05wcY4zcfSawCyoutTTxda', 690:'5hM61fBUA5OIMJUUuMrzyH',
+ 691:'2TXvjVOhfNjAYpRpODqmVb', 692:'1DCI2yWmV4UI7Aga71yx9B', 693:'08Bjvwbg1cFsFfXSdhG23I', 694:'4HJavRkzA8bYyGt7ireR4J', 695:'2OUT5225hEywJ5sKeOWvs1',
  696:'1p12OAWwudgMqfMzjMvl2a', 697:'39BXqF0ttK6P3Jx3BGjMP6', 698:'7e0mEjhM8D2x8E5c9H1oY3', 699:'0wZ4ANTdGJarksyTOD1cyl', 700:'2NnkLRaeX33d1Mn8ZLgTo8',
 }
 
@@ -22,7 +22,7 @@ SPOTIFY = {
 PLAYLIST_CHOICE = {}
 # #553: iTunes has no lengths, so they come from the hand-picked playlist (seconds)
 LENGTHS_FROM_PLAYLIST = {}
-RENAME = {'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
+RENAME = {'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
           "Honky Tonk Angels' Medley: In the Evening (When the Sun Goes Down) / You Nearly Lose Your Mind / Blues Stay Away from Me": "Honky Tonk Angels' Medley",
           'Buenos Noches From a Lonely Room (She Wore Red Dresses)': 'Buenas Noches from a Lonely Room (She Wore Red Dresses)', 'Pig’s in Zen': 'Pigs in Zen',
           'Bye Bye Bad Man': 'Bye Bye Badman', 'Trilogy: a) The Wonder / B) Hyperstation / Z) Eliminator Jr.': 'Trilogy',
@@ -55,7 +55,9 @@ POSITION = {}     # playlist positions the title matching missed
 SPLIT = {}
 BY_PLAYLIST = set()
 SKIP = set()
-NO_SPOTIFY = set()
+# Track lengths given by hand when discovery found none (#697 Ten, original CD)
+DURATIONS = {697: ['3:51', '4:53', '5:40', '3:20', '5:43', '5:18', '2:41', '3:30', '4:58', '4:18', '9:05']}
+NO_SPOTIFY = {652}   # #652 What's That Noise? is not on Spotify: YouTube only
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
 # Albums with no full playlist on YouTube: one video per song (n -> [(name, videoId, length)]), found by web search.
@@ -93,6 +95,7 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
         yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names))); durs = MANUAL[n]['durations']
     pos = list(pos)
     for i, p in POSITION.get(n, {}).items(): pos[i] = p
+    if n in DURATIONS: durs = list(DURATIONS[n])
     keep = KEEP_FIRST.get(n, len(names))
     names, pos, durs = names[:keep], pos[:keep], durs[:keep]
     names = [x for i, x in enumerate(names) if i not in DROP.get(n, ())]

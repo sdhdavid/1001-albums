@@ -336,10 +336,10 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),4,'search combines with genre');
   pick('');assert.equal(rows(),4);n['album-search'].value='';n['album-search'].listeners.input();
   assert.equal(rows(),catalogNow.length);
-  // Spotify: every album but #626 (not on Spotify) has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
+  // Spotify: every album but #626 and #652 (not on Spotify) has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
   const all=pilotAll();
   for (const [k,a] of Object.entries(all)) if (!a.noSpotify) assert.match(a.spotifyAlbum||'',/^[A-Za-z0-9]{22}$/,`spotify id for ${k}`);
-  assert.deepEqual(Object.keys(all).filter(k=>all[k].noSpotify),['626'],'only #626 lacks a Spotify album');
+  assert.deepEqual(Object.keys(all).filter(k=>all[k].noSpotify),['626','652'],'only #626 and #652 lack a Spotify album');
   n['service-spotify'].click();
   assert.equal(n['spotify-listening'].hidden,false);assert.equal(n['embedded-listening'].hidden,true);assert.equal(n['mode-switch'].hidden,true);
   assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['100'].spotifyAlbum}?utm_source=generator`);
@@ -396,5 +396,5 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   // A shared link to an album opens that album directly.
   { const d=await boot({hash:'#/album/41'}); await flush();await flush();
     assert.equal(d.nodes['album-page'].hidden,false);assert.equal(d.nodes['home'].hidden,true);assert.equal(d.nodes['album-title'].textContent,'Getz / Gilberto'); }
-  console.log('PASS: book entries 1–700 (including the 51–100 through 651–700 batches; #626 has no Spotify album with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–700 (including the 51–100 through 651–700 batches; #626 and #652 have no Spotify album; with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});
