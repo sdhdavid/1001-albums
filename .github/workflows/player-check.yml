@@ -1,0 +1,26 @@
+name: Player check
+
+# Run by hand. Opens the site in a real browser with the real YouTube player (blocked in the Claude sandbox)
+# and logs what plays when switching albums (tools/player_check.cjs).
+on:
+  workflow_dispatch:
+    inputs:
+      album:
+        description: 'First album number'
+        required: false
+        default: '101'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install playwright@1 && npx playwright install --with-deps chromium
+      - name: Check
+        env:
+          ALBUM: ${{ inputs.album }}
+        run: |
+          (cd dist && python3 -m http.server 8000 >/dev/null 2>&1 &)
+          sleep 2
+          node tools/player_check.cjs
