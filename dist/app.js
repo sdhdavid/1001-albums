@@ -854,35 +854,38 @@ let swipeAnimation = null, swipeTransition = 0, swipeBusy = false;
 function cancelAlbumMotion() {
   ++swipeTransition; swipeBusy = false; albumSwipe = null;
   swipeAnimation?.cancel(); swipeAnimation = null;
-  $('album-view').style.transform = '';
+  $('album-view').style.transform = $('album-view').style.opacity = '';
 }
 function settleAlbumDrag() {
-  const el = $('album-view'), from = el.style.transform;
+  const el = $('album-view'), from = el.style.transform, fade = el.style.opacity || 1;
   swipeAnimation?.cancel(); swipeAnimation = null;
-  el.style.transform = '';
+  el.style.transform = el.style.opacity = '';
   if (from && !reduceSwipeMotion?.matches && el.animate) {
-    const animation = swipeAnimation = el.animate([{transform: from}, {transform: 'translateX(0)'}], {duration: 180, easing: 'cubic-bezier(.2,.8,.2,1)'});
+    const animation = swipeAnimation = el.animate([{transform: from, opacity: fade}, {transform: 'translateX(0)', opacity: 1}], {duration: 200, easing: 'cubic-bezier(.2,.8,.2,1)'});
     animation.finished.catch(() => {}).finally(() => { if (swipeAnimation === animation) { animation.cancel(); swipeAnimation = null; } });
   }
 }
+// Dragging toward the previous page's arrow reveals the next page (right in Hebrew, left in English).
+const swipeStep = dx => (LANG === 'en' ? dx < 0 : dx > 0) ? 1 : -1;
 async function slideToAlbum(index, direction) {
   const el = $('album-view');
   if (index < 0 || index >= albums.length) { settleAlbumDrag(); return; }
   if (reduceSwipeMotion?.matches || !el.animate) { settleAlbumDrag(); await selectAlbum(index); return; }
   const ticket = ++swipeTransition, previous = active;
+  const stale = expected => ticket !== swipeTransition || !canSwipeAlbum() || active !== expected;
   swipeBusy = true;
-  const from = el.style.transform || 'translateX(0)';
+  const from = el.style.transform || 'translateX(0)', fade = el.style.opacity || 1;
   swipeAnimation?.cancel();
   try {
     // Load before leaving the current album so a slow connection never leaves an empty page.
     await loadAlbum(albums[index]);
-    if (ticket !== swipeTransition || !canSwipeAlbum() || active !== previous) return;
-    swipeAnimation = el.animate([{transform: from, opacity: 1}, {transform: `translateX(${direction * 80}px)`, opacity: 0}], {duration: 160, easing: 'ease-in', fill: 'forwards'});
-    el.style.transform = '';
+    if (stale(previous)) return;
+    swipeAnimation = el.animate([{transform: from, opacity: fade}, {transform: `translateX(${direction * 120}px)`, opacity: 0}], {duration: 150, easing: 'ease-in', fill: 'forwards'});
+    el.style.transform = el.style.opacity = '';
     await swipeAnimation.finished;
-    if (ticket !== swipeTransition || !canSwipeAlbum() || active !== previous) return;
+    if (stale(previous)) return;
     await selectAlbum(index, true);
-    if (ticket !== swipeTransition || !canSwipeAlbum() || active !== index) return;
+    if (stale(index)) return;
     // Swap the content while faded out, then bring the new album in from the other side.
     swipeAnimation.cancel();
     swipeAnimation = el.animate([{transform: `translateX(${-direction * 64}px)`, opacity: 0}, {transform: 'translateX(0)', opacity: 1}], {duration: 240, easing: 'cubic-bezier(.2,.8,.2,1)'});
@@ -903,23 +906,27 @@ $('album-view').addEventListener('touchstart', e => {
   const t = e.touches[0];
   // Keep browser back/forward gestures at the screen edges available.
   if (t.clientX < 24 || t.clientX > window.innerWidth - 24) return;
-  albumSwipe = {x: t.clientX, y: t.clientY, id: t.identifier, album: active};
+  albumSwipe = {x: t.clientX, y: t.clientY, id: t.identifier, album: active, time: e.timeStamp, locked: false};
 }, {passive: true});
+// Not passive: once a gesture is clearly sideways, the page stops scrolling up and down under the finger.
 $('album-view').addEventListener('touchmove', e => {
   if (!albumSwipe) return;
   if (e.touches.length !== 1) { albumSwipe = null; settleAlbumDrag(); return; }
   const t = e.touches[0];
-  const dx = Math.abs(t.clientX - albumSwipe.x), dy = Math.abs(t.clientY - albumSwipe.y);
-  // Once the user starts scrolling vertically, this gesture cannot change albums.
+  const delta = t.clientX - albumSwipe.x, dx = Math.abs(delta), dy = Math.abs(t.clientY - albumSwipe.y);
+  // A gesture that starts (or turns) vertical is a scroll and cannot change albums.
   if (t.identifier !== albumSwipe.id || (dy > 12 && dy >= dx)) { albumSwipe = null; settleAlbumDrag(); return; }
-  if (dx > 12 && dx > dy * 2 && !reduceSwipeMotion?.matches) {
-    const delta = t.clientX - albumSwipe.x;
-    const next = LANG === 'en' ? delta < 0 : delta > 0;
-    const available = next ? active < albums.length - 1 : active > 0;
-    const offset = Math.sign(delta) * Math.min(available ? 64 : 18, dx * (available ? .4 : .15));
-    $('album-view').style.transform = `translateX(${offset}px)`;
-  }
-}, {passive: true});
+  if (!albumSwipe.locked && dx > 12 && dx > dy * 2) albumSwipe.locked = true;
+  if (!albumSwipe.locked) return;
+  if (e.cancelable) e.preventDefault();
+  if (reduceSwipeMotion?.matches) return;
+  const target = active + swipeStep(delta), available = target >= 0 && target < albums.length;
+  // Follow the finger, with resistance; at the first/last album only a small elastic tug.
+  const offset = available ? Math.min(110, dx * .6) : Math.min(20, dx * .15);
+  const el = $('album-view');
+  el.style.transform = `translateX(${Math.sign(delta) * Math.round(offset)}px)`;
+  el.style.opacity = available ? String(Math.round((1 - .3 * Math.min(1, dx / 160)) * 100) / 100) : '';
+}, {passive: false});
 $('album-view').addEventListener('touchcancel', () => { albumSwipe = null; settleAlbumDrag(); }, {passive: true});
 $('album-view').addEventListener('touchend', e => {
   const start = albumSwipe; albumSwipe = null;
@@ -927,11 +934,11 @@ $('album-view').addEventListener('touchend', e => {
   if (!canSwipeAlbum() || active !== start.album || e.touches.length) { settleAlbumDrag(); return; }
   const t = Array.from(e.changedTouches).find(t => t.identifier === start.id);
   if (!t) { settleAlbumDrag(); return; }
-  const dx = t.clientX - start.x, dy = t.clientY - start.y;
-  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) { settleAlbumDrag(); return; }
-  // Drag toward the previous page's arrow to reveal the next page (RTL mirrored).
-  const next = LANG === 'en' ? dx < 0 : dx > 0;
-  slideToAlbum(active + (next ? 1 : -1), Math.sign(dx));
+  const dx = t.clientX - start.x, dy = t.clientY - start.y, distance = Math.abs(dx);
+  // A long drag, or a short quick flick, changes albums.
+  const time = e.timeStamp - start.time, flick = time > 0 && distance >= 30 && distance / time >= .4;
+  if ((distance < 60 && !flick) || distance < Math.abs(dy) * 2) { settleAlbumDrag(); return; }
+  slideToAlbum(active + swipeStep(dx), Math.sign(dx));
 }, {passive: true});
 // Keyboard: in the right-to-left (Hebrew) site ← is the next album and → the previous one; in English it is the other way round
 // (not while typing in the search box or with modifier keys held).
