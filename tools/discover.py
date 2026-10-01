@@ -68,7 +68,9 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             715: ('The Disposable Heroes of Hiphoprisy', 'Hypocrisy Is the Greatest Luxury'), 716: ('k.d. lang', 'Ingenue'),
             719: ('The Pharcyde', 'Bizarre Ride II the Pharcyde'), 724: ("Stereo MC's", 'Connected'), 725: ('Ministry', 'Psalm 69'),
             730: ('Nick Cave & The Bad Seeds', "Henry's Dream"), 731: ('Nusrat Fateh Ali Khan', 'Devotional Songs'), 737: ('Liz Phair', 'Exile in Guyville'),
-            742: ('Jamiroquai', 'Emergency on Planet Earth'), 748: ('Wu-Tang Clan', 'Enter the Wu-Tang (36 Chambers)'), 749: ('Bjork', 'Debut'), 712: ('Baaba Maal', 'Lam Toro')}
+            742: ('Jamiroquai', 'Emergency on Planet Earth'), 748: ('Wu-Tang Clan', 'Enter the Wu-Tang (36 Chambers)'), 749: ('Bjork', 'Debut'), 712: ('Baaba Maal', 'Lam Toro'),
+            751: ('Snoop Dogg', 'Doggystyle'), 757: ('Girls Against Boys', 'Venus Luxure No.1 Baby'), 773: ('Ali Farka Toure & Ry Cooder', 'Talking Timbuktu'),
+            787: ('Nightmares on Wax', 'Smokers Delight'), 789: ('Raekwon', 'Only Built 4 Cuban Linx'), 800: ('GZA', 'Liquid Swords'), 785: ('Foo Fighters', 'Foo Fighters')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -100,7 +102,10 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             689: 'Gang Starr Step in the Arena 1991 full album', 699: 'Sepultura Arise 1991 full album', 700: 'Slint Spiderland 1991 full album', 657: 'Fugazi Repeater 1990 full album',
             706: 'Metallica Black Album 1991 full album', 714: 'Rage Against the Machine 1992 debut album full', 733: 'Suede 1993 debut album full',
             750: 'Orbital 1993 Brown Album full', 732: 'PJ Harvey Dry 1992 full album', 721: 'Sugar Copper Blue 1992 full album', 701: 'U2 Achtung Baby 1991 full album',
-            725: 'Ministry Psalm 69 1992 full album', 710: 'Koffi Olomide Haut de gamme Koweit rive gauche', 731: 'Nusrat Fateh Ali Khan Devotional Songs 1992'}
+            725: 'Ministry Psalm 69 1992 full album', 710: 'Koffi Olomide Haut de gamme Koweit rive gauche', 731: 'Nusrat Fateh Ali Khan Devotional Songs 1992',
+            785: 'Foo Fighters 1995 debut album full', 786: 'Garbage 1995 debut album full', 794: 'Elastica 1995 debut album full',
+            798: 'Femi Kuti 1995 album', 772: 'G Love and Special Sauce 1994 debut album', 780: 'Orbital Snivilisation 1994 full album',
+            781: 'Nirvana MTV Unplugged in New York full album', 754: 'William Orbit Strange Cargo III album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -156,6 +161,16 @@ WANT.update({
           'Foot of the Mountain', 'Shadow of the Sun', 'Holy Man (Reprise)', 'Moon on Your Pyjamas'],
     750: ['Time Becomes', 'Planet of the Shapes', 'Lush 3-1', 'Lush 3-2', 'Impact (The Earth Is Burning)', 'Remind',
           'Walk Now...', 'Monday', 'Halcyon + On + On', 'Input Out']})
+# 751–800 second pass
+# 751–800 third pass
+EXTRA_PLAYLISTS.update({757: ['PL9D59045747AB9F3A'], 751: ['PLUEMihO9lT7_LFYYRqJ-3mYsTAsM8AUqi', 'PLQeroY7XkiFGixwefr9FdTtSgOTrb6NP-', 'PLabhUJtJ9ji-BajW4D2QLdOSx6ojorKL5', 'PLhE094uPOcyb3b7DPWiwi1jhledlqp9AP']})
+SPOTIFY_TRACKS.update({754: ['0SXXHxlC61nrSODzxjcEti', '64ceFPkKvlMxnVpGHdkmGU'], 775: ['39MevbqnkqtayGeHujte3n', '4YJoVxtIVoDL71wGwrqQ2j', '1XJ1LUBZDUFf5f6v38562R']})
+WANT.update({
+    751: ['Bathtub', 'G Funk Intro', 'Gin and Juice', 'W Balls', 'Tha Shiznit', 'Lodi Dodi', 'Murder Was the Case', 'Serial Killa',
+          "Who Am I (What's My Name)?", 'For All My Niggaz & Bitches', "Ain't No Fun (If the Homies Can't Have None)", 'Doggy Dogg World',
+          'Gz and Hustlas', 'Pump Pump'],
+    794: ['Line Up', 'Annie', 'Connection', 'Car Song', 'Smile', 'Hold Me Now', 'S.O.F.T.', 'Indian Song', 'Blue', 'All-Nighter',
+          'Waking Up', '2:1', 'Vaseline', 'Never Here', 'Stutter']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
