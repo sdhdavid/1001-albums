@@ -69,12 +69,24 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    404: ['OLAK5uy_nEfRmzliYZ8KP0g2PRBjmQdJ6kPSuU86g', 'PLEvr99j7ruPzc3YXLXOnxQGVMw4iWAA6c', 'PLOJWuc3CN303QT7RnWuruRLJJxEnf6TUu', 'PLJvYa4hB_Ul-5gdY9UcBDXNbuLGhQKim_'],
                    406: ['OLAK5uy_m2PSh2Vw6s0PdINtbPCyv81N5nMX3yNac', 'OLAK5uy_l8aOiSeHdlBuY6Uiiz2__J280s7Yh8o6k', 'PLw31gx_Af1g-uYdvOjGTI3T1WieKas-51'],
                    431: ['OLAK5uy_niijN27zTnrqADCiWObap5-AK22HsC7qI', 'PLDCQnAwuT7e-oi-BQrVV8o5DrCiOVKZV1'],
-                   441: ['PLOJWuc3CN301YxZG_I_ZniHGfb4tl7vug', 'PLo2aaBamFnLTj8Ad0ymIx81CavqxNcjnB', 'PLmna7oCNK2MmgBrbPZPciNsXxAMQEjUao']}
+                   441: ['PLOJWuc3CN301YxZG_I_ZniHGfb4tl7vug', 'PLo2aaBamFnLTj8Ad0ymIx81CavqxNcjnB', 'PLmna7oCNK2MmgBrbPZPciNsXxAMQEjUao'],
+                   458: ['OLAK5uy_l6J0IYQQ9zTbh_teJb7GYlx9T1nUKIyro', 'PL4mbw3LEmSEmMXVWZsY6J3fuIEWYB_fs9', 'PLEvwWAEnoCLlNVdGVLAWGHmMhAAwOey_W'],
+                   463: ['PLG9675Na1SXZs7yvrbLkdTsoZH4bUmJjx', 'PL2j_Wb5pKu_2V16IOI--3s_F2XV__gW38'],
+                   465: ['PLreQ0V6eABfILf1X0KFOA7bVzfFcUsPaI'],
+                   499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
 SPOTIFY_TRACKS = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
+# Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
+# them best gives the lengths, and the playlists are scored against these names.
+WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Family Snapshot', 'And Through the Wire',
+              'Games Without Frontiers', 'Not One of Us', 'Lead a Normal Life', 'Biko'],
+        473: ['Ha Ha I\'m Drowning', 'Sleeping Gas', 'Treason', 'Second Head', 'Poppies in the Field', 'Went Crazy',
+              'Brave Boys Keep Their Promises', 'Bouncing Babies', 'Books', 'Thief of Baghdad', 'When I Dream'],
+        492: ['Wordy Rappinghood', 'Genius of Love', 'Tom Tom Theme', "L'Éléphant", 'As Above, So Below', 'Lorelei', 'On, On, On, On...', 'Booming and Zooming'],
+        463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
@@ -125,6 +137,13 @@ for n in wanted:
     title = re.sub(r'\s*\(.*?\)\s*$', '', title)
     artist, title = OVERRIDE.get(n, (artist, title))
     edition, counts = pick_edition(artist, title)
+    if n in WANT:   # names given by hand: lengths from the best-matching edition
+        eds = list(editions(artist, title)); counts = [len(e) for e in eds]
+        best_ed = max(eds, key=lambda e: sum(any(sim(simple(w), simple(t)) >= .8 for t, _ in e) for w in WANT[n]), default=[])
+        def length(w):
+            m = max(best_ed, key=lambda x: sim(simple(w), simple(x[0])), default=None)
+            return m[1] if m and sim(simple(w), simple(m[0])) >= .8 else None
+        edition = [(w, length(w)) for w in WANT[n]]
     rec = {'n': n, 'artist': meta['artist'], 'title': meta['title'], 'editionSizes': counts}
     if edition:
         names = [t for t, _ in edition]
