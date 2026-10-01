@@ -19,7 +19,7 @@ SPOTIFY = {
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {481: 1, 499: 2}   # #481: the playlist in album order; #499: the official album playlist
+PLAYLIST_CHOICE = {476: 5, 481: 1, 499: 2}   # #481: the playlist in album order; #476, #499: the official album playlists
 RENAME = {'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
           'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
