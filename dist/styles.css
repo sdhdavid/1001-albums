@@ -339,7 +339,8 @@ summary { cursor: pointer; color: #b4e3d6; min-height: 32px; }
 .home-chips { display: flex; gap: 6px; }
 .home-chip { border: 1px solid #3c505a; background: #1a2a35; color: #ccd7d9; border-radius: 99px; padding: 8px 14px; font-size: .86rem; cursor: pointer; }
 .home-chip.on { background: #b4e3d6; color: #14252e; border-color: #b4e3d6; font-weight: 700; }
-.grid-decade { display: flex; align-items: baseline; gap: 12px; margin: 30px 0 14px; }
+.grid-decade { display: flex; align-items: baseline; gap: 12px; margin: 0 0 14px; padding: 12px 0 10px; position: sticky; top: 0; z-index: 5; background: #101a24; box-shadow: 0 8px 10px -6px #101a24; }
+.grid-block { margin-top: 18px; }
 .grid-decade h3 { margin: 0; font-size: 1.3rem; color: #f0f5f2; }
 .grid-decade span { color: #7f979d; font-size: .86rem; }
 .grid-decade::after { content: ""; flex: 1; height: 1px; background: #2b3d48; align-self: center; }
