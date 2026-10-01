@@ -1121,7 +1121,7 @@ function renderGrid() {
       tile.append(cover, badge, ...(done.has(a.n) ? [element('span', 'tile-check', '✓')] : []), text);
       tile.addEventListener('click', () => openAlbum(a)); return tile;
     }));
-    sections.push(head, grid);
+    const block = element('section', 'grid-block'); block.append(head, grid); sections.push(block);
   }
   $('home-grid').replaceChildren(...sections);
   $('home-empty').hidden = visible.length > 0;

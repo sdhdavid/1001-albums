@@ -378,15 +378,15 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     assert.equal(m['home'].hidden,false,'home shown first');assert.equal(m['album-page'].hidden,true);
     const hero=m['home-hero'].children;assert.equal(hero[1].children[1].textContent,'Elvis Presley','next unheard album (1 is heard)');
     assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 800/);
-    const sections=m['home-grid'].children;assert.deepEqual(sections.filter((c,i)=>i%2===0).map(c=>c.children[0].textContent),['שנות ה־50','שנות ה־60','שנות ה־70','שנות ה־80','שנות ה־90']);
-    const tiles=sections.filter((c,i)=>i%2===1).flatMap(g=>g.children);assert.equal(tiles.length,800,'one tile per album on the site');
+    const sections=m['home-grid'].children;assert.deepEqual(sections.map(c=>c.children[0].children[0].textContent),['שנות ה־50','שנות ה־60','שנות ה־70','שנות ה־80','שנות ה־90']);
+    const tiles=sections.flatMap(c=>c.children[1].children);assert.equal(tiles.length,800,'one tile per album on the site');
     assert(tiles[0].children.some(c=>c.className==='tile-check'),'heard album has a check');assert(!tiles[2].children.some(c=>c.className==='tile-check'));
     assert(tiles[1].className.includes('next'),'next album outlined');
-    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,799,'"not heard yet" hides heard albums');
-    m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,4);
+    m['home-unheard'].click();assert.equal(m['home-grid'].children.flatMap(c=>c.children[1].children).length,799,'"not heard yet" hides heard albums');
+    m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.flatMap(c=>c.children[1].children).length,4);
     m['home-search'].value='';m['home-search'].listeners.input();
     // Clicking a tile opens that album and puts it in the address; "מה זה?" returns home with the welcome box.
-    const tile5=m['home-grid'].children[1].children[4];tile5.click();await flush();await flush();
+    const tile5=m['home-grid'].children[0].children[1].children[4];tile5.click();await flush();await flush();
     assert.equal(h.ctx.location.hash,'#/album/5');assert.equal(m['album-title'].textContent,'This Is Fats Domino!');
     assert.equal(m['album-page'].hidden,false);assert.equal(m['home'].hidden,true);assert.equal(m['nav-album'].href,'#/album/5');
     assert.equal(h.storage.get('album-journey-2005-last-album'),'5','current album remembered');
