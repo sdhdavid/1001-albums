@@ -534,6 +534,7 @@ function renderMode() {
   if (spotify) {
     updateQuickPlay(); updateMiniPlayer();
     if (ready) player.stopVideo();
+    if (stageReady) stage.stopVideo(); stageAlbum = null; stageQueue = null;
     clearInterval(chapterTimer); playingAlbum = null; listQueue = []; queue = []; queueIndex = 0; state = -1;
     if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
     $('listen-eyebrow').textContent = S.eyebrowSpotify;
@@ -576,9 +577,8 @@ function renderMode() {
   if ($('album-youtube-player').src !== 'about:blank') $('album-youtube-player').src = 'about:blank';
   listQueue = mode === 'full' ? a.tracks : a.tracks.filter(t => selected.includes(trackKey(a, t)));
   // Browsing to another album while music plays leaves the music alone (the same album keeps it too, unless its songs changed).
-  // A paused album doesn't hold the player: the shown album takes it, so ▶ in the video itself plays what is on screen.
-  const keep = busy() && (playingAlbum !== a ? [1, 3].includes(state)
-    : listQueue.length === queue.length && listQueue.every((t, i) => t === queue[i]));
+  // Meanwhile the shown album waits, cued, in a second (standby) player in the same frame (see prepareStage).
+  const keep = busy() && (playingAlbum !== a || (listQueue.length === queue.length && listQueue.every((t, i) => t === queue[i])));
   if (keep && playingAlbum === a) listQueue = queue;
   if (!keep) { playingAlbum = a; playingMode = mode; queue = listQueue; queueIndex = 0; state = -1; }
   for (const m of ['full', 'short']) {
@@ -594,6 +594,7 @@ function renderMode() {
   $('focus-error').hidden = true;
   renderQueue(); renderFocus();
   if (keep) { announce(); updateControls(); } else cueQueue();
+  if (keep && playingAlbum !== a) prepareStage(); else showFrame('main');
   syncGuide();
 }
 function renderQueue() {
@@ -684,6 +685,7 @@ function startShown(index) {
   const a = currentAlbum();
   if (!ready || index < 0 || index >= listQueue.length || !playable(a, listQueue[index])) return;
   if (playingAlbum === a && queue === listQueue) { playAt(index); return; }
+  if (stageReady && stageAlbum === a && stageQueue === listQueue) { promoteStage(index); return; }
   playingAlbum = a; playingMode = mode; queue = listQueue; queueIndex = index;
   clearError(); clearInterval(chapterTimer);
   const t = queue[index];
@@ -806,24 +808,10 @@ function announce() {
   if (state === 1) { clearError(); $('player-status').textContent = S.nowPlaying(queueIndex + 1, queue.length, title); }
   if (state === 2 && $('player-error').hidden) $('player-status').textContent = S.pausedTitle(title);
 }
-// Pauses the site asks for itself (its buttons, the bottom bar, errors); any other pause came from the video
-// frame or the phone's media controls.
-let ownPause = false;
-function pauseOwn() { ownPause = true; player.pauseVideo(); }
-// The video frame shows the album that is playing even while another album is on screen. Pausing it there
-// (from inside the frame) hands the player to the album on screen, so pressing ▶ again plays that one.
-function handOverToShown() {
-  if (service !== 'youtube' || view !== 'album' || showingPlaying() || currentAlbum().externalAlbum) return false;
-  // Only a pause someone could have made in the frame: the page is in front and the frame is on screen
-  // (phones pause the video by themselves when the browser goes to the background).
-  if (document.visibilityState === 'hidden' || (!panelVisible && 'IntersectionObserver' in window)) return false;
-  playingAlbum = currentAlbum(); playingMode = mode; queue = listQueue; queueIndex = 0; state = -1;
-  cueQueue(); announce(); updateMiniPlayer(); return true;
-}
+function pauseOwn() { player.pauseVideo(); }
 function onStateChange(event) {
   state = event.data;
   if (state === 5 && playWhenCued) { playWhenCued = false; player.playVideo(); return; }
-  if (state === 2) { const own = ownPause; ownPause = false; if (!own && handOverToShown()) return; }
   const a = playingAlbum;
   if (a?.youtubePlaylist && (state === 5 || state === 1)) resolvePlaylist(a);
   if (a?.fullAlbumVideo) {
@@ -854,24 +842,80 @@ function onStateChange(event) {
 }
 function playerError(event) {
   const messages = S.errors;
-  ownPause = true; player.pauseVideo(); state = 2;
+  player.pauseVideo(); state = 2;
   showError((messages[event.data] || S.errorDefault) + S.errorCode(event.data));
   updateControls();
 }
-function createPlayer() {
-  if (player || !albums.length || !window.YT?.Player) return;
-  player = new YT.Player('youtube-player', {
-    width: '100%', height: '100%', ...(currentAlbum().youtubePlaylist ? {} : {videoId: queue[0][1]}),
-    playerVars: {autoplay: 0, controls: 1, playsinline: 1, origin: location.origin, rel: 0, ...(currentAlbum().youtubePlaylist ? {listType: 'playlist', list: currentAlbum().youtubePlaylist} : {})},
+// Two YouTube players share the frame. The main one (player) holds the album that is playing; while another
+// album is shown, the standby one (stage) shows that album cued, so the frame always shows the album on screen and
+// starting it is instant: the standby player becomes the main one and the old album stops. Each player's events
+// are routed by its current role.
+let stage = null, stageReady = false, stageAlbum = null, stageQueue = null;
+function makePlayer(host, extra, onReady) {
+  const p = new YT.Player(host, {
+    width: '100%', height: '100%', ...extra,
+    playerVars: {autoplay: 0, controls: 1, playsinline: 1, origin: location.origin, rel: 0, ...(extra.playerVars || {})},
     events: {
-      onReady: () => { clearTimeout(playerTimer); ready = true; cueQueue(); },
-      onStateChange, onError: playerError,
-      onAutoplayBlocked: () => { $('player-status').textContent = S.autoplayBlocked; }
+      onReady: () => onReady(p),
+      onStateChange: e => { if (p === player) onStateChange(e); else stageChange(e); },
+      onError: e => { if (p === player) playerError(e); },
+      onAutoplayBlocked: () => { if (p === player) $('player-status').textContent = S.autoplayBlocked; }
     }
   });
-  const frame = player.getIframe(); frame.title = S.playerTitle;
+  const frame = p.getIframe(); frame.title = S.playerTitle;
   frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
   frame.setAttribute('allow', 'autoplay; encrypted-media; fullscreen; picture-in-picture');
+  return p;
+}
+function createPlayer() {
+  if (player || !albums.length || !window.YT?.Player) return;
+  const a = currentAlbum();
+  player = makePlayer('youtube-player', {...(a.youtubePlaylist ? {playerVars: {listType: 'playlist', list: a.youtubePlaylist}} : {videoId: queue[0][1]})},
+    p => { if (p !== player) { stageReady = true; return; } clearTimeout(playerTimer); ready = true; cueQueue(); });
+}
+// Shows one of the two players in the frame; the other stays loaded (and may keep playing) out of sight.
+function showFrame(which) {
+  const main = player?.getIframe?.(), standby = stage?.getIframe?.();
+  main?.classList?.toggle('yt-standby', which === 'stage');
+  standby?.classList?.toggle('yt-standby', which !== 'stage');
+}
+// The shown album (not the one playing) waits, cued, in the standby player.
+function prepareStage() {
+  const a = currentAlbum();
+  if (!stage) {
+    if (!ready || !window.YT?.Player || !document.getElementById('youtube-player-2')) { showFrame('main'); return; }
+    stage = makePlayer('youtube-player-2', {}, () => { stageReady = true; if (view === 'album' && !showingPlaying() && busy()) prepareStage(); });
+    stage.getIframe()?.classList?.toggle('yt-standby', true);
+    return;
+  }
+  if (!stageReady) return;
+  if (stageAlbum !== a || stageQueue !== listQueue) {
+    stageAlbum = a; stageQueue = listQueue;
+    const first = Math.max(0, firstPlayable(0, 1, a, listQueue)), t = listQueue[first];
+    if (a.youtubePlaylist) stage.cuePlaylist({list: a.youtubePlaylist, listType: 'playlist', index: Math.max(0, playlistIndex(a, t)), startSeconds: 0});
+    else if (a.fullAlbumVideo) stage.cueVideoById({videoId: a.tracks[0][1], startSeconds: t[3]});
+    else stage.cuePlaylist(listQueue.map(x => x[1]), first, 0);
+  }
+  showFrame('stage');
+}
+// The standby player becomes the main one: the old album stops, the shown album plays (index), or keeps playing
+// when it was started inside its own frame (index < 0).
+function promoteStage(index) {
+  const old = player, a = stageAlbum;
+  [player, stage] = [stage, old]; [ready, stageReady] = [stageReady, ready];
+  stageAlbum = null; stageQueue = null; switching = null; playWhenCued = false;
+  old.stopVideo();
+  playingAlbum = a; playingMode = mode; queue = listQueue; queueIndex = Math.max(0, index); state = 5;
+  clearError(); clearInterval(chapterTimer); showFrame('main');
+  player.setLoop(false); player.setShuffle(false);
+  if (index >= 0) playAt(index);
+  updateControls(); syncGuide();
+}
+function stageChange(event) {
+  // ▶ pressed inside the standby frame: the shown album takes over.
+  if ([1, 3].includes(event.data) && stageAlbum && stageAlbum === currentAlbum() && view === 'album' && service === 'youtube') {
+    promoteStage(-1); onStateChange(event);
+  }
 }
 window.onYouTubeIframeAPIReady = createPlayer;
 function loadPlayer() {
@@ -888,8 +932,9 @@ function loadPlayer() {
 $('retry-player').addEventListener('click', () => {
   clearError();
   if (ready) { playAt(queueIndex); return; }
-  player?.destroy(); player = null;
-  const host = document.createElement('div'); host.id = 'youtube-player'; document.querySelector('.youtube-frame').replaceChildren(host);
+  player?.destroy(); player = null; stage?.destroy(); stage = null; stageReady = false; stageAlbum = null; stageQueue = null;
+  const host = document.createElement('div'), host2 = document.createElement('div'); host.id = 'youtube-player'; host2.id = 'youtube-player-2';
+  document.querySelector('.youtube-frame').replaceChildren(host, host2);
   $('youtube-api')?.remove(); loadPlayer();
 });
 $('play-pause').addEventListener('click', () => {

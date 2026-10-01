@@ -24,13 +24,13 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   const html=fs.readFileSync('dist/index.html','utf8'), nodes={};
   for (const [,id] of html.matchAll(/id="([^"]+)"/g)) { assert(!nodes[id], `duplicate ${id}`); nodes[id]=new El(); }
   const storage=new Map([['album-journey-2005-done','[1,999]']]);
-  const calls=[], fetched=[]; let mock, failAlbum=null;
+  const calls=[], fetched=[]; let mock, stageMock=null, failAlbum=null;
   const ctx={console, requestAnimationFrame:f=>setImmediate(f), location:{origin:'https://example.test',hash},setTimeout:(f,ms)=>ms===20?setTimeout(f,ms):1,clearTimeout(){},setInterval:()=>1,clearInterval(){},
     document:{getElementById:id=>nodes[id],createElement:t=>new El(t),createTextNode:t=>({textContent:t}),head:new El(),querySelector:()=>new El(),addEventListener:(k,fn)=>{nodes['__'+k]=fn;}},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{if(noStorage)throw Error('blocked');storage.set(k,v)}},
     fetch:async url=>(fetched.push(url),{ok:!broken&&!(failAlbum&&url.includes(`/${failAlbum}.json`)),json:async()=>JSON.parse(fs.readFileSync('dist/'+url.slice(2).replace(/\?.*$/,''),'utf8'))}),
     YT:{Player:class {
-      constructor(id,options){this.options=options;this.index=0;this.frame=new El();mock=this;calls.push(['create']);}
+      constructor(id,options){this.options=options;this.index=0;this.frame=new El();this.host=id;if(id==='youtube-player-2'){stageMock=this;return;}mock=this;calls.push(['create']);}
       getIframe(){return this.frame;} getPlaylistIndex(){return this.index;}
       stopVideo(){calls.push(['stop']);} cuePlaylist(ids,index){this.ids=ids;this.index=Array.isArray(ids)?index:ids.index;calls.push(['cue',...(Array.isArray(ids)?ids:[ids.list,ids.index])]);}
       cueVideoById(o){this.ids=[o.videoId];calls.push(['cueVideo',o.videoId,o.startSeconds]);}
@@ -48,7 +48,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   };
   ctx.history={replaceState:(_state,_title,hash)=>{ctx.location.hash=hash;}};ctx.innerWidth=phone?390:1200;ctx.matchMedia=query=>({matches:query.includes('prefers-reduced-motion')?reduceMotion:phone});ctx.document.documentElement={lang};ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync('dist/app.js','utf8'),ctx);
   await new Promise(resolve=>setImmediate(resolve));
-  return {nodes,calls,fetched,storage,ctx,motion,fail:n=>{failAlbum=n;},get player(){return mock;}};
+  return {nodes,calls,fetched,storage,ctx,motion,fail:n=>{failAlbum=n;},get player(){return mock;},get stage(){return stageMock;}};
 }
 (async()=>{
   // Swipes navigate only on phones in the album view, and respect RTL/LTR.
@@ -100,17 +100,27 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     v.listeners.touchend({touches:[],changedTouches:[{clientX:190+dx,clientY:200,identifier:1}]});await flush();
     assert.equal(s.ctx.location.hash,`#/album/${n}`,'swipe stops at catalog boundaries');
   }
-  // Album X playing, album Y on screen: ▶ in the video frame must not bring X back once Y is meant to play.
-  { const s=await boot({hash:'#/album/2'});await flush();await flush();s.player.options.events.onReady();
-    const listOf=n=>JSON.parse(fs.readFileSync(`dist/albums/${n}.json`,'utf8')).tracks[0][1], last=()=>s.calls.filter(c=>c[0]==='load'||c[0]==='cue').at(-1);
-    s.nodes['quick-play'].click();assert.deepEqual(last().slice(0,2),['cue',listOf(2)]);assert.equal(s.calls.at(-1)[0],'playAt');
-    s.nodes['next-album'].click();await flush();assert.deepEqual(last().slice(0,2),['cue',listOf(2)],'browsing keeps the playing album');
-    s.nodes['mini-play'].click();assert.deepEqual(last().slice(0,2),['cue',listOf(2)],'pausing from the bottom bar keeps it');
-    s.nodes['mini-play'].click();s.player.options.events.onStateChange({data:2});
-    assert.deepEqual(last().slice(0,2),['cue',listOf(3)],'pausing inside the video frame hands the player to the album on screen');
-    s.nodes['quick-play'].click();assert.equal(s.calls.at(-1)[0],'playAt','then ▶ plays the album on screen');
-    s.nodes['play-pause'].click();s.nodes['next-album'].click();await flush();
-    assert.deepEqual(last().slice(0,2),['cue',listOf(4)],'a paused album does not hold the player when moving on'); }
+  // Album X playing, album Y on screen: the frame shows Y, cued in a standby player; starting Y is instant
+  // (the standby player takes over and X stops), also when ▶ is pressed inside Y's frame.
+  { const s=await boot({hash:'#/album/2'});await flush();await flush();const main=s.player;main.options.events.onReady();
+    const first=n=>JSON.parse(fs.readFileSync(`dist/albums/${n}.json`,'utf8')).tracks[0][1];
+    s.nodes['quick-play'].click();assert.equal(s.calls.at(-1)[0],'playAt');const before=s.calls.length;
+    s.nodes['next-album'].click();await flush();const stage=s.stage;assert(stage,'standby player created');
+    stage.options.events.onReady();
+    assert.deepEqual(s.calls.at(-1).slice(0,2),['cue',first(3)],'album on screen cued in the standby player');
+    assert.equal(s.calls.slice(before).some(c=>['stop','pause','load'].includes(c[0])),false,'the playing album keeps playing');
+    assert(main.frame.classSet.has('yt-standby')&&!stage.frame.classSet.has('yt-standby'),'the frame shows the album on screen');
+    assert.match(s.nodes['player-status'].textContent,/ממשיך להתנגן/);
+    s.nodes['track-list'].children[1].children[1].click();
+    assert.deepEqual(s.calls.slice(-2).map(c=>c[0]),['stop','playAt'],'starting it stops the old album and plays at once');
+    assert.equal(s.calls.at(-1)[1],1);assert.equal(s.nodes['play-pause'].textContent,'השהיה ❚❚');
+    assert(!stage.frame.classSet.has('yt-standby')&&main.frame.classSet.has('yt-standby'));
+    s.nodes['next-album'].click();await flush();
+    assert.deepEqual(s.calls.at(-1).slice(0,2),['cue',first(4)],'the old player now waits with the next album');
+    main.options.events.onStateChange({data:1});
+    assert.equal(s.calls.at(-1)[0],'stop','▶ inside the waiting frame stops the other album');
+    assert.equal(s.nodes['play-pause'].textContent,'השהיה ❚❚','and the album on screen is now playing');
+    assert(!main.frame.classSet.has('yt-standby')); }
   // Switching to another album while one plays: pause the old one, cue the new list, play it once cued;
   // if YouTube still holds the old list a moment later, loadPlaylist is tried as well.
   { const s=await boot({hash:'#/album/101'});await flush();await flush();const y=s.player;y.options.events.onReady();
