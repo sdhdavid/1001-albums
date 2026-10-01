@@ -7,22 +7,22 @@ from stories_701_750 import STORIES
 
 SPOTIFY = {
  701:'5n52kyQKeUZs5ObZJejLQd', 702:'0pXHFRsNFwGmFv9zlNOoKC', 703:'5mAPk4qeNqVLtNydaWbWlf', 704:'0n5DeW2klYVOI1FnZz94d8', 705:'4M6vPZ4hQdOeH07D0JO2JQ',
- 706:'', 707:'7o14zVcXSRk7clV6QCEdOD', 708:'5ZVnbpiFllDz7NkVOWb6WG', 709:'4QrhfVaznhrAPlM5xCKBPh', 710:'7uexJzLIjd4r6asSts0jWT',
+ 706:'55fq75UfkYbGMq4CncCtOH', 707:'7o14zVcXSRk7clV6QCEdOD', 708:'5ZVnbpiFllDz7NkVOWb6WG', 709:'4QrhfVaznhrAPlM5xCKBPh', 710:'7uexJzLIjd4r6asSts0jWT',
  711:'0m3Xt8jqX3rCxX9mSfRRYN', 712:'2VyjjlQ1CxXwAqzVOWhggl', 713:'6pFFRqFbkh3XDBBuiFZqye', 714:'304ku3JS6QsFz75Jae9VKW', 715:'1FJ9XKn6aTTigSG5GTQaXZ',
  716:'1XHEQqyatYvfK5cEJfkPeK', 717:'2V5rhszUpCudPcb01zevOt', 718:'53mCB0cuaEBjsqokPSDhbw', 719:'5iLfT6G0VLP4WHUZTAYuEF', 720:'0Ge5MTUh5sUHmg61KWwYTQ',
- 721:'4haSyDMB9N6R9BHBO6flMe', 722:'5blxyZRgkA735vO40p56MA', 723:'3vZQVeesxkzSRPtVLsrXKn', 724:'3NRQnGdFznbXtP8u2O4VKB', 725:'',
+ 721:'4haSyDMB9N6R9BHBO6flMe', 722:'5blxyZRgkA735vO40p56MA', 723:'3vZQVeesxkzSRPtVLsrXKn', 724:'3NRQnGdFznbXtP8u2O4VKB', 725:'2wz3P1w89gQd3iXdmF1IA5',
  726:'1pFUGy3ABpLRRE3oNMPbDb', 727:'71HM1CMYWeZzws8pyiEn46', 728:'1a3nQN9odOQ2Mr7ygYzI9I', 729:'2VNui22dikp6XEMdK8j8Xs', 730:'05wEDivrJlju67zESWvwDe',
  731:'3Y3yhP0knjINnXoYQoNb7S', 732:'2i7LOk6ywjKsc7uPzidTve', 733:'2cGYoviw1c8njoL5uN2nVg', 734:'16RbYsL8rkGIn02qZx6t2o', 735:'3kWHxGw4R5azuMU2FYxLfK',
- 736:'', 737:'3DRlG4ezNna6WCi3uPGcDL', 738:'2GWIHTDjZJ3H5Cu6qooJhT', 739:'6c1xyQiasQXWYtKy70Vm8q', 740:'2l9jfB5bOcsR9VSbYbnSuE',
- 741:'0IeANhddQskfJOk3UxzfB6', 742:'0pF9a14D0GUZoYGoFM90Ji', 743:'6isi41U6Wdh0JBglB26rKX', 744:'2fDJpBJhtloxzUENHlU9JB', 745:'',
- 746:'244V9tFZNQ9tuN0cKNLQT5', 747:'3y4o8DtTqCFEFcJrI87nqu', 748:'0ujpvwNskNwgU6nb2krDZS', 749:'4ORsCg1x8p80RfW0vXA35N', 750:'',
+ 736:'7dJLDJkGND4ovSCRL4r4bk', 737:'3DRlG4ezNna6WCi3uPGcDL', 738:'2GWIHTDjZJ3H5Cu6qooJhT', 739:'6c1xyQiasQXWYtKy70Vm8q', 740:'2l9jfB5bOcsR9VSbYbnSuE',
+ 741:'0IeANhddQskfJOk3UxzfB6', 742:'0pF9a14D0GUZoYGoFM90Ji', 743:'6isi41U6Wdh0JBglB26rKX', 744:'2fDJpBJhtloxzUENHlU9JB', 745:'23mDNB6otna4M0e8MORCsZ',
+ 746:'244V9tFZNQ9tuN0cKNLQT5', 747:'3y4o8DtTqCFEFcJrI87nqu', 748:'0ujpvwNskNwgU6nb2krDZS', 749:'4ORsCg1x8p80RfW0vXA35N', 750:'1JYyYFJSYrXMHLe7Dz1B3W',
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
+PLAYLIST_CHOICE = {748: 2, 713: 1}
 # #553: iTunes has no lengths, so they come from the hand-picked playlist (seconds)
 LENGTHS_FROM_PLAYLIST = {}
-RENAME = {'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
+RENAME = {'Papa Bohnheur': 'Papa Bonheur', 'Koweit Rive Gauches': 'Koweït Rive Gauche', 'Desespoir': 'Désespoir', 'Conte De Fees': 'Conte de fées', 'Passing Me By': "Passin' Me By", 'When You Gonna Learn? (Digeridoo)': 'When You Gonna Learn?', 'Go West [Hidden Track]': 'Go West', 'Chemical World (Including "Intermission")': 'Chemical World', 'Resigned (Includes "Commercial Break")': 'Resigned', 'Im Going To Spain': "I'm Going to Spain", 'Ladybird': 'Ladybird (Green Grass)', 'Mr Wendal': 'Mr. Wendal', 'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
           "Honky Tonk Angels' Medley: In the Evening (When the Sun Goes Down) / You Nearly Lose Your Mind / Blues Stay Away from Me": "Honky Tonk Angels' Medley",
           'Buenos Noches From a Lonely Room (She Wore Red Dresses)': 'Buenas Noches from a Lonely Room (She Wore Red Dresses)', 'Pig’s in Zen': 'Pigs in Zen',
           'Bye Bye Bad Man': 'Bye Bye Badman', 'Trilogy: a) The Wonder / B) Hyperstation / Z) Eliminator Jr.': 'Trilogy',
@@ -48,8 +48,8 @@ RENAME = {'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben hei�
           'She Is Like Heroin to Me': "She's Like Heroin to Me", 'Abstieg and Zerfall': 'Abstieg & Zerfall', 'Schmerzen hören': 'Hören mit Schmerzen',
           'Jet`m': "Jet'm", 'California über alles': 'California Über Alles', 'I was a Teenage Werewolf': 'I Was a Teenage Werewolf',
           'Rock On the Moon': 'Rock on the Moon', 'Steh Auf Berlin': 'Steh auf Berlin', 'Draussen Ist Feindlich': 'Draußen ist feindlich', 'The Queen of Eyes': 'Queen of Eyes', 'Kick in the Eye 2': 'Kick in the Eye', 'Of Lillies and Remains': 'Of Lilies and Remains'}
-KEEP_FIRST = {}   # bonus tracks cut
-DROP = {}   # songs not on the original LP
+KEEP_FIRST = {723: 19, 747: 10}   # bonus tracks cut
+DROP = {748: [12, 13], 712: [9], 723: [4, 13, 14, 16], 729: [8]}   # songs not on the original LP
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
