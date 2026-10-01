@@ -58,5 +58,10 @@ TAGS = {
   471: [BLUES, STD], 472: [REGGAE], 473: [PUNK, PSYCH], 474: [PUNK, REGGAE], 475: [ROCK, POP], 476: [PUNK, ROCK], 477: [EL, ALT], 478: [PUNK, ALT], 479: [EL, SOUL], 480: [PUNK, POP],
   481: ["מטאל", ROCK], 482: [EL, POP], 483: [EL, POP], 484: [EL, WORLD], 485: [PUNK], 486: [PUNK, R], 487: [PUNK, ALT], 488: [EL, POP], 489: [PUNK, BLUES], 490: [PUNK, ALT],
   491: [SOUL], 492: [SOUL, PUNK], 493: [ROCK, PSYCH], 494: [POP], 495: [POP, SOUL], 496: [SOUL, POP], 497: ["היפ הופ"], 498: [ROCK, POP], 499: [PUNK, ALT], 500: [POP, FOLK],
+  501: [ROCK, POP], 502: [POP, PUNK], 503: [JAZZ, POP], 504: [POP, PUNK], 505: [POP, ALT], 506: [PUNK, POP], 507: [POP, SOUL], 508: [PUNK, ALT], 509: ["מטאל"], 510: [FOLK, ROCK],
+  511: [POP, EL], 512: ["מטאל"], 513: [POP, PUNK], 514: [PUNK, FOLK], 515: [WORLD, "היפ הופ"], 516: ["מטאל", ROCK], 517: [ALT, ROCK], 518: [POP, EL], 519: [ALT, BLUES], 520: [POP, EL],
+  521: [ROCK, PUNK], 522: [POP], 523: [FOLK, POP], 524: [PUNK, ALT], 525: [ROCK, BLUES], 526: [EL, POP], 527: [ROCK], 528: [ROCK, POP], 529: [ALT, COUNTRY], 530: [POP, SOUL],
+  531: [POP, EL], 532: ["היפ הופ"], 533: [SOUL, JAZZ], 534: [ALT], 535: [PUNK], 536: [ROCK, "מטאל"], 537: [SOUL, ROCK], 538: [ALT, PUNK], 539: [SOUL, JAZZ], 540: [SOUL, POP],
+  541: [PUNK, ALT], 542: [PUNK, ALT], 543: [POP, ROCK], 544: [WORLD], 545: [ROCK], 546: [PUNK, ALT], 547: [JAZZ, WORLD], 548: [POP, EL], 549: [POP, ROCK], 550: [ROCK],
 }
 assert all(l in LABELS for v in TAGS.values() for l in v)
