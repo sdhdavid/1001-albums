@@ -103,11 +103,11 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
   const rows=()=>n['album-list'].children.filter(c=>c.tag==='button').length;
   const nx=async()=>{p.options.events.onStateChange({data:5});n['next-album'].click();await flush();}, pv=async()=>{p.options.events.onStateChange({data:5});n['previous-album'].click();await flush();};
-  assert.deepEqual(n['album-list'].children.filter(c=>c.tag==='div').map(c=>c.textContent),['שנות ה־50','שנות ה־60','שנות ה־70'],'decade markers in book order');
+  assert.deepEqual(n['album-list'].children.filter(c=>c.tag==='div').map(c=>c.textContent),['שנות ה־50','שנות ה־60','שנות ה־70','שנות ה־80'],'decade markers in book order');
   // Decade line above the list and the decade rail beside it.
   assert.equal(n['list-now'].children[0].textContent,'שנות ה־50','decade of the album at the top of the list');
   const rail=n['decade-rail'].children;assert.equal(rail.length,6,'one rail part per decade of the book');
-  assert.equal(rail[0].disabled,false);assert.equal(rail[2].disabled,false);assert.equal(rail[3].disabled,true,'decades not on the site yet cannot be clicked');
+  assert.equal(rail[0].disabled,false);assert.equal(rail[2].disabled,false);assert.equal(rail[3].disabled,false);assert.equal(rail[4].disabled,true,'decades not on the site yet cannot be clicked');
   assert(rail[0].classSet.has('current'),'current decade highlighted');
   rail[1].click();assert(n['album-list'].scrolledTo,'clicking a decade scrolls the list');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
@@ -343,11 +343,11 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     assert.equal(m['home'].hidden,false,'home shown first');assert.equal(m['album-page'].hidden,true);
     const hero=m['home-hero'].children;assert.equal(hero[1].children[1].textContent,'Elvis Presley','next unheard album (1 is heard)');
     assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 500/);
-    const sections=m['home-grid'].children;assert.deepEqual(sections.filter((c,i)=>i%2===0).map(c=>c.children[0].textContent),['שנות ה־50','שנות ה־60','שנות ה־70']);
+    const sections=m['home-grid'].children;assert.deepEqual(sections.filter((c,i)=>i%2===0).map(c=>c.children[0].textContent),['שנות ה־50','שנות ה־60','שנות ה־70','שנות ה־80']);
     const tiles=sections.filter((c,i)=>i%2===1).flatMap(g=>g.children);assert.equal(tiles.length,500,'one tile per album on the site');
     assert(tiles[0].children.some(c=>c.className==='tile-check'),'heard album has a check');assert(!tiles[2].children.some(c=>c.className==='tile-check'));
     assert(tiles[1].className.includes('next'),'next album outlined');
-    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,449,'"not heard yet" hides heard albums');
+    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,499,'"not heard yet" hides heard albums');
     m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,4);
     m['home-search'].value='';m['home-search'].listeners.input();
     // Clicking a tile opens that album and puts it in the address; "מה זה?" returns home with the welcome box.
