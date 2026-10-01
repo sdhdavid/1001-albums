@@ -142,6 +142,20 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
               'Streets of Sorrow / Birmingham Six', 'Lullaby of London', 'Sit Down by the Fire', 'The Broad Majestic Shannon', 'Worms'],
         641: ['Honey', 'Come Down Softly to My Soul', 'How Does It Feel?', 'I Believe It', 'Revolution', 'Let Me Down Gently',
               'So Hot (Wash Away All of My Tears)', 'Suicide', 'Lord Can You Hear Me?']}
+# 701–750 second pass
+EXTRA_PLAYLISTS.update({733: ['OLAK5uy_lgrJED_9IOrwM_apbNCgfW59JSbzOobnE'], 748: ['OLAK5uy_nysk5zmSkNeO06IpaImRO7kzoP0Iw8YSs']})
+SPOTIFY_TRACKS.update({706: ['3VqHuw0wFlIHcIPWkhIbdQ'], 725: ['46cTw1Xxyq8UX7MNAcFot7'], 736: ['288nj7X7UnHg2MrisAHMhh'],
+                       745: ['7dU0naThnlYiA3EaQlMFhg', '2ZU4gtRTj53RJddZkqeOu7'], 750: ['76UmpTenKN4jWFagdnmVCo', '3Qy9rFEBH2h6FuJz0ofihm']})
+WANT.update({
+    713: ['Rockin Stroll', 'Confetti', "It's a Shame About Ray", 'Rudderless', 'My Drug Buddy', 'The Turnpike Down', 'Bit Part',
+          "Alison's Starting to Happen", 'Hannah & Gabi', 'Kitchen', 'Ceiling Fan in My Spoon', 'Frank Mills'],
+    724: ['Connected', 'Ground Level', 'Everything', 'Sketch', 'Fade Away', 'All Night Long', 'Step It Up', 'Playing with Fire',
+          'Pressure', 'Chicken Shake', 'Creation', 'The End'],
+    734: ['Sunflower', 'Can You Heal Us (Holy Man)', 'Wild Wood', 'Instrumental One (Part 1)', 'All the Pictures on the Wall',
+          'Has My Fire Really Gone Out?', 'Country', 'Instrumental Two', '5th Season', 'The Weaver', 'Instrumental One (Part 2)',
+          'Foot of the Mountain', 'Shadow of the Sun', 'Holy Man (Reprise)', 'Moon on Your Pyjamas'],
+    750: ['Time Becomes', 'Planet of the Shapes', 'Lush 3-1', 'Lush 3-2', 'Impact (The Earth Is Burning)', 'Remind',
+          'Walk Now...', 'Monday', 'Halcyon + On + On', 'Input Out']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
