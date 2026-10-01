@@ -62,7 +62,13 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             674: ('George Michael', 'Listen Without Prejudice Vol. 1'), 675: ('Neil Young', 'Ragged Glory'), 676: ('Ice Cube', "AmeriKKKa's Most Wanted"),
             677: ("Jane's Addiction", 'Ritual de lo Habitual'), 678: ('LL Cool J', 'Mama Said Knock You Out'), 680: ("Sinead O'Connor", "I Do Not Want What I Haven't Got"),
             681: ('A Tribe Called Quest', "People's Instinctive Travels and the Paths of Rhythm"), 690: ('MC Solaar', 'Qui seme le vent recolte le tempo'),
-            691: ('Jah Wobble', 'Rising Above Bedlam'), 693: ('Ice-T', 'O.G. Original Gangster'), 695: ('Public Enemy', 'Apocalypse 91'), 684: ('My Bloody Valentine', 'Loveless')}
+            691: ('Jah Wobble', 'Rising Above Bedlam'), 693: ('Ice-T', 'O.G. Original Gangster'), 695: ('Public Enemy', 'Apocalypse 91'), 684: ('My Bloody Valentine', 'Loveless'),
+            708: ('Aphex Twin', 'Selected Ambient Works 85-92'), 709: ('Arrested Development', '3 Years 5 Months and 2 Days in the Life Of'),
+            710: ('Koffi Olomide', 'Haut de gamme Koweit rive gauche'), 713: ('The Lemonheads', "It's a Shame About Ray"),
+            715: ('The Disposable Heroes of Hiphoprisy', 'Hypocrisy Is the Greatest Luxury'), 716: ('k.d. lang', 'Ingenue'),
+            719: ('The Pharcyde', 'Bizarre Ride II the Pharcyde'), 724: ("Stereo MC's", 'Connected'), 725: ('Ministry', 'Psalm 69'),
+            730: ('Nick Cave & The Bad Seeds', "Henry's Dream"), 731: ('Nusrat Fateh Ali Khan', 'Devotional Songs'), 737: ('Liz Phair', 'Exile in Guyville'),
+            742: ('Jamiroquai', 'Emergency on Planet Earth'), 748: ('Wu-Tang Clan', 'Enter the Wu-Tang (36 Chambers)'), 749: ('Bjork', 'Debut'), 712: ('Baaba Maal', 'Lam Toro')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -91,7 +97,10 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album',
             651: '808 State 90 1989 album', 653: 'Barry Adamson Moss Side Story 1989 album', 666: "The La's 1990 debut album full", 687: 'Cypress Hill 1991 debut album full',
             683: 'Ride Nowhere 1990 full album', 686: 'Crowded House Woodface 1991 full album', 688: 'Julian Cope Peggy Suicide 1991 full album',
-            689: 'Gang Starr Step in the Arena 1991 full album', 699: 'Sepultura Arise 1991 full album', 700: 'Slint Spiderland 1991 full album', 657: 'Fugazi Repeater 1990 full album'}
+            689: 'Gang Starr Step in the Arena 1991 full album', 699: 'Sepultura Arise 1991 full album', 700: 'Slint Spiderland 1991 full album', 657: 'Fugazi Repeater 1990 full album',
+            706: 'Metallica Black Album 1991 full album', 714: 'Rage Against the Machine 1992 debut album full', 733: 'Suede 1993 debut album full',
+            750: 'Orbital 1993 Brown Album full', 732: 'PJ Harvey Dry 1992 full album', 721: 'Sugar Copper Blue 1992 full album', 701: 'U2 Achtung Baby 1991 full album',
+            725: 'Ministry Psalm 69 1992 full album', 710: 'Koffi Olomide Haut de gamme Koweit rive gauche', 731: 'Nusrat Fateh Ali Khan Devotional Songs 1992'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -133,6 +142,20 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
               'Streets of Sorrow / Birmingham Six', 'Lullaby of London', 'Sit Down by the Fire', 'The Broad Majestic Shannon', 'Worms'],
         641: ['Honey', 'Come Down Softly to My Soul', 'How Does It Feel?', 'I Believe It', 'Revolution', 'Let Me Down Gently',
               'So Hot (Wash Away All of My Tears)', 'Suicide', 'Lord Can You Hear Me?']}
+# 701–750 second pass
+EXTRA_PLAYLISTS.update({733: ['OLAK5uy_lgrJED_9IOrwM_apbNCgfW59JSbzOobnE'], 748: ['OLAK5uy_nysk5zmSkNeO06IpaImRO7kzoP0Iw8YSs']})
+SPOTIFY_TRACKS.update({706: ['3VqHuw0wFlIHcIPWkhIbdQ'], 725: ['46cTw1Xxyq8UX7MNAcFot7'], 736: ['288nj7X7UnHg2MrisAHMhh'],
+                       745: ['7dU0naThnlYiA3EaQlMFhg', '2ZU4gtRTj53RJddZkqeOu7'], 750: ['76UmpTenKN4jWFagdnmVCo', '3Qy9rFEBH2h6FuJz0ofihm']})
+WANT.update({
+    713: ['Rockin Stroll', 'Confetti', "It's a Shame About Ray", 'Rudderless', 'My Drug Buddy', 'The Turnpike Down', 'Bit Part',
+          "Alison's Starting to Happen", 'Hannah & Gabi', 'Kitchen', 'Ceiling Fan in My Spoon', 'Frank Mills'],
+    724: ['Connected', 'Ground Level', 'Everything', 'Sketch', 'Fade Away', 'All Night Long', 'Step It Up', 'Playing with Fire',
+          'Pressure', 'Chicken Shake', 'Creation', 'The End'],
+    734: ['Sunflower', 'Can You Heal Us (Holy Man)', 'Wild Wood', 'Instrumental One (Part 1)', 'All the Pictures on the Wall',
+          'Has My Fire Really Gone Out?', 'Country', 'Instrumental Two', '5th Season', 'The Weaver', 'Instrumental One (Part 2)',
+          'Foot of the Mountain', 'Shadow of the Sun', 'Holy Man (Reprise)', 'Moon on Your Pyjamas'],
+    750: ['Time Becomes', 'Planet of the Shapes', 'Lush 3-1', 'Lush 3-2', 'Impact (The Earth Is Burning)', 'Remind',
+          'Walk Now...', 'Monday', 'Halcyon + On + On', 'Input Out']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
