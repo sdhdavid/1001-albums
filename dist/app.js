@@ -660,17 +660,24 @@ $('quick-play').addEventListener('click', () => {
   else if (state === 2) player.playVideo(); else playAt(firstPlayable());
   revealPlayer();
 });
-// Switching albums: YouTube sometimes keeps the old list after loadPlaylist. Remember what was loaded before,
-// ignore that list's details while switching, and if it is still there after a few seconds, cue the new list
-// and play it once it is ready.
+// Switching albums: on phones YouTube often ignores loadPlaylist while another list is in the player, but it
+// takes a cued list. So the new list is cued and played as soon as it is ready ('cued' state). The old list's
+// details are ignored meanwhile, and if the old list is somehow still there after a moment, loadPlaylist is
+// tried as well.
 let switching = null, playWhenCued = false;
 const playlistKey = () => (typeof player?.getPlaylist === 'function' && player.getPlaylist() || []).join();
+function cueAndPlay(a, target) {
+  playWhenCued = true;
+  if (a.youtubePlaylist) player.cuePlaylist({list: a.youtubePlaylist, listType: 'playlist', index: target, startSeconds: 0});
+  else player.cuePlaylist(queue.map(x => x[1]), target, 0);
+}
 function checkSwitch() {
   const s = switching; switching = null;
   if (!s || playingAlbum !== s.a || !s.before || playlistKey() !== s.before) return;
   if (state === 1 || state === 3) pauseOwn();
-  playWhenCued = true;
-  player.cuePlaylist({list: s.a.youtubePlaylist, listType: 'playlist', index: s.target, startSeconds: 0});
+  playWhenCued = false;
+  if (s.a.youtubePlaylist) player.loadPlaylist({list: s.a.youtubePlaylist, listType: 'playlist', index: s.target, startSeconds: 0});
+  else player.loadPlaylist(queue.map(x => x[1]), s.target, 0);
 }
 // Starts a song of the shown album; if another album is in the player, the shown album takes its place.
 function startShown(index) {
@@ -682,14 +689,13 @@ function startShown(index) {
   const t = queue[index];
   // Pause the old album first: if YouTube doesn't take the new list, the old one must not keep playing.
   if (state === 1 || state === 3) pauseOwn();
-  if (a.youtubePlaylist) {
-    const target = Math.max(0, playlistIndex(a, t));
+  if (a.fullAlbumVideo) player.loadVideoById({videoId: a.tracks[0][1], startSeconds: t[3]});
+  else {
+    const target = a.youtubePlaylist ? Math.max(0, playlistIndex(a, t)) : index;
     switching = {a, before: playlistKey(), target};
-    player.loadPlaylist({list: a.youtubePlaylist, listType: 'playlist', index: target, startSeconds: 0});
-    setTimeout(checkSwitch, 3000);
+    cueAndPlay(a, target);
+    setTimeout(checkSwitch, 2500);
   }
-  else if (a.fullAlbumVideo) player.loadVideoById({videoId: a.tracks[0][1], startSeconds: t[3]});
-  else player.loadPlaylist(queue.map(x => x[1]), index, 0);
   player.setLoop(false); player.setShuffle(false);
   updateControls(); syncGuide();
 }
@@ -749,7 +755,7 @@ function firstPlayable(from = 0, step = 1, a = playingAlbum, q = queue) {
   return -1;
 }
 function cueQueue() {
-  clearError(); clearInterval(chapterTimer);
+  clearError(); clearInterval(chapterTimer); playWhenCued = false;
   if (!ready || !queue.length) return;
   player.stopVideo();
   const a = playingAlbum;
