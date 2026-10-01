@@ -73,6 +73,7 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    458: ['OLAK5uy_l6J0IYQQ9zTbh_teJb7GYlx9T1nUKIyro', 'PL4mbw3LEmSEmMXVWZsY6J3fuIEWYB_fs9', 'PLEvwWAEnoCLlNVdGVLAWGHmMhAAwOey_W'],
                    463: ['PLG9675Na1SXZs7yvrbLkdTsoZH4bUmJjx', 'PL2j_Wb5pKu_2V16IOI--3s_F2XV__gW38'],
                    465: ['PLreQ0V6eABfILf1X0KFOA7bVzfFcUsPaI'],
+                   476: ['PLahyulnypeEyK9PA4r6QoeDzA1nJ4wgG7', 'PLBokfEObLPHAU9IejPCwVkJs0E-Y8mkhc', 'OLAK5uy_n58mJ_2quIcm6sKFTWa90TEedpuAqj3x8'],
                    499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
@@ -86,6 +87,8 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
         473: ['Ha Ha I\'m Drowning', 'Sleeping Gas', 'Treason', 'Second Head', 'Poppies in the Field', 'Went Crazy',
               'Brave Boys Keep Their Promises', 'Bouncing Babies', 'Books', 'Thief of Baghdad', 'When I Dream'],
         492: ['Wordy Rappinghood', 'Genius of Love', 'Tom Tom Theme', "L'Éléphant", 'As Above, So Below', 'Lorelei', 'On, On, On, On...', 'Booming and Zooming'],
+        476: ['Precious', 'The Phone Call', 'Up the Neck', 'Tattooed Love Boys', 'Space Invader', 'The Wait', 'Stop Your Sobbing',
+              'Kid', 'Private Life', 'Brass in Pocket', 'Lovers of Today', 'Mystery Achievement'],
         463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}

@@ -19,7 +19,7 @@ SPOTIFY = {
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
+PLAYLIST_CHOICE = {481: 1}   # #481: the playlist in album order
 RENAME = {'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
           'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
@@ -32,9 +32,12 @@ RENAME = {'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 &
           'I Want to Be Loved': 'I Want to Be Loved', 'Modern Dance': 'The Modern Dance', 'Nova estação': 'Nova Estação', 'O medo de amar é o medo de ser livre': 'O Medo de Amar É o Medo de Ser Livre',
           'Aprendendo a jogar': 'Aprendendo a Jogar', 'Só Deus é quem sabe': 'Só Deus É Quem Sabe', 'O trem azul': 'O Trem Azul',
           'Vento de maio (Música Incidental: Um Girassol Da Cor Do Seu Cabelo)': 'Vento de Maio', 'Calcanhar de Aquilles': 'Calcanhar de Aquiles', 'Köln, January 24, 1975, Pt. I': 'Part I', 'Köln, January 24, 1975, Pt. II A': 'Part IIa',
-          'Köln, January 24, 1975, Pt. II B': 'Part IIb', 'Köln, January 24, 1975, Pt. II C': 'Part IIc', 'H₂Ogate Blues': 'H2Ogate Blues'}
-KEEP_FIRST = {}   # bonus tracks cut
-DROP = {}         # songs added on later editions, not on the original LP
+          'Köln, January 24, 1975, Pt. II B': 'Part IIb', 'Köln, January 24, 1975, Pt. II C': 'Part IIc', 'H₂Ogate Blues': 'H2Ogate Blues',
+          'She Is Like Heroin to Me': "She's Like Heroin to Me", 'Abstieg and Zerfall': 'Abstieg & Zerfall', 'Schmerzen hören': 'Hören mit Schmerzen',
+          'Jet`m': "Jet'm", 'California über alles': 'California Über Alles', 'I was a Teenage Werewolf': 'I Was a Teenage Werewolf',
+          'Rock On the Moon': 'Rock on the Moon', 'Steh Auf Berlin': 'Steh auf Berlin', 'Draussen Ist Feindlich': 'Draußen ist feindlich', 'The Queen of Eyes': 'Queen of Eyes', 'Kick in the Eye 2': 'Kick in the Eye', 'Of Lillies and Remains': 'Of Lilies and Remains'}
+KEEP_FIRST = {453: 12, 456: 13, 477: 13, 480: 11, 490: 10, 497: 7}   # bonus tracks cut (#453 the UK LP)
+DROP = {452: [12]}         # songs added on later editions, not on the original LP (#452 Gangsters, US edition)
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
@@ -54,6 +57,8 @@ def clean(s):
 def norm(s): return re.sub(r'[^a-z0-9]+', '', s.replace('’', "'").lower())
 
 disc = json.load(open('tools/batches/451-500.discovered.json'))
+try: disc.update(json.load(open('tools/batches/451-500.fix.discovered.json')))   # second pass for a few albums
+except FileNotFoundError: pass
 out = []
 for n in sorted(int(k) for k in disc if int(k) not in SKIP):
     r = disc[str(n)]
@@ -100,6 +105,7 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
         assert norm(p[0]) in lookup, (n, p[0], tnames)
         p[0] = lookup[norm(p[0])]   # use the track's exact spelling
     focus = sorted({tnames.index(name) for name, _ in picks})
+    if not SPOTIFY[n]: print('no Spotify id yet', n); continue
     assert len(SPOTIFY[n]) == 22
     rec = {'n': n, 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus, 'story': st['story'], 'picks': picks}
     rec['durations'] = durs if not extra else MANUAL[n]['durations']
