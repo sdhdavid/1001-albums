@@ -49,7 +49,13 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             562: ('Dexys Midnight Runners', "Don't Stand Me Down"), 565: ('Afrika Bambaataa', 'Planet Rock The Album'),
             572: ('Megadeth', "Peace Sells But Who's Buying"), 578: ('Run-DMC', 'Raising Hell'), 586: ('Dinosaur Jr', "You're Living All Over Me"),
             587: ('Dolly Parton', 'Trio'), 590: ('Prince', 'Sign o the Times'), 595: ('Husker Du', 'Warehouse Songs and Stories'),
-            597: ('Astor Piazzolla', 'The New Tango'), 564: ('Elvis Costello', 'Blood & Chocolate')}
+            597: ('Astor Piazzolla', 'The New Tango'), 564: ('Elvis Costello', 'Blood & Chocolate'),
+            609: ("Terence Trent D'Arby", 'Introducing the Hardline'), 610: ('The Pogues', 'If I Should Fall from Grace with God'),
+            611: ('Leonard Cohen', "I'm Your Man"), 612: ('The Waterboys', "Fisherman's Blues"), 616: ('Mudhoney', 'Superfuzz Bigmuff'), 619: ('The Go-Betweens', '16 Lovers Lane'),
+            622: ('My Bloody Valentine', "Isn't Anything"), 624: ('Metallica', 'And Justice for All'), 626: ('Dagmar Krause', 'Tank Battles'), 629: ('Morrissey', 'Viva Hate'),
+            631: ('The Sugarcubes', "Life's Too Good"), 633: ("Jane's Addiction", "Nothing's Shocking"), 640: ('Queen Latifah', 'All Hail the Queen'),
+            642: ('fIREHOSE', 'fROMOHIO'), 643: ('Beastie Boys', "Paul's Boutique"), 644: ('The Young Gods', "L'eau rouge"), 645: ('John Zorn', 'Spy vs Spy'),
+            648: ('Baaba Maal', 'Djam Leelii'), 601: ('Ladysmith Black Mambazo', 'Shaka Zulu')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -70,7 +76,12 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             538: 'The Replacements Let It Be 1984 full album', 509: 'Venom Black Metal 1982 full album', 539: 'The Style Council Cafe Bleu 1984 full album',
             544: "Youssou N'Dour Immigres 1984 album", 547: 'Abdullah Ibrahim Water from an Ancient Well album', 529: 'Meat Puppets II 1984 full album',
             554: 'Suzanne Vega 1985 debut album full', 576: 'Throwing Muses 1986 debut album full', 552: 'Mekons Fear and Whiskey 1985 full album',
-            587: 'Dolly Parton Linda Ronstadt Emmylou Harris Trio 1987 full album', 597: 'Astor Piazzolla Gary Burton The New Tango 1987'}
+            587: 'Dolly Parton Linda Ronstadt Emmylou Harris Trio 1987 full album', 597: 'Astor Piazzolla Gary Burton The New Tango 1987',
+            604: 'Sonic Youth Sister 1987 full album', 605: 'The Triffids Calenture 1987 full album', 621: 'Tracy Chapman 1988 debut album full',
+            625: 'Dinosaur Jr Bug 1988 full album', 628: 'American Music Club California 1988 album', 646: 'The Stone Roses 1989 debut album full',
+            616: 'Mudhoney Superfuzz Bigmuff 1988 EP', 626: 'Dagmar Krause Tank Battles Hanns Eisler', 648: 'Baaba Maal Mansour Seck Djam Leelii',
+            645: 'John Zorn Spy vs Spy Ornette Coleman', 644: 'The Young Gods L eau rouge 1989', 609: 'Terence Trent DArby Introducing the Hardline 1987 full album',
+            610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -92,8 +103,9 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['22mcOt74IVtCeR5hoIfveO', '2fgQN85UzwZMRIBTs06FjX', '3zeDrhkNv8872fC7CsOCpI', '4xrUp1M9XmKHFzRRyXIx71', '53fzZMZ3ENBY0BpLFOMy9p', '6GjMcck9c4i6cQo194xKl6', '7lCEnPYYkUuvnkrCbA6RCa', '7lGDjzmvAcNl6kEtn1rTaJ', '7qLJ8bzny3tynTPW2U2Anv'], 498: ['0LSWSMW0LVJX3fmSgDnk2A', '0rhmwOflgYrPntNuEe8chN', '1aucGNKimhgARC7iO2xLt2', '1pK8MLyjgvt8pNVkQCBnSg', '27qrMWYugzTnAvn2mtZdcx', '2B6i9ZY0NF8UkESEIL0taZ', '2srC8Ls3xXdRUH3n7jvHQD', '4HWzj6tf8nXvH7GzXAl1ld', '5h4pJfrTGROIhFJpTHa1Cu', '65Al3RSB7zeQeYcinysMxJ', '6A4MecoyRjnDtYeAZ7JGQf', '6Iyeo7CPHen8QEW4x31TpI', '6zwFIyWKbdHi9mwrQcrEY1']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {587: ['0ZPmyHbX6jBdu2mvDnjGQe', '5LaKqu2QaLkWI0ZVWtsMWz', '2g8ywFUVna7EBMkzxExiCn']}  # the page lists the artist's albums; each is named via its embed page
-_SPOTIFY_TRACKS_USED = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN'],
+SPOTIFY_TRACKS = {608: ['6ADSaE87h8Y3lccZlBJdXH', '6FlSRjNfbyHoZZGfsMwItH'], 626: ['2jPtopeUYFoUXTc6tJGKe6'], 628: ['2YeaR7DR5m1iLNcx0N1310', '0sXf52fCQROCfUmj2kG4EQ'],
+                  646: ['48ScV1Ft5BCX4U9kfS1QXo'], 648: ['5NuFKf7sqeWKM5quLZPUNw', '2I1eqWLqWOnAmUy5cg60OT']}  # the page lists the artist's albums; each is named via its embed page
+_SPOTIFY_TRACKS_USED = {587: ['0ZPmyHbX6jBdu2mvDnjGQe', '5LaKqu2QaLkWI0ZVWtsMWz', '2g8ywFUVna7EBMkzxExiCn'], 515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN'],
                   471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
@@ -107,7 +119,14 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
               'Kid', 'Private Life', 'Brass in Pocket', 'Lovers of Today', 'Mystery Achievement'],
         509: ['Black Metal', 'To Hell and Back', 'Buried Alive', 'Raise the Dead', "Teacher's Pet", 'Leave Me in Hell', 'Sacrifice',
               "Heaven's on Fire", 'Countess Bathory', "Don't Burn the Witch", 'At War with Satan'],
-        463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive']}
+        463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive'],
+        609: ['If You All Get to Heaven', 'If You Let Me Stay', 'Wishing Well', "I'll Never Turn My Back on You (Father's Words)", 'Dance Little Sister',
+              'Seven More Days', "Let's Go Forward", 'Rain', 'Sign Your Name', 'As Yet Untitled', "Who's Loving You"],
+        610: ['If I Should Fall from Grace with God', 'Turkish Song of the Damned', 'Bottle of Smoke', 'Fairytale of New York', 'Metropolis',
+              'Thousands Are Sailing', 'Fiesta', 'Medley: The Recruiting Sergeant / The Rocky Road to Dublin / The Galway Races',
+              'Streets of Sorrow / Birmingham Six', 'Lullaby of London', 'Sit Down by the Fire', 'The Broad Majestic Shannon', 'Worms'],
+        641: ['Honey', 'Come Down Softly to My Soul', 'How Does It Feel?', 'I Believe It', 'Revolution', 'Let Me Down Gently',
+              'So Hot (Wash Away All of My Tears)', 'Suicide', 'Lord Can You Hear Me?']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())

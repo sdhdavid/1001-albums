@@ -68,5 +68,10 @@ TAGS = {
   571: [ALT, POP], 572: ["מטאל"], 573: [ROCK, "מטאל"], 574: [ALT, PUNK], 575: ["מטאל"], 576: [ALT, PUNK], 577: [POP, WORLD], 578: ["היפ הופ"], 579: [POP, ROCK], 580: [COUNTRY, ROCK],
   581: [PUNK, REGGAE], 582: [SOUL, JAZZ], 583: [ALT, POP], 584: [POP, ROCK], 585: ["מטאל"], 586: [ALT, PUNK], 587: [COUNTRY, FOLK], 588: [ROCK, "מטאל"], 589: [ALT, ROCK], 590: [SOUL, POP],
   591: [ROCK], 592: [EL, POP], 593: [ALT, EL], 594: [POP, SOUL], 595: [PUNK, ALT], 596: [ALT, PSYCH], 597: [WORLD, JAZZ], 598: [ALT, POP], 599: [ROCK, "מטאל"], 600: [ALT, PUNK],
+  601: [WORLD], 602: [EL, ALT], 603: ["מטאל", PUNK], 604: [ALT, PUNK], 605: [ALT, ROCK], 606: [POP, SOUL], 607: [POP, EL], 608: [ROCK], 609: [SOUL, POP], 610: [FOLK, PUNK],
+  611: [FOLK, POP], 612: [FOLK, ROCK], 613: [PUNK, SOUL], 614: [POP, JAZZ], 615: [ROCK, "מטאל"], 616: [ALT, PUNK], 617: [ALT, ROCK], 618: [ALT, EL], 619: [ALT, POP], 620: [COUNTRY, ALT],
+  621: [FOLK, POP], 622: [ALT], 623: [ALT, PUNK], 624: ["מטאל"], 625: [ALT, PUNK], 626: [STD], 627: [COUNTRY, STD], 628: [ALT, FOLK], 629: [ALT, POP], 630: [ALT, PUNK],
+  631: [ALT, PUNK], 632: [COUNTRY], 633: [ALT, ROCK], 634: ["היפ הופ"], 635: ["מטאל", ALT], 636: [ROCK, SOUL], 637: [BLUES], 638: [EL, ALT], 639: [POP], 640: ["היפ הופ"],
+  641: [ALT, PSYCH], 642: [PUNK, ALT], 643: ["היפ הופ"], 644: [EL, ALT], 645: [JAZZ, PUNK], 646: [ALT, ROCK], 647: ["היפ הופ", POP], 648: [WORLD, FOLK], 649: [POP, ALT], 650: [ALT, PUNK],
 }
 assert all(l in LABELS for v in TAGS.values() for l in v)

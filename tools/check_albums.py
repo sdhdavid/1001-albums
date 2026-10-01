@@ -9,7 +9,9 @@ def problems(n, a, known):
     """Return a list of problems with album n's data (empty list = ready to publish)."""
     out = []
     if n not in known: out.append('not in the catalog (albums.json)')
-    if not re.fullmatch(r'[A-Za-z0-9]{22}', a.get('spotifyAlbum') or ''): out.append('spotifyAlbum must be a 22-character id')
+    if a.get('noSpotify') is True:   # not on Spotify (e.g. #626): YouTube only, no cover from Spotify
+        if 'spotifyAlbum' in a: out.append('noSpotify album must not have a spotifyAlbum')
+    elif not re.fullmatch(r'[A-Za-z0-9]{22}', a.get('spotifyAlbum') or ''): out.append('spotifyAlbum must be a 22-character id')
     tracks = a.get('tracks') or []
     if not tracks: return out + ['no tracks']
     names = [t[0] for t in tracks]
