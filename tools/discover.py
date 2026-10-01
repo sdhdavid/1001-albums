@@ -49,7 +49,13 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             562: ('Dexys Midnight Runners', "Don't Stand Me Down"), 565: ('Afrika Bambaataa', 'Planet Rock The Album'),
             572: ('Megadeth', "Peace Sells But Who's Buying"), 578: ('Run-DMC', 'Raising Hell'), 586: ('Dinosaur Jr', "You're Living All Over Me"),
             587: ('Dolly Parton', 'Trio'), 590: ('Prince', 'Sign o the Times'), 595: ('Husker Du', 'Warehouse Songs and Stories'),
-            597: ('Astor Piazzolla', 'The New Tango'), 564: ('Elvis Costello', 'Blood & Chocolate')}
+            597: ('Astor Piazzolla', 'The New Tango'), 564: ('Elvis Costello', 'Blood & Chocolate'),
+            609: ("Terence Trent D'Arby", 'Introducing the Hardline According to Terence Trent DArby'), 610: ('The Pogues', 'If I Should Fall from Grace with God'),
+            611: ('Leonard Cohen', "I'm Your Man"), 612: ('The Waterboys', "Fisherman's Blues"), 616: ('Mudhoney', 'Superfuzz Bigmuff'), 619: ('The Go-Betweens', '16 Lovers Lane'),
+            622: ('My Bloody Valentine', "Isn't Anything"), 624: ('Metallica', 'And Justice for All'), 626: ('Dagmar Krause', 'Tank Battles'), 629: ('Morrissey', 'Viva Hate'),
+            631: ('The Sugarcubes', "Life's Too Good"), 633: ("Jane's Addiction", "Nothing's Shocking"), 640: ('Queen Latifah', 'All Hail the Queen'),
+            642: ('fIREHOSE', 'fROMOHIO'), 643: ('Beastie Boys', "Paul's Boutique"), 644: ('The Young Gods', "L'eau rouge"), 645: ('John Zorn', 'Spy vs Spy'),
+            648: ('Baaba Maal', 'Djam Leelii'), 601: ('Ladysmith Black Mambazo', 'Shaka Zulu')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -70,7 +76,11 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             538: 'The Replacements Let It Be 1984 full album', 509: 'Venom Black Metal 1982 full album', 539: 'The Style Council Cafe Bleu 1984 full album',
             544: "Youssou N'Dour Immigres 1984 album", 547: 'Abdullah Ibrahim Water from an Ancient Well album', 529: 'Meat Puppets II 1984 full album',
             554: 'Suzanne Vega 1985 debut album full', 576: 'Throwing Muses 1986 debut album full', 552: 'Mekons Fear and Whiskey 1985 full album',
-            587: 'Dolly Parton Linda Ronstadt Emmylou Harris Trio 1987 full album', 597: 'Astor Piazzolla Gary Burton The New Tango 1987'}
+            587: 'Dolly Parton Linda Ronstadt Emmylou Harris Trio 1987 full album', 597: 'Astor Piazzolla Gary Burton The New Tango 1987',
+            604: 'Sonic Youth Sister 1987 full album', 605: 'The Triffids Calenture 1987 full album', 621: 'Tracy Chapman 1988 debut album full',
+            625: 'Dinosaur Jr Bug 1988 full album', 628: 'American Music Club California 1988 album', 646: 'The Stone Roses 1989 debut album full',
+            616: 'Mudhoney Superfuzz Bigmuff 1988 EP', 626: 'Dagmar Krause Tank Battles Hanns Eisler', 648: 'Baaba Maal Mansour Seck Djam Leelii',
+            645: 'John Zorn Spy vs Spy Ornette Coleman', 644: 'The Young Gods L eau rouge 1989'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
