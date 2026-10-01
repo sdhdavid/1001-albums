@@ -1,0 +1,25 @@
+name: Fetch covers
+
+# Run by hand after adding albums. Looks up each playable album's cover image on Spotify (blocked in the
+# Claude sandbox) and saves tools/covers.json to the branch "covers-data"; copy it into tools/ and run
+# python3 -c "import sys; sys.path.insert(0, 'tools'); import store; store.rebuild_index()".
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/fetch_covers.py tools/covers.json
+      - name: Save to branch covers-data
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git checkout -B covers-data
+          git add -f tools/covers.json
+          git commit -m "Album cover addresses"
+          git push -f origin covers-data
