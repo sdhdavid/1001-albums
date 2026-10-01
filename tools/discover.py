@@ -55,7 +55,14 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             622: ('My Bloody Valentine', "Isn't Anything"), 624: ('Metallica', 'And Justice for All'), 626: ('Dagmar Krause', 'Tank Battles'), 629: ('Morrissey', 'Viva Hate'),
             631: ('The Sugarcubes', "Life's Too Good"), 633: ("Jane's Addiction", "Nothing's Shocking"), 640: ('Queen Latifah', 'All Hail the Queen'),
             642: ('fIREHOSE', 'fROMOHIO'), 643: ('Beastie Boys', "Paul's Boutique"), 644: ('The Young Gods', "L'eau rouge"), 645: ('John Zorn', 'Spy vs Spy'),
-            648: ('Baaba Maal', 'Djam Leelii'), 601: ('Ladysmith Black Mambazo', 'Shaka Zulu')}
+            648: ('Baaba Maal', 'Djam Leelii'), 601: ('Ladysmith Black Mambazo', 'Shaka Zulu'),
+            651: ('808 State', '90'), 652: ('Coldcut', "What's That Noise"), 658: ('Soul II Soul', 'Club Classics Vol. One'), 659: ('De La Soul', '3 Feet High and Rising'),
+            660: ('Janet Jackson', 'Rhythm Nation 1814'), 661: ('Jungle Brothers', 'Done by the Forces of Nature'), 662: ('N.W.A', 'Straight Outta Compton'),
+            664: ('The Shamen', 'En-Tact'), 666: ("The La's", "The La's"), 671: ('Digital Underground', 'Sex Packets'), 673: ('Happy Mondays', "Pills 'n' Thrills and Bellyaches"),
+            674: ('George Michael', 'Listen Without Prejudice Vol. 1'), 675: ('Neil Young', 'Ragged Glory'), 676: ('Ice Cube', "AmeriKKKa's Most Wanted"),
+            677: ("Jane's Addiction", 'Ritual de lo Habitual'), 678: ('LL Cool J', 'Mama Said Knock You Out'), 680: ("Sinead O'Connor", "I Do Not Want What I Haven't Got"),
+            681: ('A Tribe Called Quest', "People's Instinctive Travels and the Paths of Rhythm"), 690: ('MC Solaar', 'Qui seme le vent recolte le tempo'),
+            691: ('Jah Wobble', 'Rising Above Bedlam'), 693: ('Ice-T', 'O.G. Original Gangster'), 695: ('Public Enemy', 'Apocalypse 91'), 684: ('My Bloody Valentine', 'Loveless')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -81,7 +88,10 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             625: 'Dinosaur Jr Bug 1988 full album', 628: 'American Music Club California 1988 album', 646: 'The Stone Roses 1989 debut album full',
             616: 'Mudhoney Superfuzz Bigmuff 1988 EP', 626: 'Dagmar Krause Tank Battles Hanns Eisler', 648: 'Baaba Maal Mansour Seck Djam Leelii',
             645: 'John Zorn Spy vs Spy Ornette Coleman', 644: 'The Young Gods L eau rouge 1989', 609: 'Terence Trent DArby Introducing the Hardline 1987 full album',
-            610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album'}
+            610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album',
+            651: '808 State 90 1989 album', 653: 'Barry Adamson Moss Side Story 1989 album', 666: "The La's 1990 debut album full", 687: 'Cypress Hill 1991 debut album full',
+            683: 'Ride Nowhere 1990 full album', 686: 'Crowded House Woodface 1991 full album', 688: 'Julian Cope Peggy Suicide 1991 full album',
+            689: 'Gang Starr Step in the Arena 1991 full album', 699: 'Sepultura Arise 1991 full album', 700: 'Slint Spiderland 1991 full album', 657: 'Fugazi Repeater 1990 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
