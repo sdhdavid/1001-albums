@@ -13,14 +13,22 @@ SPOTIFY = {
  571:'1Xtzjp8COFI0V82CLiHvia', 572:'4PqSk2iBHnsYQK0ecXjS9k', 573:'0kBfgEilUFCMIQY5IOjG4t', 574:'5Bf5U1Zw9gsJh6bWaM2VY2', 575:'279yIkDusPSYNWUMiZGIsE',
  576:'5V2UTN2mkQkn5GnoVkmIUI', 577:'4WoQ94qzwQj28n3nlSOVLB', 578:'0PanG8trSzqFIX7pZmCVFG', 579:'3FVsJiQMI7dp0RfTBdWtMW', 580:'3bEnaGjQRqfoqNkAQtO1Uy',
  581:'6xw5oNhHoLltpXCFONNnqs', 582:'15Ob3oBedxes2SqsrQbVuY', 583:'38PSQu2ndRIMJSoZwho17z', 584:'0sozfhkNTSDCVxhicblcsq', 585:'5vZVl8vM576VyIrksnvAph',
- 586:'7LpjAJON4CNX6PmY9SICs3', 587:'', 588:'1ja2qzCrh6bZykcojbZs82', 589:'1Sl9IDnFbR4c5nQnwFn0GV', 590:'1XsXHctYSQNyAd9BANCk2B',
+ 586:'7LpjAJON4CNX6PmY9SICs3', 587:'1uPjtjcaOwsxwLO7DzwQh2', 588:'1ja2qzCrh6bZykcojbZs82', 589:'1Sl9IDnFbR4c5nQnwFn0GV', 590:'1XsXHctYSQNyAd9BANCk2B',
  591:'2Ah76CkWPKnhhuwQT8DcHQ', 592:'2ybu0EJFA2jgoOFy64LKf0', 593:'5Wcb09PdAwHCKGAwBvnK04', 594:'4imgqeBHbJPcoU57twdgTk', 595:'1By3l3EcAlNZXJvSOHFJ98',
  596:'0YaG8TgKhZGxqEqMC913FY', 597:'4C0wWqAGX8EegAkSQJXjtu', 598:'7jfexk2w5aDI25njkN0UGg', 599:'5JKFiC2WVi9HtvJEm8CUB8', 600:'7KLJM2KoVkWIaOpLzfyGHh',
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
 PLAYLIST_CHOICE = {}
-RENAME = {'Back of Love': 'The Back of Love', 'Rene and Georgette Magritte with Their Dog After the War': 'René and Georgette Magritte with Their Dog After the War', "Sucker M.C.'s (Krush-Groove 1)": "Sucker M.C.'s", 'Hollis Crew (Krush-Groove 2)': 'Hollis Crew', 'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
+# #553: iTunes has no lengths, so they come from the hand-picked playlist (seconds)
+LENGTHS_FROM_PLAYLIST = {553: 2}
+RENAME = {'Psycho Cupid - Danceband On the Edge of Time': 'Psycho Cupid', 'Marlene On the Wall': 'Marlene on the Wall', 'The Sick Bed of Cuchulainn': 'The Sick Bed of Cúchulainn',
+          'Wood Beez': 'Wood Beez (Pray Like Aretha Franklin)', 'Fight for Your Right': '(You Gotta) Fight for Your Right (To Party!)', 'Honey Are You Straight Or Are You Blind': 'Honey, Are You Straight or Are You Blind?',
+          'The Last Of The True Believers': 'The Last of the True Believers', 'Love At The Five & Dime': 'Love at the Five and Dime', 'More Than A Whisper': 'More Than a Whisper',
+          'Banks Of The Pontchartrain': 'Banks of the Pontchartrain', "Lookin' For The Time (Workin' Girl)": "Lookin' for the Time (Workin' Girl)", 'One Of These Days': 'One of These Days',
+          "Love's Found A Shoulder": "Love's Found a Shoulder", 'Fly By Night': 'Fly by Night', 'The Wing & The Wheel': 'The Wing and the Wheel', 'SludgeFeast': 'Sludgefeast',
+          'I Want Your Sex, Pts. 1 & 2': 'I Want Your Sex (Parts 1 & 2)', 'La Muerta del Angel': 'La Muerte del Angel', 'Reminisce': 'Reminisce (Part Two)', 'Cables (live)': 'Cables',
+          'Back of Love': 'The Back of Love', 'Rene and Georgette Magritte with Their Dog After the War': 'René and Georgette Magritte with Their Dog After the War', "Sucker M.C.'s (Krush-Groove 1)": "Sucker M.C.'s", 'Hollis Crew (Krush-Groove 2)': 'Hollis Crew', 'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
           'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
           'Shine On You Crazy Diamond, Pts. 1-5': 'Shine On You Crazy Diamond (Parts I-V)',
@@ -36,12 +44,12 @@ RENAME = {'Back of Love': 'The Back of Love', 'Rene and Georgette Magritte with 
           'She Is Like Heroin to Me': "She's Like Heroin to Me", 'Abstieg and Zerfall': 'Abstieg & Zerfall', 'Schmerzen hören': 'Hören mit Schmerzen',
           'Jet`m': "Jet'm", 'California über alles': 'California Über Alles', 'I was a Teenage Werewolf': 'I Was a Teenage Werewolf',
           'Rock On the Moon': 'Rock on the Moon', 'Steh Auf Berlin': 'Steh auf Berlin', 'Draussen Ist Feindlich': 'Draußen ist feindlich', 'The Queen of Eyes': 'Queen of Eyes', 'Kick in the Eye 2': 'Kick in the Eye', 'Of Lillies and Remains': 'Of Lilies and Remains'}
-KEEP_FIRST = {}   # bonus tracks cut
-DROP = {}         # songs added on later editions, not on the original LP
+KEEP_FIRST = {586: 9, 594: 9}   # bonus tracks cut (#586 Just Like Heaven, #594 A Last Request, CD only)
+DROP = {557: [5], 579: [14]}   # not on the original UK LP: #557 How Soon Is Now?, #579 Dear God
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
-BY_PLAYLIST = set()   # albums with no fixed track order: follow the playlist
+BY_PLAYLIST = {584}   # #584: original LP order (In Your Eyes on side two), not the 2002 order   # albums with no fixed track order: follow the playlist
 SKIP = set()   # albums to hold back (none)
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
@@ -50,6 +58,7 @@ VIDEOS = {}
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
+    s = re.sub(r'\s*\(with [^)]*\)', '', s)
     s = re.sub(r'\s*[\(\[]feat\.[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s*[\(\[][^)\]]*(remaster|mono|stereo|version|edit|mix|bonus|single|live|\b(19|20)\d\d\b)[^)\]]*[\)\]]', '', s, flags=re.I)
     s = re.sub(r'\s+-\s+(\d{4}\s+)?(remaster|mono|stereo|single|live).*$', '', s, flags=re.I)
@@ -72,6 +81,9 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
     yt = (r.get('youtube') or [{'positions': []}])[PLAYLIST_CHOICE.get(n, 0)]
     names = [clean(t) for t in r.get('tracks', [])]
     pos = yt.get('positions', []); durs = list(r.get('durations') or [None] * len(names))
+    if n in LENGTHS_FROM_PLAYLIST:
+        secs = r['youtube'][LENGTHS_FROM_PLAYLIST[n]]['durations']
+        durs = [f'{secs[p] // 60}:{secs[p] % 60:02d}' for p in pos]
     if n in MANUAL and not extra:
         yt = {'id': MANUAL[n]['youtubePlaylist']}; names = MANUAL[n]['names']; pos = list(range(len(names))); durs = MANUAL[n]['durations']
     pos = list(pos)
