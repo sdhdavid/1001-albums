@@ -161,6 +161,14 @@ WANT.update({
           'Foot of the Mountain', 'Shadow of the Sun', 'Holy Man (Reprise)', 'Moon on Your Pyjamas'],
     750: ['Time Becomes', 'Planet of the Shapes', 'Lush 3-1', 'Lush 3-2', 'Impact (The Earth Is Burning)', 'Remind',
           'Walk Now...', 'Monday', 'Halcyon + On + On', 'Input Out']})
+# 751–800 second pass
+SPOTIFY_TRACKS.update({754: ['0SXXHxlC61nrSODzxjcEti', '64ceFPkKvlMxnVpGHdkmGU'], 775: ['39MevbqnkqtayGeHujte3n', '4YJoVxtIVoDL71wGwrqQ2j', '1XJ1LUBZDUFf5f6v38562R']})
+WANT.update({
+    751: ['Bathtub', 'G Funk Intro', 'Gin and Juice', 'W Balls', 'Tha Shiznit', 'Lodi Dodi', 'Murder Was the Case', 'Serial Killa',
+          "Who Am I (What's My Name)?", 'For All My Niggaz & Bitches', "Ain't No Fun (If the Homies Can't Have None)", 'Doggy Dogg World',
+          'Gz and Hustlas', 'Pump Pump'],
+    794: ['Line Up', 'Annie', 'Connection', 'Car Song', 'Smile', 'Hold Me Now', 'S.O.F.T.', 'Indian Song', 'Blue', 'All-Nighter',
+          'Waking Up', '2:1', 'Vaseline', 'Never Here', 'Stutter']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
