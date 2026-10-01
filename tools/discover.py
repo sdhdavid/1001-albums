@@ -87,12 +87,14 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    463: ['PLG9675Na1SXZs7yvrbLkdTsoZH4bUmJjx', 'PL2j_Wb5pKu_2V16IOI--3s_F2XV__gW38'],
                    465: ['PLreQ0V6eABfILf1X0KFOA7bVzfFcUsPaI'],
                    476: ['PLahyulnypeEyK9PA4r6QoeDzA1nJ4wgG7', 'PLBokfEObLPHAU9IejPCwVkJs0E-Y8mkhc', 'OLAK5uy_n58mJ_2quIcm6sKFTWa90TEedpuAqj3x8'],
-                   499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ']}
+                   499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ'],
+                   570: ['PLuFrIncMdIQzSOBw9mJg_jhMO8zp4DoHC'], 553: ['PLVxakxoWul5UcH8THGanJuzSyIorJfVQr', 'PLF56F94BE1CDFF4DD']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['22mcOt74IVtCeR5hoIfveO', '2fgQN85UzwZMRIBTs06FjX', '3zeDrhkNv8872fC7CsOCpI', '4xrUp1M9XmKHFzRRyXIx71', '53fzZMZ3ENBY0BpLFOMy9p', '6GjMcck9c4i6cQo194xKl6', '7lCEnPYYkUuvnkrCbA6RCa', '7lGDjzmvAcNl6kEtn1rTaJ', '7qLJ8bzny3tynTPW2U2Anv'], 498: ['0LSWSMW0LVJX3fmSgDnk2A', '0rhmwOflgYrPntNuEe8chN', '1aucGNKimhgARC7iO2xLt2', '1pK8MLyjgvt8pNVkQCBnSg', '27qrMWYugzTnAvn2mtZdcx', '2B6i9ZY0NF8UkESEIL0taZ', '2srC8Ls3xXdRUH3n7jvHQD', '4HWzj6tf8nXvH7GzXAl1ld', '5h4pJfrTGROIhFJpTHa1Cu', '65Al3RSB7zeQeYcinysMxJ', '6A4MecoyRjnDtYeAZ7JGQf', '6Iyeo7CPHen8QEW4x31TpI', '6zwFIyWKbdHi9mwrQcrEY1']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN']}  # the page lists the artist's albums; each is named via its embed page
-_SPOTIFY_TRACKS_USED = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
+SPOTIFY_TRACKS = {587: ['0ZPmyHbX6jBdu2mvDnjGQe', '5LaKqu2QaLkWI0ZVWtsMWz', '2g8ywFUVna7EBMkzxExiCn']}  # the page lists the artist's albums; each is named via its embed page
+_SPOTIFY_TRACKS_USED = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN'],
+                  471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
 # them best gives the lengths, and the playlists are scored against these names.
@@ -173,7 +175,8 @@ for n in wanted:
             ents = [e.get('title') for e in info.get('entries', []) if e]
             pos = score(names, ents)
             found = sum(p >= 0 for p in pos)
-            best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos, 'entries': ents if ptitle == 'hand-picked' else None})
+            best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos, 'entries': ents if ptitle == 'hand-picked' else None,
+                         'durations': [e.get('duration') for e in info.get('entries', []) if e] if ptitle == 'hand-picked' else None})
         best.sort(key=lambda b: (b['found'] - abs(b['size'] - len(names)) * .5, b['id'].startswith('OLAK')), reverse=True)
         rec['youtube'] = best[:3] + [b for b in best[3:] if b['title'] == 'hand-picked']
         vids = []
