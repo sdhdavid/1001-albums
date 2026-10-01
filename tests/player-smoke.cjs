@@ -111,16 +111,19 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     s.nodes['quick-play'].click();assert.equal(s.calls.at(-1)[0],'playAt','then ▶ plays the album on screen');
     s.nodes['play-pause'].click();s.nodes['next-album'].click();await flush();
     assert.deepEqual(last().slice(0,2),['cue',listOf(4)],'a paused album does not hold the player when moving on'); }
-  // YouTube keeps the old list after loadPlaylist: the site pauses the old album, then cues the new one and plays it.
+  // Switching to another album while one plays: pause the old one, cue the new list, play it once cued;
+  // if YouTube still holds the old list a moment later, loadPlaylist is tried as well.
   { const s=await boot({hash:'#/album/101'});await flush();await flush();const y=s.player;y.options.events.onReady();
     const listOf=n=>JSON.parse(fs.readFileSync(`dist/albums/${n}.json`,'utf8')).youtubePlaylist;
     y.playlist=['old1','old2'];s.nodes['quick-play'].click();assert.equal(s.calls.at(-1)[0],'playAt');
     s.nodes['next-album'].click();await flush();
-    y.loadPlaylist=function(o){s.calls.push(['load',o.list,o.index]);};   // ignored by YouTube: the old list stays
     s.nodes['track-list'].children[0].children[1].click();
-    assert.deepEqual(s.calls.slice(-2).map(c=>c[0]),['pause','load'],'old album paused before the new one loads');
-    s.ctx.checkSwitch();assert.deepEqual(s.calls.at(-1).slice(0,2),['cue',listOf(102)],'new album cued again');
-    y.options.events.onStateChange({data:5});assert.equal(s.calls.at(-1)[0],'play','and played once cued'); }
+    assert.deepEqual(s.calls.slice(-2).map(c=>c.slice(0,2)),[['pause'],['cue',listOf(102)]],'old album paused, new one cued');
+    y.options.events.onStateChange({data:5});assert.equal(s.calls.at(-1)[0],'play','and played once cued');
+    s.nodes['next-album'].click();await flush();
+    y.cuePlaylist=function(o){s.calls.push(['cue',o.list,o.index]);};   // ignored by YouTube: the old list stays
+    s.nodes['play-pause'].click();assert.deepEqual(s.calls.slice(-2).map(c=>c.slice(0,2)),[['pause'],['cue',listOf(103)]]);
+    s.ctx.checkSwitch();assert.deepEqual(s.calls.at(-1).slice(0,2),['load',listOf(103)],'fallback: load the new list'); }
   const t=await boot(), {nodes:n,calls,storage}=t; const p=t.player;
   const rows=()=>n['album-list'].children.filter(c=>c.tag==='button').length;
   const nx=async()=>{p.options.events.onStateChange({data:5});n['next-album'].click();await flush();}, pv=async()=>{p.options.events.onStateChange({data:5});n['previous-album'].click();await flush();};
@@ -234,10 +237,10 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     assert.equal(quiet(),before,'coming back keeps playing');assert.equal(n['play-pause'].textContent,'השהיה ❚❚');
     assert.equal(n['track-list'].children[7].attributes['aria-current'],'true');
     n['next-album'].click();await flush();n['play-pause'].click();
-    assert.equal(calls.at(-1)[0],'load','starting the shown album loads it');assert.equal(p.ids.length,7);
+    assert.equal(calls.at(-1)[0],'cue','starting the shown album cues it');p.options.events.onStateChange({data:5});assert.equal(calls.at(-1)[0],'play','and plays it once cued');assert.equal(p.ids.length,7);
     assert.match(n['mini-album'].textContent,/Time Out/);assert.equal(n['play-pause'].textContent,'השהיה ❚❚');
     n['previous-album'].click();await flush();n['track-list'].children[2].children[1].click();
-    assert.deepEqual(calls.at(-1),['load',added['22'].youtubePlaylist,added['22'].tracks[2][2]],'a song of the shown album moves the player to it');
+    assert.deepEqual(calls.at(-1),['cue',added['22'].youtubePlaylist,added['22'].tracks[2][2]],'a song of the shown album moves the player to it');p.options.events.onStateChange({data:5});
     await nx();
   }
   assert.equal(n['album-title'].textContent,'Time Out');assert.equal(p.ids.length,7);assert.equal(n['embedded-listening'].hidden,false);
