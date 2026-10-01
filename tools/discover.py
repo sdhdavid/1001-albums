@@ -96,6 +96,8 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
         492: ['Wordy Rappinghood', 'Genius of Love', 'Tom Tom Theme', "L'Éléphant", 'As Above, So Below', 'Lorelei', 'On, On, On, On...', 'Booming and Zooming'],
         476: ['Precious', 'The Phone Call', 'Up the Neck', 'Tattooed Love Boys', 'Space Invader', 'The Wait', 'Stop Your Sobbing',
               'Kid', 'Private Life', 'Brass in Pocket', 'Lovers of Today', 'Mystery Achievement'],
+        509: ['Black Metal', 'To Hell and Back', 'Buried Alive', 'Raise the Dead', "Teacher's Pet", 'Leave Me in Hell', 'Sacrifice',
+              "Heaven's on Fire", 'Countess Bathory', "Don't Burn the Witch", 'At War with Satan'],
         463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
