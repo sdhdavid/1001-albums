@@ -21,7 +21,7 @@ SPOTIFY = {
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
 PLAYLIST_CHOICE = {}
 # #553: iTunes has no lengths, so they come from the hand-picked playlist (seconds)
-LENGTHS_FROM_PLAYLIST = {}
+LENGTHS_FROM_PLAYLIST = {751: 0}
 RENAME = {'Hell Is Around the Corner': 'Hell Is Round the Corner', 'Papa Bohnheur': 'Papa Bonheur', 'Koweit Rive Gauches': 'Koweït Rive Gauche', 'Desespoir': 'Désespoir', 'Conte De Fees': 'Conte de fées', 'Passing Me By': "Passin' Me By", 'When You Gonna Learn? (Digeridoo)': 'When You Gonna Learn?', 'Go West [Hidden Track]': 'Go West', 'Chemical World (Including "Intermission")': 'Chemical World', 'Resigned (Includes "Commercial Break")': 'Resigned', 'Im Going To Spain': "I'm Going to Spain", 'Ladybird': 'Ladybird (Green Grass)', 'Mr Wendal': 'Mr. Wendal', 'Release / Master/Slave': 'Release', 'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
           "Honky Tonk Angels' Medley: In the Evening (When the Sun Goes Down) / You Nearly Lose Your Mind / Blues Stay Away from Me": "Honky Tonk Angels' Medley",
           'Buenos Noches From a Lonely Room (She Wore Red Dresses)': 'Buenas Noches from a Lonely Room (She Wore Red Dresses)', 'Pig’s in Zen': 'Pigs in Zen',
@@ -49,12 +49,12 @@ RENAME = {'Hell Is Around the Corner': 'Hell Is Round the Corner', 'Papa Bohnheu
           'Jet`m': "Jet'm", 'California über alles': 'California Über Alles', 'I was a Teenage Werewolf': 'I Was a Teenage Werewolf',
           'Rock On the Moon': 'Rock on the Moon', 'Steh Auf Berlin': 'Steh auf Berlin', 'Draussen Ist Feindlich': 'Draußen ist feindlich', 'The Queen of Eyes': 'Queen of Eyes', 'Kick in the Eye 2': 'Kick in the Eye', 'Of Lillies and Remains': 'Of Lilies and Remains'}
 KEEP_FIRST = {755: 13, 770: 11, 794: 15}   # bonus tracks cut
-DROP = {778: [0, 7]}   # songs not on the original LP
+DROP = {778: [0, 7], 751: [3]}   # songs not on the original LP
 POSITION = {774: {11: 11}, 796: {5: 5}, 799: {11: 11}}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
 BY_PLAYLIST = set()
-SKIP = {751}
+SKIP = set()
 # Track lengths given by hand when discovery found none (#697 Ten, original CD)
 DURATIONS = {}   # track lengths given by hand when discovery found none
 NO_SPOTIFY = set()

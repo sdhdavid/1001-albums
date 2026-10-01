@@ -40,7 +40,194 @@
    null,
    "4:40"
   ],
-  "youtube": []
+  "youtube": [
+   {
+    "id": "PLUEMihO9lT7_LFYYRqJ-3mYsTAsM8AUqi",
+    "title": "hand-picked",
+    "size": 14,
+    "found": 13,
+    "positions": [
+     0,
+     1,
+     2,
+     -1,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     13
+    ],
+    "entries": [
+     "Bathtub",
+     "G Funk Intro",
+     "Gin and Juice",
+     "Tha Shiznit",
+     "Lodi Dodi",
+     "Murder Was The Case",
+     "Serial Killa",
+     "Who Am I (What’s My Name) ?",
+     "For All My Niggaz & Bitches",
+     "Ain’t No Fun (If The Homies Can’t Have None)",
+     "Doggy Dogg World",
+     "Gz and Hustlas",
+     "Gz Up, Hoes Down",
+     "Pump Pump"
+    ],
+    "durations": [
+     111,
+     145,
+     212,
+     281,
+     302,
+     219,
+     213,
+     247,
+     284,
+     247,
+     339,
+     276,
+     142,
+     280
+    ]
+   },
+   {
+    "id": "PLQeroY7XkiFGixwefr9FdTtSgOTrb6NP-",
+    "title": "hand-picked",
+    "size": 13,
+    "found": 13,
+    "positions": [
+     0,
+     1,
+     2,
+     -1,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "entries": [
+     "Snoop Doggy Dogg - Bathtub",
+     "Snoop Doggy Dogg - G Funk Intro (feat. The Lady of Rage)",
+     "Snoop Doggy Dogg - Gin And Juice (feat. Daz Dillinger & Dr. Dre)",
+     "Snoop Doggy Dogg - Tha Shiznit",
+     "Snoop Doggy Dogg - Lodi Dodi",
+     "Snoop Doggy Dogg - Murder Was The Case",
+     "Snoop Doggy Dogg - Serial Killa (feat. Daz Dillinger, Kurupt & RBX)",
+     "Snoop Doggy Dogg - Who Am I (What's My Name?)",
+     "Snoop Doggy Dogg - For All My Niggaz & Bitches (feat. Tha Dogg Pound & The Lady of Rage)",
+     "Snoop Doggy Dogg - Ain't No Fun (If The Homies Can't Have None) (feat. Kurupt, Nate Dogg & Warren G)",
+     "Snoop Doggy Dogg - Doggy Dogg World (feat. Tha Dogg Pound and The Dramatics)",
+     "Snoop Doggy Dogg - Gz And Hustlas",
+     "Snoop Doggy Dogg - Pump Pump (feat. Lil Malik)"
+    ],
+    "durations": [
+     111,
+     145,
+     212,
+     244,
+     265,
+     219,
+     213,
+     247,
+     283,
+     247,
+     339,
+     276,
+     280
+    ]
+   },
+   {
+    "id": "PLhE094uPOcyb3b7DPWiwi1jhledlqp9AP",
+    "title": "hand-picked",
+    "size": 15,
+    "found": 12,
+    "positions": [
+     -1,
+     0,
+     1,
+     -1,
+     2,
+     4,
+     14,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     12
+    ],
+    "entries": [
+     "Snoop Dogg featuring Lady of Rage - “G Funk (Intro)”",
+     "Snoop Dogg - \"Gin & Juice\"",
+     "Snoop Dogg - “Tha Shiznit” (Dirty Version)",
+     "Snoop Dogg feat. Tha Dogg Pound & The Lady of Rage - “For All My N----z & B-----s” (Clean Version)",
+     "Snoop Dogg featuring Nancy Fletcher - “Lodi Dodi” (Clean Version)",
+     "Snoop Dogg featuring The D.O.C., Tha Dogg Pound & RBX - “Serial Killa”",
+     "Snoop Dogg - “Who Am I (What's My Name)?”",
+     "Snoop Dogg feat. Tha Dogg Pound and The Lady of Rage - “For All My Niggaz & Bitches” (Dirty Version)",
+     "Snoop Dogg featuring Nate Dogg, Warren G & Kurupt - “Ain't No Fun (If the Homies Cant Have None)”",
+     "Snoop Dogg feat. The Dramatics & Tha Dogg Pound - “Doggy Dogg World”",
+     "Snoop Dogg featuring Nancy Fletcher - “Gz And Hustlas”",
+     "Snoop Dogg - \"Gz Up, Hoes Down\"",
+     "Snoop Dogg featuring Lil’ Malik - “Pump Pump”",
+     "Snoop Doggy Dogg- \"Gin & Juice (Laid Back Remix)\"",
+     "Snoop Dogg - \"Murder Was the Case\""
+    ],
+    "durations": [
+     145,
+     211,
+     281,
+     284,
+     266,
+     213,
+     247,
+     284,
+     247,
+     306,
+     276,
+     143,
+     280,
+     289,
+     262
+    ]
+   },
+   {
+    "id": "PLabhUJtJ9ji-BajW4D2QLdOSx6ojorKL5",
+    "title": "hand-picked",
+    "size": 0,
+    "found": 0,
+    "positions": [
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1,
+     -1
+    ],
+    "entries": [],
+    "durations": []
+   }
+  ]
  },
  "754": {
   "n": 754,
@@ -590,6 +777,88 @@
     ],
     "entries": null,
     "durations": null
+   }
+  ]
+ },
+ "757": {
+  "n": 757,
+  "artist": "Girls Against Boys",
+  "title": "Venus Luxure No. 1 Baby",
+  "editionSizes": [
+   11,
+   11
+  ],
+  "tracks": [
+   "In Like Flynn",
+   "Go Be Delighted",
+   "Rockets Are Red",
+   "Satin Down",
+   "Let Me Come Back",
+   "Learned It",
+   "Get Down",
+   "Bullet Proof Cupid",
+   "7 Seas",
+   "Billy’s One Stop",
+   "Bughouse"
+  ],
+  "durations": [
+   "4:25",
+   "3:57",
+   "5:03",
+   "5:56",
+   "3:24",
+   "3:25",
+   "4:32",
+   "4:51",
+   "2:55",
+   "2:59",
+   "4:51"
+  ],
+  "youtube": [
+   {
+    "id": "PL9D59045747AB9F3A",
+    "title": "hand-picked",
+    "size": 11,
+    "found": 10,
+    "positions": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     -1,
+     9,
+     10
+    ],
+    "entries": [
+     "Girls Against Boys - In Like Flynn",
+     "Girls Against Boys - Go Be Delighted",
+     "Girls Against Boys - Rockets Are Red",
+     "Girls Against Boys - Satin Down",
+     "Girls Against Boys - Let Me Come Back",
+     "Girls Against Boys - Learned It",
+     "Girls Against Boys - Get Down",
+     "Girls Against Boys - Bullet Proof Cupid",
+     "Girls Against Boys - Seven Seas",
+     "Girls Against Boys - Billy's One Stop",
+     "Girls Against Boys - Bug House"
+    ],
+    "durations": [
+     266,
+     237,
+     304,
+     357,
+     205,
+     205,
+     272,
+     291,
+     176,
+     180,
+     292
+    ]
    }
   ]
  }
