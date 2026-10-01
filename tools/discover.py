@@ -76,9 +76,10 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    476: ['PLahyulnypeEyK9PA4r6QoeDzA1nJ4wgG7', 'PLBokfEObLPHAU9IejPCwVkJs0E-Y8mkhc', 'OLAK5uy_n58mJ_2quIcm6sKFTWa90TEedpuAqj3x8'],
                    499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
-SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
+SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['0IVXajJt5yb8xr3qpBlbFB', '0hSKsAfvBPfJupYNmzRfHt', '1eDH2OjESBVjChXNzMkT5c', '1r1nFQMEBVjOqXHL1B8bAn', '2fnWxy7UoIazBiewjgchvm', '34jdCKLIC2rmMyACRTKZNG', '3IpexZ309jiPcLdFkz3S6F', '4VNqy9FUAFCvwE6XqrtlOn', '51CvLH7MxsLuFgTwVvzApx', '5A0o9GyE1NAr389rcXyigG', '5kngzyNwERbKiQDvVwsgMt', '67F2ya9fonXH0jVVgLa7sb', '6F17MbloTeRoXs7JI3lTHy', '6SliAMTcxmxn6Qiyktge7z', '6kvSCK1lNgZokyIK4Sk73B', '6msKh2uAIFTl0YAE4umlgO', '7bayA9jbq8BMefjnCVNkdC', '7cAcex6xw4fP67ltgn1gm3'], 498: ['0jo7K3IkLusU2dbYLvQIOs', '1UBJQrk5zgVJLbUKyu4qvj', '1fIpP2UR5bKQbhhDoH6GyK', '2tLV5BtLAUeouMb3U2e8XI', '2vpTqx1tsOjFM6o0s58Qaj', '38sLlYZ4sdfm5SvjmshqcY', '3OOmJPU7S7RY4R0XKmaay9', '4RLIesiAVONV4fOUlOSmr4', '4XIzcMRInHcCr9O3vHJ8m9', '5w3q6GZbw0gsAtvl1c0rmu', '6FMx94HvuFfZQnH8nyRU3f', '6T5rtCxx8dI4C0VckeB85M']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
+SPOTIFY_TRACKS = {}  # done for 471/483/498 (the page lists the artist's albums; candidates checked via SPOTIFY_CHECK)
+_SPOTIFY_TRACKS_USED = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
 # them best gives the lengths, and the playlists are scored against these names.
