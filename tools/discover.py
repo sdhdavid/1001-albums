@@ -44,7 +44,12 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             500: ("Dexys Midnight Runners", 'Too-Rye-Ay'), 498: ('Elvis Costello', 'Imperial Bedroom'),
             501: ('Simple Minds', 'New Gold Dream'), 532: ('Run-DMC', 'Run-D.M.C.'), 548: ('a-ha', 'Hunting High and Low'),
             544: ("Youssou N'Dour", 'Immigres'), 539: ('The Style Council', 'Cafe Bleu'), 546: ('The Fall', "This Nation's Saving Grace"),
-            526: ('Eurythmics', 'Sweet Dreams (Are Made of This)'), 537: ('Prince', 'Purple Rain'), 547: ('Abdullah Ibrahim', 'Water from an Ancient Well')}
+            526: ('Eurythmics', 'Sweet Dreams (Are Made of This)'), 537: ('Prince', 'Purple Rain'), 547: ('Abdullah Ibrahim', 'Water from an Ancient Well'),
+            552: ('Mekons', 'Fear and Whiskey'), 555: ('The Pogues', 'Rum Sodomy and the Lash'), 560: ('New Order', 'Low-Life'),
+            562: ('Dexys Midnight Runners', "Don't Stand Me Down"), 565: ('Afrika Bambaataa', 'Planet Rock The Album'),
+            572: ('Megadeth', "Peace Sells But Who's Buying"), 578: ('Run-DMC', 'Raising Hell'), 586: ('Dinosaur Jr', "You're Living All Over Me"),
+            587: ('Dolly Parton', 'Trio'), 590: ('Prince', 'Sign o the Times'), 595: ('Husker Du', 'Warehouse Songs and Stories'),
+            597: ('Astor Piazzolla', 'The New Tango'), 564: ('Elvis Costello', 'Blood & Chocolate')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -63,7 +68,9 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             481: 'Motorhead No Sleep til Hammersmith 1981 live album full', 486: 'X Wild Gift 1981 full album', 465: 'Circle Jerks Group Sex 1980 full album',
             514: 'Violent Femmes 1983 debut album full', 532: 'Run DMC 1984 debut album full', 536: 'Van Halen 1984 album full',
             538: 'The Replacements Let It Be 1984 full album', 509: 'Venom Black Metal 1982 full album', 539: 'The Style Council Cafe Bleu 1984 full album',
-            544: "Youssou N'Dour Immigres 1984 album", 547: 'Abdullah Ibrahim Water from an Ancient Well album', 529: 'Meat Puppets II 1984 full album'}
+            544: "Youssou N'Dour Immigres 1984 album", 547: 'Abdullah Ibrahim Water from an Ancient Well album', 529: 'Meat Puppets II 1984 full album',
+            554: 'Suzanne Vega 1985 debut album full', 576: 'Throwing Muses 1986 debut album full', 552: 'Mekons Fear and Whiskey 1985 full album',
+            587: 'Dolly Parton Linda Ronstadt Emmylou Harris Trio 1987 full album', 597: 'Astor Piazzolla Gary Burton The New Tango 1987'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -80,12 +87,14 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    463: ['PLG9675Na1SXZs7yvrbLkdTsoZH4bUmJjx', 'PL2j_Wb5pKu_2V16IOI--3s_F2XV__gW38'],
                    465: ['PLreQ0V6eABfILf1X0KFOA7bVzfFcUsPaI'],
                    476: ['PLahyulnypeEyK9PA4r6QoeDzA1nJ4wgG7', 'PLBokfEObLPHAU9IejPCwVkJs0E-Y8mkhc', 'OLAK5uy_n58mJ_2quIcm6sKFTWa90TEedpuAqj3x8'],
-                   499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ']}
+                   499: ['OLAK5uy_kojS0C3l6gUvDaGXWmRH8_lYvIyfvVk_M', 'PLE6gHCwAovfDEU0bQ2mOWKTa9Gj6bSQ63', 'PLfimnwaZdumh8CA9TGQuYLwYLMePx5SbQ'],
+                   570: ['PLuFrIncMdIQzSOBw9mJg_jhMO8zp4DoHC'], 553: ['PLVxakxoWul5UcH8THGanJuzSyIorJfVQr', 'PLF56F94BE1CDFF4DD']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['22mcOt74IVtCeR5hoIfveO', '2fgQN85UzwZMRIBTs06FjX', '3zeDrhkNv8872fC7CsOCpI', '4xrUp1M9XmKHFzRRyXIx71', '53fzZMZ3ENBY0BpLFOMy9p', '6GjMcck9c4i6cQo194xKl6', '7lCEnPYYkUuvnkrCbA6RCa', '7lGDjzmvAcNl6kEtn1rTaJ', '7qLJ8bzny3tynTPW2U2Anv'], 498: ['0LSWSMW0LVJX3fmSgDnk2A', '0rhmwOflgYrPntNuEe8chN', '1aucGNKimhgARC7iO2xLt2', '1pK8MLyjgvt8pNVkQCBnSg', '27qrMWYugzTnAvn2mtZdcx', '2B6i9ZY0NF8UkESEIL0taZ', '2srC8Ls3xXdRUH3n7jvHQD', '4HWzj6tf8nXvH7GzXAl1ld', '5h4pJfrTGROIhFJpTHa1Cu', '65Al3RSB7zeQeYcinysMxJ', '6A4MecoyRjnDtYeAZ7JGQf', '6Iyeo7CPHen8QEW4x31TpI', '6zwFIyWKbdHi9mwrQcrEY1']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN']}  # the page lists the artist's albums; each is named via its embed page
-_SPOTIFY_TRACKS_USED = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
+SPOTIFY_TRACKS = {587: ['0ZPmyHbX6jBdu2mvDnjGQe', '5LaKqu2QaLkWI0ZVWtsMWz', '2g8ywFUVna7EBMkzxExiCn']}  # the page lists the artist's albums; each is named via its embed page
+_SPOTIFY_TRACKS_USED = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN'],
+                  471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
 # them best gives the lengths, and the playlists are scored against these names.
@@ -166,7 +175,8 @@ for n in wanted:
             ents = [e.get('title') for e in info.get('entries', []) if e]
             pos = score(names, ents)
             found = sum(p >= 0 for p in pos)
-            best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos, 'entries': ents if ptitle == 'hand-picked' else None})
+            best.append({'id': pid, 'title': ptitle, 'size': len(ents), 'found': found, 'positions': pos, 'entries': ents if ptitle == 'hand-picked' else None,
+                         'durations': [e.get('duration') for e in info.get('entries', []) if e] if ptitle == 'hand-picked' else None})
         best.sort(key=lambda b: (b['found'] - abs(b['size'] - len(names)) * .5, b['id'].startswith('OLAK')), reverse=True)
         rec['youtube'] = best[:3] + [b for b in best[3:] if b['title'] == 'hand-picked']
         vids = []
