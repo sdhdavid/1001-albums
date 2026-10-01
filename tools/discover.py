@@ -41,7 +41,10 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             481: ('Motorhead', "No Sleep 'til Hammersmith"), 482: ('Soft Cell', 'Non-Stop Erotic Cabaret'),
             483: ('Orchestral Manoeuvres in the Dark', 'Architecture & Morality'), 484: ('Brian Eno & David Byrne', 'My Life in the Bush of Ghosts'),
             462: ('Motorhead', 'Ace of Spades'), 477: ('Einsturzende Neubauten', 'Kollaps'), 497: ('Grandmaster Flash', 'The Message'),
-            500: ("Dexys Midnight Runners", 'Too-Rye-Ay'), 498: ('Elvis Costello', 'Imperial Bedroom')}
+            500: ("Dexys Midnight Runners", 'Too-Rye-Ay'), 498: ('Elvis Costello', 'Imperial Bedroom'),
+            501: ('Simple Minds', 'New Gold Dream'), 532: ('Run-DMC', 'Run-D.M.C.'), 548: ('a-ha', 'Hunting High and Low'),
+            544: ("Youssou N'Dour", 'Immigres'), 539: ('The Style Council', 'Cafe Bleu'), 546: ('The Fall', "This Nation's Saving Grace"),
+            526: ('Eurythmics', 'Sweet Dreams (Are Made of This)'), 537: ('Prince', 'Purple Rain'), 547: ('Abdullah Ibrahim', 'Water from an Ancient Well')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -57,7 +60,10 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             433: 'The Fall Live at the Witch Trials full album',
             452: 'The Specials 1979 debut album full', 458: 'Peter Gabriel 3 Melt 1980 full album', 463: 'Killing Joke 1980 debut album full',
             468: 'Iron Maiden 1980 debut album full', 476: 'Pretenders 1980 debut album full', 492: 'Tom Tom Club 1981 debut album full',
-            481: 'Motorhead No Sleep til Hammersmith 1981 live album full', 486: 'X Wild Gift 1981 full album', 465: 'Circle Jerks Group Sex 1980 full album'}
+            481: 'Motorhead No Sleep til Hammersmith 1981 live album full', 486: 'X Wild Gift 1981 full album', 465: 'Circle Jerks Group Sex 1980 full album',
+            514: 'Violent Femmes 1983 debut album full', 532: 'Run DMC 1984 debut album full', 536: 'Van Halen 1984 album full',
+            538: 'The Replacements Let It Be 1984 full album', 509: 'Venom Black Metal 1982 full album', 539: 'The Style Council Cafe Bleu 1984 full album',
+            544: "Youssou N'Dour Immigres 1984 album", 547: 'Abdullah Ibrahim Water from an Ancient Well album', 529: 'Meat Puppets II 1984 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -78,7 +84,7 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['22mcOt74IVtCeR5hoIfveO', '2fgQN85UzwZMRIBTs06FjX', '3zeDrhkNv8872fC7CsOCpI', '4xrUp1M9XmKHFzRRyXIx71', '53fzZMZ3ENBY0BpLFOMy9p', '6GjMcck9c4i6cQo194xKl6', '7lCEnPYYkUuvnkrCbA6RCa', '7lGDjzmvAcNl6kEtn1rTaJ', '7qLJ8bzny3tynTPW2U2Anv'], 498: ['0LSWSMW0LVJX3fmSgDnk2A', '0rhmwOflgYrPntNuEe8chN', '1aucGNKimhgARC7iO2xLt2', '1pK8MLyjgvt8pNVkQCBnSg', '27qrMWYugzTnAvn2mtZdcx', '2B6i9ZY0NF8UkESEIL0taZ', '2srC8Ls3xXdRUH3n7jvHQD', '4HWzj6tf8nXvH7GzXAl1ld', '5h4pJfrTGROIhFJpTHa1Cu', '65Al3RSB7zeQeYcinysMxJ', '6A4MecoyRjnDtYeAZ7JGQf', '6Iyeo7CPHen8QEW4x31TpI', '6zwFIyWKbdHi9mwrQcrEY1']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {}  # done for 471/483/498 (the page lists the artist's albums; candidates checked via SPOTIFY_CHECK)
+SPOTIFY_TRACKS = {515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN']}  # the page lists the artist's albums; each is named via its embed page
 _SPOTIFY_TRACKS_USED = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
                   483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
@@ -90,6 +96,8 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
         492: ['Wordy Rappinghood', 'Genius of Love', 'Tom Tom Theme', "L'Éléphant", 'As Above, So Below', 'Lorelei', 'On, On, On, On...', 'Booming and Zooming'],
         476: ['Precious', 'The Phone Call', 'Up the Neck', 'Tattooed Love Boys', 'Space Invader', 'The Wait', 'Stop Your Sobbing',
               'Kid', 'Private Life', 'Brass in Pocket', 'Lovers of Today', 'Mystery Achievement'],
+        509: ['Black Metal', 'To Hell and Back', 'Buried Alive', 'Raise the Dead', "Teacher's Pet", 'Leave Me in Hell', 'Sacrifice',
+              "Heaven's on Fire", 'Countess Bathory', "Don't Burn the Witch", 'At War with Satan'],
         463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
@@ -188,6 +196,14 @@ for n in wanted:
             page = ''.join(ur.urlopen(ur.Request(f'https://open.spotify.com/{kind}/track/{tid}'.replace('//track', '/track'), headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
                            for kind in ('', 'embed'))
             rec.setdefault('spotifyTracks', {})[tid] = sorted(set(re.findall(r'spotify:album:([A-Za-z0-9]{22})', page) + re.findall(r'/album/([A-Za-z0-9]{22})', page) + re.findall(r'album%3A([A-Za-z0-9]{22})', page)))
+            # name each candidate album (its embed page starts with the album name)
+            for aid in rec['spotifyTracks'][tid]:
+                if aid in rec.setdefault('spotifyNames', {}): continue
+                try:
+                    apage = ur.urlopen(ur.Request(f'https://open.spotify.com/embed/album/{aid}', headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
+                    rec['spotifyNames'][aid] = (re.findall(r'"name":"([^"]{1,80})"', apage) or [''])[0]
+                except Exception as e:
+                    rec['spotifyNames'][aid] = str(e)
         except Exception as e:
             rec.setdefault('spotifyTracks', {})[tid] = [str(e)]
     result[n] = rec
