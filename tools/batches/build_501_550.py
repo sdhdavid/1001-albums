@@ -8,19 +8,19 @@ from stories_501_550 import STORIES
 SPOTIFY = {
  501:'1m8ybrw0umxg8FbBC3pH7K', 502:'0VTxtFfoBxHDMFjDuVLmTh', 503:'5cOS6szqlcoqmiSoVTqqe8', 504:'27EpLLPy10aNZ1VfXioW2x', 505:'59dmyw7CgPluQ6PlTmn7ik',
  506:'0kyKdRPKFDn8cATzWkFAsO', 507:'1x6guHfwvOGsIQgRK5v5p1', 508:'1JfIRGXDOQFlP1OGWzmvL5', 509:'5tcHEZse8nH7FiSVcriInN', 510:'6yskFQZNlLYhkchAxELHi6',
- 511:'25SKfbYtNpdoWI2z3mOhUI', 512:'6UXvg5jZjihUbG7OvhWLHb', 513:'0vndiSM8xxlb8CQFOMMO9h', 514:'2G9onFLGqlMJd1ThYf0vIB', 515:None,
+ 511:'25SKfbYtNpdoWI2z3mOhUI', 512:'6UXvg5jZjihUbG7OvhWLHb', 513:'0vndiSM8xxlb8CQFOMMO9h', 514:'2G9onFLGqlMJd1ThYf0vIB', 515:'6S4f7yDtJlS0iQMEuCtIF0',
  516:'5wRCRA0W8B6oYJbbKwtH8M', 517:'4Mw9Gcu1LT7JaipXdwrq1Q', 518:'1BsN7LvFmxvfUaaUj5Bskr', 519:'51hrKjSvIX69tl1g13R0hI', 520:'2UrSPDjccATKgu4CIxu8IV',
- 521:'57ILJ0HfN2VCtFSUCa1Ull', 522:'1FvdZ1oizXwF9bxogujoF0', 523:'4qs8dBF1Avnt97zEMU9nxp', 524:None, 525:'4KW6YVbF8E3kexYcl0k4IK',
+ 521:'57ILJ0HfN2VCtFSUCa1Ull', 522:'1FvdZ1oizXwF9bxogujoF0', 523:'4qs8dBF1Avnt97zEMU9nxp', 524:'4brJ6hWYqPj1sccgk390dC', 525:'4KW6YVbF8E3kexYcl0k4IK',
  526:'4RMZ9x6tYqO2R5ioa0zAPw', 527:'4EG6O0FseOD53hZ4B2CosR', 528:'7yDxJXFPl88Dt9kBo0dDD6', 529:'5JFZRr2UTCkcuT5LSXSbJ9', 530:'51NPMfa9QfxsYtqzcB2VfY',
- 531:'6shkK6FfpYBwBWwXMm4dsm', 532:None, 533:'1yypMM9PUTFVLAgLn3GJ29', 534:'7pBPB9vwqCMLKNmUCK4k62', 535:'0w3NDo617KZktU7gtIdxTR',
+ 531:'6shkK6FfpYBwBWwXMm4dsm', 532:'5nK0vU32lSmcGrglfcOfg8', 533:'1yypMM9PUTFVLAgLn3GJ29', 534:'7pBPB9vwqCMLKNmUCK4k62', 535:'0w3NDo617KZktU7gtIdxTR',
  536:'2g39bJJlAVqLkCiwvlcM95', 537:'2umoqwMrmjBBPeaqgYu6J9', 538:'2sOLW5TSgXiLZBacdHxO6m', 539:'6tF9nPl6x7ACsKZ8alL1he', 540:'0grIG45v0JWy5N46z4As0B',
  541:'43jEYhOEU6eWL51lk4l3M7', 542:'5viZ5HyYtV0wafK7DoXmgF', 543:'2RtAWChS6XRsqiz28hpB1Q', 544:'5bRDrsAfi4j65Zbf3LQE6E', 545:'47VqWjxJe2AiTIIeyeWlPX',
  546:'2QcPIOpOR2sxOqKVXODAhx', 547:'5EQkSknw8twG8oiukc55la', 548:'1ER3B6zev5JEAaqhnyyfbf', 549:'7y7459SFZReE5Wec4hejv5', 550:'15J400U0rEpgE64UQgtvLs',
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
-RENAME = {'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
+PLAYLIST_CHOICE = {511: 1}   # #511: the UK LP playlist
+RENAME = {'Back of Love': 'The Back of Love', 'Rene and Georgette Magritte with Their Dog After the War': 'René and Georgette Magritte with Their Dog After the War', "Sucker M.C.'s (Krush-Groove 1)": "Sucker M.C.'s", 'Hollis Crew (Krush-Groove 2)': 'Hollis Crew', 'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 & 2)': 'Smash It Up (Parts 1 & 2)', 'Another Brick In the Wall, Pt. 1': 'Another Brick in the Wall, Part 1', 'Another Brick In the Wall, Pt. 2': 'Another Brick in the Wall, Part 2', 'Another Brick In the Wall, Pt. 3': 'Another Brick in the Wall, Part 3', 'Love Like Anthrax': 'Anthrax', 'Tubular Bells, Pt. I': 'Tubular Bells, Part One', 'Tubular Bells, Pt. II': 'Tubular Bells, Part Two',
           'That Lady, Parts 1 & 2': 'That Lady', 'Speak to Me / Breathe in the Air': 'Speak to Me / Breathe',
           'Rock and Roll P***y': 'Rock and Roll Pussy', 'Cars and Girls': '(I Live for) Cars and Girls',
           'Shine On You Crazy Diamond, Pts. 1-5': 'Shine On You Crazy Diamond (Parts I-V)',
@@ -36,8 +36,8 @@ RENAME = {'Weight - Lifting Lulu': 'Weight-Lifting Lulu', 'Smash It Up (Pts. 1 &
           'She Is Like Heroin to Me': "She's Like Heroin to Me", 'Abstieg and Zerfall': 'Abstieg & Zerfall', 'Schmerzen hören': 'Hören mit Schmerzen',
           'Jet`m': "Jet'm", 'California über alles': 'California Über Alles', 'I was a Teenage Werewolf': 'I Was a Teenage Werewolf',
           'Rock On the Moon': 'Rock on the Moon', 'Steh Auf Berlin': 'Steh auf Berlin', 'Draussen Ist Feindlich': 'Draußen ist feindlich', 'The Queen of Eyes': 'Queen of Eyes', 'Kick in the Eye 2': 'Kick in the Eye', 'Of Lillies and Remains': 'Of Lilies and Remains'}
-KEEP_FIRST = {}   # bonus tracks cut
-DROP = {}         # songs added on later editions, not on the original LP
+KEEP_FIRST = {504: 12, 523: 10, 529: 12}   # bonus tracks cut
+DROP = {546: [2]}         # songs added on later editions, not on the original LP (#546 Cruiser's Creek, a single)
 POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
@@ -45,6 +45,9 @@ BY_PLAYLIST = set()   # albums with no fixed track order: follow the playlist
 SKIP = set()   # albums to hold back (none)
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
+# Albums with no full playlist on YouTube: one video per song (n -> [(name, videoId, length)]), found by web search.
+VIDEOS = {544: [('Immigrés / Bitim Rew', 'aAkyS6s-gTc', '7:03'), ('Pitche Mi', 'rHbQK55B4es', '9:28'),
+                ('Taaw', '0RNif6ks9F0', '11:57'), ('Badou', 'R1xxtjS8mZI', '5:35')]}
 
 def clean(s):
     s = re.sub(r'\s*\(including [^)]*\)', '', s)
@@ -98,6 +101,7 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
         i, parts = SPLIT[n]
         names[i:i + 1] = [x[0] for x in parts]; fixed[i:i + 1] = [x[1] for x in parts]; durs[i:i + 1] = [x[2] for x in parts]
     if not extra: tracks = [[name, None, p] for name, p in zip(names, fixed)]
+    if n in VIDEOS: tracks = [[name, vid] for name, vid, _ in VIDEOS[n]]; durs = [d for _, _, d in VIDEOS[n]]
     st = STORIES[n]; tnames = [t[0] for t in tracks]
     picks = [list(p) for p in st['picks']]
     lookup = {norm(t): t for t in tnames}
@@ -109,7 +113,7 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
     assert len(SPOTIFY[n]) == 22
     rec = {'n': n, 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus, 'story': st['story'], 'picks': picks}
     rec['durations'] = durs if not extra else MANUAL[n]['durations']
-    rec.update(extra or {'youtubePlaylist': yt['id']})
+    if n not in VIDEOS: rec.update(extra or {'youtubePlaylist': yt['id']})
     out.append(rec)
 json.dump(out, open('tools/batches/501-550.json', 'w'), ensure_ascii=False, indent=1)
 print(len(out), 'albums')
