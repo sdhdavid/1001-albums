@@ -16,11 +16,12 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - run: npm install playwright@1 && npx playwright install --with-deps chromium
+      - run: npm install playwright@1 && npx playwright install --with-deps chromium chrome
       - name: Check
         env:
           ALBUM: ${{ inputs.album }}
+          CHANNEL: chrome
         run: |
           (cd dist && python3 -m http.server 8000 >/dev/null 2>&1 &)
           sleep 2
-          node tools/player_check.cjs
+          xvfb-run -a node tools/player_check.cjs
