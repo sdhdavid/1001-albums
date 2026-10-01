@@ -7,19 +7,19 @@ from stories_601_650 import STORIES
 
 SPOTIFY = {
  601:'6BqoNCQsupSaLBkl8u1uME', 602:'1TBNjPts9k7Z0Pq6qYsdhQ', 603:'6udwOJKxsNiLZAkcvjjnvb', 604:'0apKBDnFXYmhlMYfXt5zCB', 605:'5wTBP2faMYL8VfGJ6Ax3oy',
- 606:'3Us57CjssWnHjTUIXBuIeH', 607:'5UVU0ftzd3onHzP7rs6EpI', 608:'5y6wlw1LnqFnQFruMeiwGU', 609:'0nw38yniBfbluS93FdYcbE', 610:'4V92Puney9WxGPecKtLG4L',
+ 606:'3Us57CjssWnHjTUIXBuIeH', 607:'5UVU0ftzd3onHzP7rs6EpI', 608:'5vBZRYu2GLA65nfxBvG1a7', 609:'0nw38yniBfbluS93FdYcbE', 610:'4V92Puney9WxGPecKtLG4L',
  611:'0iahfkN4PwmphXcQezpTRg', 612:'1niTZlsM14tECBG5PDAdZc', 613:'4aAhYU0IplW3AKbduPspJx', 614:'4zhqDQd41cAkGg7EJVezvx', 615:'0Itv01cUzRusmyNcEgEmOA',
  616:'5w4gJSJS1LaSJ5DgaC6Cl8', 617:'7rfKAiPs9ToZP9zEJDBqBH', 618:'63bl9diz0qWk5OOxb71zda', 619:'2jodAR4BsYntuyZn55ZrHB', 620:'566tD6a3xWL6MKLWkw8ERz',
  621:'6hmmX5UP4rIvOpGSaPerV8', 622:'3mnv6nzZV5AQhDG7OUsLdo', 623:'2l7RPWC3E6eStJJLBsUeCI', 624:'69oeRoYEpSsNPGVuYRxfoB', 625:'3qyW9uFZskhChIgwyrIh0i',
- 626:'', 627:'6PmH3vQpsBfkQdnDr4AzLs', 628:'', 629:'4k4khFDw8jRzRnRynxgACP', 630:'5z8bPdGFiJx56cqsHTvWM9',
+ 626:'', 627:'6PmH3vQpsBfkQdnDr4AzLs', 628:'4CgweKiwA0yckiVbG6eUJI', 629:'4k4khFDw8jRzRnRynxgACP', 630:'5z8bPdGFiJx56cqsHTvWM9',
  631:'4HI70D2jFAAVJXKY9LAlpg', 632:'1NZ8YBYnruBPeKLuvTBARx', 633:'3LppC6RopLS9eWrceGYN8i', 634:'08lBERPbNkl9wCLHnJXXvm', 635:'6JOUA8k5wGLvppurfYDS6y',
  636:'70Vuh3jYUMO8LLP5BaqZMb', 637:'3FjlnBZ4PGmGrtyKw0H8ka', 638:'7b7yM2bhyOEjcFQRF6dRSV', 639:'48AGkmM7iO4jrELRnNZGPV', 640:'6Agl4DVuihiDPuxuN1L8Jv',
  641:'0Ju8YUtJB0RMw8NZXgXe6n', 642:'5SUqb3XY2BmvfAFLTjnBs0', 643:'4DfmPm17Nz6a60BlEpGGKU', 644:'5G6akYvygKGToUIB863YqU', 645:'4A10zgDO51IMdrLVfUnhh8',
- 646:'', 647:'2AyJzvREOnlnYhaBzF1Kxp', 648:'', 649:'1dr9h8cfIfIWp1Z57pbr3Z', 650:'6DZNOsLXIU2zOQfQDwDpIS',
+ 646:'0um9FI6BLBldL5POP4D4Cw', 647:'2AyJzvREOnlnYhaBzF1Kxp', 648:'3fI60xJqLkfhnbAf907JsS', 649:'1dr9h8cfIfIWp1Z57pbr3Z', 650:'6DZNOsLXIU2zOQfQDwDpIS',
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
+PLAYLIST_CHOICE = {641: 2}   # #641: the playlist that holds the whole LP
 # #553: iTunes has no lengths, so they come from the hand-picked playlist (seconds)
 LENGTHS_FROM_PLAYLIST = {}
 RENAME = {'Leben Heißt Leben': 'Leben heißt Leben', 'Geburt Einer Nation': 'Geburt einer Nation', 'Open Letter (To a Landord)': 'Open Letter (To a Landlord)',
@@ -54,7 +54,8 @@ POSITION = {}     # playlist positions the title matching missed
 # One discovered track that is two songs in the playlist: n -> (index, [(name, position, length), ...])
 SPLIT = {}
 BY_PLAYLIST = {616}   # #616: the original EP order
-SKIP = set()   # albums to hold back (none)
+SKIP = set()
+NO_SPOTIFY = {626}   # #626 Tank Battles is not on Spotify: YouTube only
 # Albums the automatic search got wrong, filled in by hand.
 MANUAL = {}
 # Albums with no full playlist on YouTube: one video per song (n -> [(name, videoId, length)]), found by web search.
@@ -124,9 +125,10 @@ for n in sorted(int(k) for k in disc if int(k) not in SKIP):
         assert norm(p[0]) in lookup, (n, p[0], tnames)
         p[0] = lookup[norm(p[0])]   # use the track's exact spelling
     focus = sorted({tnames.index(name) for name, _ in picks})
-    if not SPOTIFY[n]: print('no Spotify id yet', n); continue
-    assert len(SPOTIFY[n]) == 22
+    if not SPOTIFY[n] and n not in NO_SPOTIFY: print('no Spotify id yet', n); continue
     rec = {'n': n, 'spotifyAlbum': SPOTIFY[n], 'tracks': tracks, 'focus': focus, 'story': st['story'], 'picks': picks}
+    if n in NO_SPOTIFY: del rec['spotifyAlbum']; rec['noSpotify'] = True
+    else: assert len(SPOTIFY[n]) == 22
     rec['durations'] = durs if not extra else MANUAL[n]['durations']
     if n not in VIDEOS: rec.update(extra or {'youtubePlaylist': yt['id']})
     out.append(rec)

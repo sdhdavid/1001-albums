@@ -45,8 +45,9 @@ def rebuild_index():
         e = {k: e[k] for k in ('n', 'year', 'title', 'artist')}
         if e['n'] in have:
             e['ready'] = True
-            e['spotifyAlbum'] = have[e['n']]['spotifyAlbum']
-            if covers.get(e['spotifyAlbum']): e['cover'] = covers[e['spotifyAlbum']]
+            if have[e['n']].get('spotifyAlbum'):   # albums not on Spotify (noSpotify) have no id and no cover from there
+                e['spotifyAlbum'] = have[e['n']]['spotifyAlbum']
+                if covers.get(e['spotifyAlbum']): e['cover'] = covers[e['spotifyAlbum']]
         if e['n'] in TAGS: e['genres'] = TAGS[e['n']]
         out.append(e)
     with open(CATALOG, 'w') as f:  # one album per line keeps the 1001-entry file compact and diffable
