@@ -50,7 +50,7 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             572: ('Megadeth', "Peace Sells But Who's Buying"), 578: ('Run-DMC', 'Raising Hell'), 586: ('Dinosaur Jr', "You're Living All Over Me"),
             587: ('Dolly Parton', 'Trio'), 590: ('Prince', 'Sign o the Times'), 595: ('Husker Du', 'Warehouse Songs and Stories'),
             597: ('Astor Piazzolla', 'The New Tango'), 564: ('Elvis Costello', 'Blood & Chocolate'),
-            609: ("Terence Trent D'Arby", 'Introducing the Hardline According to Terence Trent DArby'), 610: ('The Pogues', 'If I Should Fall from Grace with God'),
+            609: ("Terence Trent D'Arby", 'Introducing the Hardline'), 610: ('The Pogues', 'If I Should Fall from Grace with God'),
             611: ('Leonard Cohen', "I'm Your Man"), 612: ('The Waterboys', "Fisherman's Blues"), 616: ('Mudhoney', 'Superfuzz Bigmuff'), 619: ('The Go-Betweens', '16 Lovers Lane'),
             622: ('My Bloody Valentine', "Isn't Anything"), 624: ('Metallica', 'And Justice for All'), 626: ('Dagmar Krause', 'Tank Battles'), 629: ('Morrissey', 'Viva Hate'),
             631: ('The Sugarcubes', "Life's Too Good"), 633: ("Jane's Addiction", "Nothing's Shocking"), 640: ('Queen Latifah', 'All Hail the Queen'),
@@ -80,7 +80,8 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             604: 'Sonic Youth Sister 1987 full album', 605: 'The Triffids Calenture 1987 full album', 621: 'Tracy Chapman 1988 debut album full',
             625: 'Dinosaur Jr Bug 1988 full album', 628: 'American Music Club California 1988 album', 646: 'The Stone Roses 1989 debut album full',
             616: 'Mudhoney Superfuzz Bigmuff 1988 EP', 626: 'Dagmar Krause Tank Battles Hanns Eisler', 648: 'Baaba Maal Mansour Seck Djam Leelii',
-            645: 'John Zorn Spy vs Spy Ornette Coleman', 644: 'The Young Gods L eau rouge 1989'}
+            645: 'John Zorn Spy vs Spy Ornette Coleman', 644: 'The Young Gods L eau rouge 1989', 609: 'Terence Trent DArby Introducing the Hardline 1987 full album',
+            610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -118,7 +119,14 @@ WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Famil
               'Kid', 'Private Life', 'Brass in Pocket', 'Lovers of Today', 'Mystery Achievement'],
         509: ['Black Metal', 'To Hell and Back', 'Buried Alive', 'Raise the Dead', "Teacher's Pet", 'Leave Me in Hell', 'Sacrifice',
               "Heaven's on Fire", 'Countess Bathory', "Don't Burn the Witch", 'At War with Satan'],
-        463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive']}
+        463: ['Requiem', 'Wardance', "Tomorrow's World", 'Bloodsport', 'The Wait', 'Complications', 'S.O. 36', 'Primitive'],
+        609: ['If You All Get to Heaven', 'If You Let Me Stay', 'Wishing Well', "I'll Never Turn My Back on You (Father's Words)", 'Dance Little Sister',
+              'Seven More Days', "Let's Go Forward", 'Rain', 'Sign Your Name', 'As Yet Untitled', "Who's Loving You"],
+        610: ['If I Should Fall from Grace with God', 'Turkish Song of the Damned', 'Bottle of Smoke', 'Fairytale of New York', 'Metropolis',
+              'Thousands Are Sailing', 'Fiesta', 'Medley: The Recruiting Sergeant / The Rocky Road to Dublin / The Galway Races',
+              'Streets of Sorrow / Birmingham Six', 'Lullaby of London', 'Sit Down by the Fire', 'The Broad Majestic Shannon', 'Worms'],
+        641: ['Honey', 'Come Down Softly to My Soul', 'How Does It Feel?', 'I Believe It', 'Revolution', 'Let Me Down Gently',
+              'So Hot (Wash Away All of My Tears)', 'Suicide', 'Lord Can You Hear Me?']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
