@@ -41,7 +41,10 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             481: ('Motorhead', "No Sleep 'til Hammersmith"), 482: ('Soft Cell', 'Non-Stop Erotic Cabaret'),
             483: ('Orchestral Manoeuvres in the Dark', 'Architecture & Morality'), 484: ('Brian Eno & David Byrne', 'My Life in the Bush of Ghosts'),
             462: ('Motorhead', 'Ace of Spades'), 477: ('Einsturzende Neubauten', 'Kollaps'), 497: ('Grandmaster Flash', 'The Message'),
-            500: ("Dexys Midnight Runners", 'Too-Rye-Ay'), 498: ('Elvis Costello', 'Imperial Bedroom')}
+            500: ("Dexys Midnight Runners", 'Too-Rye-Ay'), 498: ('Elvis Costello', 'Imperial Bedroom'),
+            501: ('Simple Minds', 'New Gold Dream'), 532: ('Run-DMC', 'Run-D.M.C.'), 548: ('a-ha', 'Hunting High and Low'),
+            544: ("Youssou N'Dour", 'Immigres'), 539: ('The Style Council', 'Cafe Bleu'), 546: ('The Fall', "This Nation's Saving Grace"),
+            526: ('Eurythmics', 'Sweet Dreams (Are Made of This)'), 537: ('Prince', 'Purple Rain'), 547: ('Abdullah Ibrahim', 'Water from an Ancient Well')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -57,7 +60,10 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             433: 'The Fall Live at the Witch Trials full album',
             452: 'The Specials 1979 debut album full', 458: 'Peter Gabriel 3 Melt 1980 full album', 463: 'Killing Joke 1980 debut album full',
             468: 'Iron Maiden 1980 debut album full', 476: 'Pretenders 1980 debut album full', 492: 'Tom Tom Club 1981 debut album full',
-            481: 'Motorhead No Sleep til Hammersmith 1981 live album full', 486: 'X Wild Gift 1981 full album', 465: 'Circle Jerks Group Sex 1980 full album'}
+            481: 'Motorhead No Sleep til Hammersmith 1981 live album full', 486: 'X Wild Gift 1981 full album', 465: 'Circle Jerks Group Sex 1980 full album',
+            514: 'Violent Femmes 1983 debut album full', 532: 'Run DMC 1984 debut album full', 536: 'Van Halen 1984 album full',
+            538: 'The Replacements Let It Be 1984 full album', 509: 'Venom Black Metal 1982 full album', 539: 'The Style Council Cafe Bleu 1984 full album',
+            544: "Youssou N'Dour Immigres 1984 album", 547: 'Abdullah Ibrahim Water from an Ancient Well album', 529: 'Meat Puppets II 1984 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
