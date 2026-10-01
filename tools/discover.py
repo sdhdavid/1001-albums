@@ -72,6 +72,9 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
                    441: ['PLOJWuc3CN301YxZG_I_ZniHGfb4tl7vug', 'PLo2aaBamFnLTj8Ad0ymIx81CavqxNcjnB', 'PLmna7oCNK2MmgBrbPZPciNsXxAMQEjUao']}
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC']}
+# Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
+SPOTIFY_TRACKS = {471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
+                  483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
@@ -156,6 +159,13 @@ for n in wanted:
             rec.setdefault('spotifyCheck', {})[sid] = re.findall(r'"name":"([^"]{1,80})"', page)[:25] + re.findall(r'"releaseDate":\{"isoString":"([^"]+)"', page)[:1]
         except Exception as e:
             rec.setdefault('spotifyCheck', {})[sid] = [str(e)]
+    for tid in SPOTIFY_TRACKS.get(n, []):
+        try:
+            import urllib.request as ur
+            page = ur.urlopen(ur.Request(f'https://open.spotify.com/embed/track/{tid}', headers={'User-Agent': 'Mozilla/5.0'}), timeout=30).read().decode('utf8', 'ignore')
+            rec.setdefault('spotifyTracks', {})[tid] = sorted(set(re.findall(r'spotify:album:([A-Za-z0-9]{22})', page) + re.findall(r'/album/([A-Za-z0-9]{22})', page)))
+        except Exception as e:
+            rec.setdefault('spotifyTracks', {})[tid] = [str(e)]
     result[n] = rec
     print(n, meta['title'], '| editions', counts, '| best', (rec.get('youtube') or [{}])[0].get('id'), (rec.get('youtube') or [{}])[0].get('found'), flush=True)
     json.dump(result, open(out_path, 'w'), ensure_ascii=False, indent=1)
