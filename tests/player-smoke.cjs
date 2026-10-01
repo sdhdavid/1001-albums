@@ -59,11 +59,14 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     const begin=(x=190,extra={})=>v.listeners.touchstart({touches:[touch(x)],target,...extra});
     const end=async(x,y=200)=>{v.listeners.touchend({touches:[],changedTouches:[touch(x,y)]});await flush();};
     const number=()=>s.ctx.location.hash;
-    begin();v.listeners.touchmove({touches:[touch(lang==='he'?290:90)]});assert.equal(v.style.transform,`translateX(${lang==='he'?40:-40}px)`,'content follows finger');
+    begin();let prevented=0;v.listeners.touchmove({touches:[touch(lang==='he'?290:90)],cancelable:true,preventDefault:()=>prevented++});assert.equal(v.style.transform,`translateX(${lang==='he'?60:-60}px)`,'content follows finger');assert.equal(prevented,1,'sideways drag stops page scroll');assert.ok(Number(v.style.opacity)<1,'content dims while dragging');
     await end(lang==='he'?290:90);assert.equal(number(),'#/album/3','swipe next');
     assert.equal(s.motion.at(-2).frames[1].opacity,0,'old album fades out');assert.equal(s.motion.at(-1).frames[0].transform,`translateX(${lang==='he'?-64:64}px)`,'new album enters from opposite side');assert.equal(v.style.transform,'','motion cleaned up');
     begin();await end(lang==='he'?90:290);assert.equal(number(),'#/album/2','swipe previous');
     begin();await end(220);assert.equal(number(),'#/album/2','short swipe ignored');
+    begin(190,{timeStamp:1000});v.listeners.touchend({touches:[],changedTouches:[touch(lang==='he'?235:145)],timeStamp:1600});await flush();assert.equal(number(),'#/album/2','slow short drag ignored');
+    begin(190,{timeStamp:1000});v.listeners.touchend({touches:[],changedTouches:[touch(lang==='he'?235:145)],timeStamp:1080});await flush();assert.equal(number(),'#/album/3','quick flick changes album');
+    begin();await end(lang==='he'?90:290);assert.equal(number(),'#/album/2');
     begin();v.listeners.touchmove({touches:[touch(195,240)]});await end(290,240);assert.equal(number(),'#/album/2','vertical scroll remains scroll even when ending horizontally');
     begin();await end(290,270);assert.equal(number(),'#/album/2','diagonal swipe ignored');
     begin(10);await end(290);assert.equal(number(),'#/album/2','browser edge gesture ignored');

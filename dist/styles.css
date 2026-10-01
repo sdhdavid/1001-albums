@@ -415,3 +415,5 @@ body.has-mini-player { padding-bottom: 84px; }
 @media (max-width: 760px) and (pointer: coarse) {
   .detail { overflow-x: clip; }
 }
+/* Phone album swipes: the browser handles only vertical scrolling and zoom here, sideways drags go to the swipe. */
+@media (max-width: 760px) and (pointer: coarse) { #album-view { touch-action: pan-y pinch-zoom; } }
