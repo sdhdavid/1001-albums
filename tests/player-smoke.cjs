@@ -94,7 +94,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});
     v.listeners.touchend({touches:[],changedTouches:[{clientX:290,clientY:200,identifier:1}]});await flush();
     assert.equal(s.ctx.location.hash,'#/album/2','desktop touch does not navigate'); }
-  for (const [n,dx] of [[1,-100],[700,100]]) {
+  for (const [n,dx] of [[1,-100],[750,100]]) {
     const s=await boot({phone:true,hash:`#/album/${n}`});await flush();await flush();const v=s.nodes['album-view'];
     v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});
     v.listeners.touchend({touches:[],changedTouches:[{clientX:190+dx,clientY:200,identifier:1}]});await flush();
@@ -145,7 +145,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   assert(rail[0].classSet.has('current'),'current decade highlighted');
   rail[1].click();assert(n['album-list'].scrolledTo,'clicking a decade scrolls the list');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
-  assert.equal(rows(),700);assert.equal(n['edition-label'].textContent,'700 האלבומים הראשונים','album count label follows the site'); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
+  assert.equal(rows(),750);assert.equal(n['edition-label'].textContent,'750 האלבומים הראשונים','album count label follows the site'); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
   // "Next album" from the bottom of the page jumps up to the new album; no jump when already at the top.
   { const v=n['album-view']; let jumps=0; v.scrollIntoView=()=>jumps++;
@@ -162,8 +162,8 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
-  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 700 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,700);
-  assert.equal(n['toggle-progress'].textContent,'1 מתוך 700');
+  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 750 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,750);
+  assert.equal(n['toggle-progress'].textContent,'1 מתוך 750');
   for (let i=0;i<10;i++) {
     const data=pilotAll()[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
@@ -257,7 +257,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   assert.equal(n['album-youtube-player'].src,'about:blank','switching to the mapped player unloads prior album');
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
-  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const lastAlbum=added['700'];
+  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const lastAlbum=added['750'];
   for (let number=24; number<=50; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title);
     assert.equal(n['embedded-listening'].hidden,false);
@@ -290,7 +290,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
       n['mode-full'].click();
     }
   }
-  for (let number=51; number<=700; number++) {
+  for (let number=51; number<=750; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title,`album ${number}`);
     const album=added[String(number)];
     if (number===53||number===544) { assert.equal(p.ids.length,4); continue; }
@@ -377,12 +377,12 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   { const h=await boot(), m=h.nodes; await flush();
     assert.equal(m['home'].hidden,false,'home shown first');assert.equal(m['album-page'].hidden,true);
     const hero=m['home-hero'].children;assert.equal(hero[1].children[1].textContent,'Elvis Presley','next unheard album (1 is heard)');
-    assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 700/);
+    assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 750/);
     const sections=m['home-grid'].children;assert.deepEqual(sections.filter((c,i)=>i%2===0).map(c=>c.children[0].textContent),['שנות ה־50','שנות ה־60','שנות ה־70','שנות ה־80','שנות ה־90']);
-    const tiles=sections.filter((c,i)=>i%2===1).flatMap(g=>g.children);assert.equal(tiles.length,700,'one tile per album on the site');
+    const tiles=sections.filter((c,i)=>i%2===1).flatMap(g=>g.children);assert.equal(tiles.length,750,'one tile per album on the site');
     assert(tiles[0].children.some(c=>c.className==='tile-check'),'heard album has a check');assert(!tiles[2].children.some(c=>c.className==='tile-check'));
     assert(tiles[1].className.includes('next'),'next album outlined');
-    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,699,'"not heard yet" hides heard albums');
+    m['home-unheard'].click();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,749,'"not heard yet" hides heard albums');
     m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.filter((c,i)=>i%2===1).flatMap(g=>g.children).length,4);
     m['home-search'].value='';m['home-search'].listeners.input();
     // Clicking a tile opens that album and puts it in the address; "מה זה?" returns home with the welcome box.
@@ -396,5 +396,5 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   // A shared link to an album opens that album directly.
   { const d=await boot({hash:'#/album/41'}); await flush();await flush();
     assert.equal(d.nodes['album-page'].hidden,false);assert.equal(d.nodes['home'].hidden,true);assert.equal(d.nodes['album-title'].textContent,'Getz / Gilberto'); }
-  console.log('PASS: book entries 1–700 (including the 51–100 through 651–700 batches; #626 and #652 have no Spotify album; with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–750 (including the 51–100 through 701–750 batches; #626 and #652 have no Spotify album; with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});
