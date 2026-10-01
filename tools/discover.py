@@ -55,7 +55,14 @@ OVERRIDE = {74: ('The Yardbirds', 'Roger the Engineer'), 63: ('The Byrds', 'Fift
             622: ('My Bloody Valentine', "Isn't Anything"), 624: ('Metallica', 'And Justice for All'), 626: ('Dagmar Krause', 'Tank Battles'), 629: ('Morrissey', 'Viva Hate'),
             631: ('The Sugarcubes', "Life's Too Good"), 633: ("Jane's Addiction", "Nothing's Shocking"), 640: ('Queen Latifah', 'All Hail the Queen'),
             642: ('fIREHOSE', 'fROMOHIO'), 643: ('Beastie Boys', "Paul's Boutique"), 644: ('The Young Gods', "L'eau rouge"), 645: ('John Zorn', 'Spy vs Spy'),
-            648: ('Baaba Maal', 'Djam Leelii'), 601: ('Ladysmith Black Mambazo', 'Shaka Zulu')}
+            648: ('Baaba Maal', 'Djam Leelii'), 601: ('Ladysmith Black Mambazo', 'Shaka Zulu'),
+            651: ('808 State', '90'), 652: ('Coldcut', "What's That Noise"), 658: ('Soul II Soul', 'Club Classics Vol. One'), 659: ('De La Soul', '3 Feet High and Rising'),
+            660: ('Janet Jackson', 'Rhythm Nation 1814'), 661: ('Jungle Brothers', 'Done by the Forces of Nature'), 662: ('N.W.A', 'Straight Outta Compton'),
+            664: ('The Shamen', 'En-Tact'), 666: ("The La's", "The La's"), 671: ('Digital Underground', 'Sex Packets'), 673: ('Happy Mondays', "Pills 'n' Thrills and Bellyaches"),
+            674: ('George Michael', 'Listen Without Prejudice Vol. 1'), 675: ('Neil Young', 'Ragged Glory'), 676: ('Ice Cube', "AmeriKKKa's Most Wanted"),
+            677: ("Jane's Addiction", 'Ritual de lo Habitual'), 678: ('LL Cool J', 'Mama Said Knock You Out'), 680: ("Sinead O'Connor", "I Do Not Want What I Haven't Got"),
+            681: ('A Tribe Called Quest', "People's Instinctive Travels and the Paths of Rhythm"), 690: ('MC Solaar', 'Qui seme le vent recolte le tempo'),
+            691: ('Jah Wobble', 'Rising Above Bedlam'), 693: ('Ice-T', 'O.G. Original Gangster'), 695: ('Public Enemy', 'Apocalypse 91'), 684: ('My Bloody Valentine', 'Loveless')}
 # Extra words for the YouTube search when the plain query finds the wrong playlists (live versions, other albums).
 YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock Head Hunters 1973 full album Chameleon',
             297: 'Iggy and the Stooges Raw Power 1973 full album',
@@ -81,7 +88,10 @@ YT_QUERY = {275: 'Hawkwind Space Ritual 1973 full album', 284: 'Herbie Hancock H
             625: 'Dinosaur Jr Bug 1988 full album', 628: 'American Music Club California 1988 album', 646: 'The Stone Roses 1989 debut album full',
             616: 'Mudhoney Superfuzz Bigmuff 1988 EP', 626: 'Dagmar Krause Tank Battles Hanns Eisler', 648: 'Baaba Maal Mansour Seck Djam Leelii',
             645: 'John Zorn Spy vs Spy Ornette Coleman', 644: 'The Young Gods L eau rouge 1989', 609: 'Terence Trent DArby Introducing the Hardline 1987 full album',
-            610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album'}
+            610: 'The Pogues If I Should Fall from Grace with God 1988 full album', 641: 'Spacemen 3 Playing with Fire 1989 full album',
+            651: '808 State 90 1989 album', 653: 'Barry Adamson Moss Side Story 1989 album', 666: "The La's 1990 debut album full", 687: 'Cypress Hill 1991 debut album full',
+            683: 'Ride Nowhere 1990 full album', 686: 'Crowded House Woodface 1991 full album', 688: 'Julian Cope Peggy Suicide 1991 full album',
+            689: 'Gang Starr Step in the Arena 1991 full album', 699: 'Sepultura Arise 1991 full album', 700: 'Slint Spiderland 1991 full album', 657: 'Fugazi Repeater 1990 full album'}
 # Candidates found by hand (web search): extra playlists to score, and full-album videos whose chapters are read.
 EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_kCFLJeEuBQmuXIHWYQxX-zjcXtceZe8UY', 'PLycVTiaj8OI_vlOI_Hhs7lHuTeAAf57c5'],
                    284: ['OLAK5uy_nvlpZLPE7acPh4D5k2lvtdFCe68yEIqV4', 'OLAK5uy_m789U0dt-J4aLVd7p-dXJxSfDliep-NT0', 'PLm4I8tP6UbWayMmspp9ucpplfT2twORSe', 'PLLpV5usM_H_YUpR35cBBP4fwXrSQOH-qZ'],
@@ -103,11 +113,7 @@ EXTRA_PLAYLISTS = {275: ['OLAK5uy_lFFPjJvqQDLVRR8HA3an2aZZUIH_s4ogk', 'OLAK5uy_k
 # Spotify album ids to check (the embed page lists the album's tracks), when web search found several albums with one name.
 SPOTIFY_CHECK = {397: ['3NOxICud3CE6svBnR9WqC7', '4huMvebKxtKXAm51LCfOoC', '67UdOjU4vLZx8yoHgXkNes', '21XmM8dZGAfwUXTnAPqxdC'], 471: ['22mcOt74IVtCeR5hoIfveO', '2fgQN85UzwZMRIBTs06FjX', '3zeDrhkNv8872fC7CsOCpI', '4xrUp1M9XmKHFzRRyXIx71', '53fzZMZ3ENBY0BpLFOMy9p', '6GjMcck9c4i6cQo194xKl6', '7lCEnPYYkUuvnkrCbA6RCa', '7lGDjzmvAcNl6kEtn1rTaJ', '7qLJ8bzny3tynTPW2U2Anv'], 498: ['0LSWSMW0LVJX3fmSgDnk2A', '0rhmwOflgYrPntNuEe8chN', '1aucGNKimhgARC7iO2xLt2', '1pK8MLyjgvt8pNVkQCBnSg', '27qrMWYugzTnAvn2mtZdcx', '2B6i9ZY0NF8UkESEIL0taZ', '2srC8Ls3xXdRUH3n7jvHQD', '4HWzj6tf8nXvH7GzXAl1ld', '5h4pJfrTGROIhFJpTHa1Cu', '65Al3RSB7zeQeYcinysMxJ', '6A4MecoyRjnDtYeAZ7JGQf', '6Iyeo7CPHen8QEW4x31TpI', '6zwFIyWKbdHi9mwrQcrEY1']}
 # Spotify track ids (found by web search) whose album id is wanted, when no album page turned up in search.
-SPOTIFY_TRACKS = {608: ['6ADSaE87h8Y3lccZlBJdXH', '6FlSRjNfbyHoZZGfsMwItH'], 626: ['2jPtopeUYFoUXTc6tJGKe6'], 628: ['2YeaR7DR5m1iLNcx0N1310', '0sXf52fCQROCfUmj2kG4EQ'],
-                  646: ['48ScV1Ft5BCX4U9kfS1QXo'], 648: ['5NuFKf7sqeWKM5quLZPUNw', '2I1eqWLqWOnAmUy5cg60OT']}  # the page lists the artist's albums; each is named via its embed page
-_SPOTIFY_TRACKS_USED = {587: ['0ZPmyHbX6jBdu2mvDnjGQe', '5LaKqu2QaLkWI0ZVWtsMWz', '2g8ywFUVna7EBMkzxExiCn'], 515: ['2iRfFc9nABTCQWexLcGGTM', '6YDiyTHDzZ74wynh9AOJbT'], 524: ['08tvhsb42bMMlo11SBB3C0'], 532: ['2XYNq7LIQrh82m7LPiPN8w', '1V7xIBIQPlAFeT2SngY0mN'],
-                  471: ['627mVweI5lc6IljJmgYe4f', '1UQfMZ9AIW38YBrcgUpwkP', '10c4ffh4ozt4PlpMmIGhu4'], 498: ['5qIWEtVAzylkR5zzMEk5uA', '1BPPJOryl1IGh5mqxnVIkG', '2B6r2U1lqVuBvr3TetoMo4'],
-                  483: ['2wt2ncc9cEsJqKwLo4eTDm', '0X3vIV9DwWQl01v2sN7br7']}
+SPOTIFY_TRACKS = {652: ['6rvinglzwGWPaO9N9nnHeR', '1F5QCrmxZ18xN9jkOI94aU', '3w9fto7To0gKvUzYWxthP8'], 690: ['0JYiIbdztz6KjiJt9OXfYS', '55u4IiABkTGzBfs2iXwhbo'], 691: ['1sffL3V01zHOByMZxAMCfD', '1kZJYvBOXRBA6zgB5vocqY']}
 # Track lists given by hand (n -> names) when the automatic edition is the wrong album: the iTunes edition that matches
 # them best gives the lengths, and the playlists are scored against these names.
 WANT = {458: ['Intruder', 'No Self Control', 'Start', "I Don't Remember", 'Family Snapshot', 'And Through the Wire',
