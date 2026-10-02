@@ -185,6 +185,22 @@ WANT.update({
           'You & Me', 'Still Life'],
     820: ['Roots Bloody Roots', 'Attitude', 'Cut-Throat', 'Ratamahatta', 'Breed Apart', 'Straighthate', 'Spit', 'Lookaway', 'Dusted',
           'Born Stubborn', 'Jasco', 'Itsári', 'Ambush', 'Endangered Species', 'Dictatorshit']})
+# 851–900 second pass
+EXTRA_PLAYLISTS.update({867: ['OLAK5uy_nnykGh8RUrN5xlrj3NnXcKQKBdQOsfyVw', 'PLmOQOIaLKSCgmgi-581mSROwwZb5COqJ9'],
+                        899: ['PLdglF_k2dXLWDFD7bBSBUUa2q6H6HvAKw', 'PLm4I8tP6UbWbFVjU6G2i-_UgNWgJS2t9G']})
+YT_QUERY.update({891: 'Flaming Lips The Soft Bulletin 1999 full album Race for the Prize', 852: 'Mariah Carey Butterfly 1997 full album Honey'})
+SPOTIFY_TRACKS.update({875: ['7viecLL3E8L4OJ6OGzgs4n', '2JdQsEl2hijBasn39JALBR'], 889: ['1cYo2sWoz6ybZKUwjMxy0K', '0XcEly9Np3fhe84FneCIDh'],
+                       893: ['6JIq2EDv3kR2oIj0X9R0AR', '6uAX7MehkRJeHgdycRfa5Y'], 895: ['3MjUtNVVq3C8Fn0MP3zhXa']})
+SPOTIFY_CHECK.update({852: ['6qoD3WaEeRFUTIjQLPsSjy', '7aDBFWp72Pz4NZEtVBANi9'], 858: ['56YzQ0dhmRMDryZsrjdHun', '4GMgNPA4fMv3U0QQsdRLJk'],
+                      864: ['5dbW25KDJWBkv2gtaQdmxJ', '7G7cCHgQKbDD6zvwDQZyJu'], 876: ['0gsiszk6JWYwAyGvaTTud4', '5eAoPNZzWRn2C409kAUsbE'],
+                      877: ['4PQFrVyQ6xWGjbq5kkVVaX', '0IPrsbOiX2tgYnJw3l8AbR'], 880: ['74HTGmkjvbilVJjTCsneXD', '4rezpGly476QPhbmG2SITq'],
+                      887: ['6lijTrmA0yAucg4Axbj1up', '3yIFysHpeQKb1dAuHQICVW'], 894: ['1pAakXNiYkGzS7gRzxGyHn', '0vE6mttRTBXRe9rKghyr1l']})
+WANT.update({
+    852: ['Honey', 'Butterfly', 'My All', 'The Roof (Back in Time)', 'Fourth of July', 'Breakdown', 'Babydoll', 'Close My Eyes',
+          'Whenever You Call', 'Fly Away (Butterfly Reprise)', 'The Beautiful Ones', 'Outside'],
+    891: ['Race for the Prize', 'A Spoonful Weighs a Ton', 'The Spark That Bled', 'The Spiderbite Song', "Buggin'", 'What Is the Light?',
+          'The Observer', "Waitin' for a Superman", 'Suddenly Everything Has Changed', 'The Gash', 'Feeling Yourself Disintegrate',
+          'Sleeping on the Roof']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
