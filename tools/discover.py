@@ -171,6 +171,20 @@ WANT.update({
           'Gz and Hustlas', 'Pump Pump'],
     794: ['Line Up', 'Annie', 'Connection', 'Car Song', 'Smile', 'Hold Me Now', 'S.O.F.T.', 'Indian Song', 'Blue', 'All-Nighter',
           'Waking Up', '2:1', 'Vaseline', 'Never Here', 'Stutter']})
+# 801–850 second pass
+SPOTIFY_TRACKS.update({807: ['7MJ7HFbvjTv9F60jdludgb', '1erjdjgmqLwoxNI1KfDvFq'], 808: ['6hK0ln2TayCrTbul9f3Kve', '2KTpsmJ3l6m0kkTAcO4IpV'],
+                       809: ['6m5LnidB0c4sBInIrk4j1X', '5oefjw7i602MPGSTUjeiQJ'], 820: ['5bZpHnxYgIH7GLVTRkc1rC', '2AgMxAo250PE5JR6olyz14'],
+                       825: ['0mX3QD1FSB6a55vDmS78kZ', '2gDqY4FScnezysSpsw2Tpa'], 839: ['2WRzpLD8qDRrxMXc63E5WJ'],
+                       841: ['76mCw71NjJoyUzwZvm08ts', '0mPi7OzFdbqdjtRrtMSCC8'], 847: ['1cFYFeniVjSqQswDGyYLyM', '1a5PrrbiFfLJWKSV68TJZY'],
+                       834: ['2q3Q18Iog6pyB7ooQHVzc7', '2yvvqbSGet4LAXzpwaroPz']})
+SPOTIFY_CHECK.update({805: ['0MbeekWXeO9BFjImhNH5gf', '6avrxdTyI3jUxVPVEtmT8o'], 811: ['2EvCXuFV2Oduqo3cVqeU5W', '490GQTZ4gHnqAe83K9eGjt'],
+                      815: ['7ssmEk3nxZq0EGOdGz1kAu', '7N0W5QxnRMP3s1mMxfQo1p'], 831: ['0YI7QPNUGq8NTB6Nd8nWfd', '56vFkneGivqQcoNQq362iZ'],
+                      834: ['6Zj0LtkX3xTnaNwO1Bia3Z', '5MrIBMRh9FJf1iB2LGeMeS']})
+WANT.update({
+    805: ['Timeless', 'Saint Angel', 'State of Mind', 'This Is a Bad', 'Sea of Tears', 'Jah', 'Angel', 'Adrift', 'Kemistry', 'Sensual',
+          'You & Me', 'Still Life'],
+    820: ['Roots Bloody Roots', 'Attitude', 'Cut-Throat', 'Ratamahatta', 'Breed Apart', 'Straighthate', 'Spit', 'Lookaway', 'Dusted',
+          'Born Stubborn', 'Jasco', 'Itsári', 'Ambush', 'Endangered Species', 'Dictatorshit']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
