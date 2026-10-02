@@ -245,6 +245,9 @@ WANT.update({
         "Andy, You're a Star", 'On Top', 'Change Your Mind', 'Believe Me Natalie', 'Midnight Show', 'Everything Will Be Alright'],
 })
 
+# 952–1001 third pass (Spotify album ids from track pages)
+SPOTIFY_TRACKS.update({989: ['7mmObwxtuS62xRT9S82VhD', '17eJBaZWHTEcUTI8QoCaNe'], 993: ['6gcom6QUTRPDEQBXKxOlGj', '2sC2FVqaSnVheb10crwY5P']})
+
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
