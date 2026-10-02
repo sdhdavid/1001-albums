@@ -17,8 +17,8 @@ SPOTIFY = {
  971:'1UsmQ3bpJTyK6ygoOOjG1r', 972:'2PiSkRUZWhvID1Cf3ppls4', 973:'0CA2EVHhRPR5VPV78KZw89', 974:'4DsHBZ9Cw8D5cE2gmjoaXu', 975:'4oOhV44kug5ZR6crjk7tqS',
  976:'0n1CrR5kCz5aAUH565cLDu', 977:'4mXL7oTIbIqAJPTQOBEQXb', 978:'1OBctVHKbHrQ2t5oCeHNtN', 979:'2wdHHEDHe9dw71xVl1EgJZ', 980:'4Uc6YCjpfyjj02rZfg2EUv',
  981:'63Eji2cNg0vH9sYqxg5iHI', 982:'0aGwrXjKIfAMlj1vBYLtnR', 983:'2s6AIr1sL5P0NAFzqd0zsW', 984:'0Dn05ZrhYlqEXIfbdkNqQS', 985:'0vi5ePiEHrGZJF7QhnDW2z',
- 986:'4MwR8zCF5m9JH8t3LcHqas', 987:'3lDca6e9MuyFAhoaR6GjlW', 988:'5pgaVcKREhdQ3OI7ZvP9tv', 989:'', 990:'3ff2p3LnR6V7m6BinwhNaQ',
- 991:'0wdleLMeNmGUHChsmx9svt', 992:'76XQSGpf3sPBgnAX0iVEr1', 993:'', 994:'365ETCJBUmEWroc4UGBS1u', 995:'5lHKuIClr94hUV3xP1joHm',
+ 986:'4MwR8zCF5m9JH8t3LcHqas', 987:'3lDca6e9MuyFAhoaR6GjlW', 988:'5pgaVcKREhdQ3OI7ZvP9tv', 989:'026fArxz2P8Vuj8ReXLD6j', 990:'3ff2p3LnR6V7m6BinwhNaQ',
+ 991:'0wdleLMeNmGUHChsmx9svt', 992:'76XQSGpf3sPBgnAX0iVEr1', 993:'6is8bNUHTiMpkmknFneo5r', 994:'365ETCJBUmEWroc4UGBS1u', 995:'5lHKuIClr94hUV3xP1joHm',
  996:'0FLs42SkAlPHa6Y6YwVne4', 997:'6SODLjPAWEhIlsb9Ewt7ez', 998:'7eJbM7ZdGAFPLQfW53hllZ', 999:'0fsIwO8qESz53BkTMjBSd3', 1000:'3ZJhEfoNRh684uuv9VG9EC',
  1001:'3rHeq4F5wnaLBjNtuz7Yvh',
 }
@@ -27,7 +27,7 @@ SPOTIFY = {
 PLAYLIST_CHOICE = {963: 2, 979: 1}   # #963 the 13-track UK album; #979 the original 14 tracks in order
 LENGTHS_FROM_PLAYLIST = {}
 RAW = {'Work It (feat. 50 Cent) [Remix]': 'Work It (Remix)'}   # names fixed before clean()
-RENAME = {'Quattro - World Drifts in': 'Quattro (World Drifts In)', 'Holy Roller Novocaine / Talihina Sky': 'Holy Roller Novocaine',
+RENAME = {'Sit Down. Stand Up': 'Sit Down. Stand Up.', 'Quattro - World Drifts in': 'Quattro (World Drifts In)', 'Holy Roller Novocaine / Talihina Sky': 'Holy Roller Novocaine',
           'Modern Romance / Poor Song': 'Modern Romance', 'Galang / M.I.A.': 'Galang', 'Intro / Stronger Than Me': 'Stronger Than Me',
           'Who Is It (Carry My Joy On the Left, Carry My Pain On the Right)': 'Who Is It'}
 KEEP_FIRST = {963: 13, 979: 14}   # deluxe / US bonus tracks cut

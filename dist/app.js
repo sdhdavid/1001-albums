@@ -12,7 +12,7 @@ const STR = {
     allGenres: "כל הז'אנרים",
     decade: d => `שנות ה־${d < 2000 ? d - 1900 : d}`,
     railTitle: (label, on, all) => `${label} · ${on} מתוך ${all} אלבומים באתר`,
-    edition: n => `${n} האלבומים הראשונים`,
+    edition: n => n >= 1001 ? `כל ${n} האלבומים` : `${n} האלבומים הראשונים`,
     listProgress: (h, n) => `האזנת ל־${h} מתוך ${n} אלבומים`,
     ofTotal: (h, n) => `${h} מתוך ${n}`,
     doneYes: '✓ האזנתי לאלבום', doneNo: 'סימון שהאזנתי',
