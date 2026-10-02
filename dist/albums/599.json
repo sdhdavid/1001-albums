@@ -1,105 +1,93 @@
 {
-  "spotifyAlbum": "5JKFiC2WVi9HtvJEm8CUB8",
+  "spotifyAlbum": "7jfexk2w5aDI25njkN0UGg",
   "tracks": [
     [
-      "Welcome to the Jungle",
+      "A Rush and a Push and the Land Is Ours",
       null,
       0
     ],
     [
-      "It's So Easy",
+      "I Started Something I Couldn't Finish",
       null,
       1
     ],
     [
-      "Nightrain",
+      "Death of a Disco Dancer",
       null,
       2
     ],
     [
-      "Out ta Get Me",
+      "Girlfriend In a Coma",
       null,
       3
     ],
     [
-      "Mr. Brownstone",
+      "Stop Me If You Think You've Heard This One Before",
       null,
       4
     ],
     [
-      "Paradise City",
+      "Last Night I Dreamt That Somebody Loved Me",
       null,
       5
     ],
     [
-      "My Michelle",
+      "Unhappy Birthday",
       null,
       6
     ],
     [
-      "Think About You",
+      "Paint a Vulgar Picture",
       null,
       7
     ],
     [
-      "Sweet Child o' Mine",
+      "Death at One's Elbow",
       null,
       8
     ],
     [
-      "You're Crazy",
+      "I Won't Share You",
       null,
       9
-    ],
-    [
-      "Anything Goes",
-      null,
-      10
-    ],
-    [
-      "Rocket Queen",
-      null,
-      11
     ]
   ],
   "focus": [
-    0,
-    5,
-    8
+    3,
+    4,
+    5
   ],
   "story": [
-    "גאנז אנד רוזס קמו בלוס אנג׳לס ב־1985, חמישה צעירים שחיו בעוני, בסמים ובמועדוני הרוק של שדרות סאנסט. הזמר אקסל רוז, עם קול צורמני וטווח רחב, והגיטריסט סלאש, עם הכובע והשיער, הפכו לדמויות המזוהות ביותר עם הרוק של סוף שנות השמונים. Appetite for Destruction, אלבום הבכורה, יצא ב־1987.",
-    "האלבום מחוספס ומסוכן, בניגוד לרוק המלוטש של אותן שנים. Welcome to the Jungle פותח בצעקה, ומתאר את לוס אנג׳לס כג׳ונגל מסוכן שאוכל את מי שמגיע אליו. Sweet Child o' Mine נבנה על תרגיל גיטרה שסלאש ניגן כבדיחה, ואקסל כתב עליו שיר אהבה לחברתו. Paradise City הוא המנון ענק שמאיץ לקראת הסוף. Mr. Brownstone מתאר את ההתמכרות להרואין, ו־Nightrain הוא שיר על יין זול. Rocket Queen, הסוגר, משנה כיוון באמצע והופך לשיר רך ומלא תקווה.",
-    "בהתחלה האלבום כמעט לא נמכר. רק שנה אחרי שיצא, כשהקליפ של Sweet Child o' Mine הגיע ל־MTV, הוא קפץ למקום הראשון במצעד האמריקאי. מאז הוא מכר עשרות מיליוני עותקים, והוא אחד מאלבומי הבכורה הנמכרים בכל הזמנים. הצליל המחוספס שלו היה תגובה לרוק המלוטש של אותן שנים, ופתח את הדרך לרוק הגולמי של שנות התשעים.",
-    "שמעו את Sweet Child o' Mine, ושימו לב לפתיחה של הגיטרה: אחד הצלילים המוכרים ברוק. ואחר כך שמעו את Toys in the Attic של אירוסמית׳ (אלבום 331), הלהקה שגאנז אנד רוזס העריצו."
+    "Strangeways, Here We Come, שיצא ב־1987, הוא האלבום האחרון של הסמית׳ס, שכבר הופיעו כאן עם Meat Is Murder (אלבום 558) ועם The Queen Is Dead (אלבום 584). עוד לפני שהאלבום יצא, הגיטריסט ג׳וני מאר עזב, והלהקה התפרקה. השם לקוח מבית הכלא הידוע של מנצ׳סטר, Strangeways, ועל העטיפה מופיע השחקן ריצ׳רד דבאלוס, מתוך הסרט \"קדמת עדן\".",
+    "הצליל עשיר ומגוון יותר מבעבר: פסנתר, כלי מיתר, סקסופון וקלידים, לצד הגיטרות המוכרות. Last Night I Dreamt That Somebody Loved Me נפתח בדקה ארוכה של רעשים ופסנתר, והופך לאחד השירים הכי עצובים שלהם. Girlfriend in a Coma קצר, קליל ומצחיק בצורה מוזרה. Stop Me If You Think You've Heard This One Before מהיר וסוחף. Paint a Vulgar Picture עוסק בתעשיית המוזיקה, שמרוויחה כסף על אמנים גם אחרי מותם. ו־I Won't Share You, הסוגר, הוא שיר פרידה שקט. Death of a Disco Dancer ארוך ואפל, ומסתיים בפסנתר מבולבל שמוריסי ניגן בעצמו.",
+    "גם מוריסי וגם מאר אמרו לא פעם שזה האלבום האהוב עליהם מכל אלבומי הסמית׳ס. הוא סוגר את סיפורה של אחת הלהקות החשובות של שנות השמונים, בפחות מחמש שנים של פעילות. קשה לחשוב על סוף יפה יותר ללהקה.",
+    "שמעו את Last Night I Dreamt That Somebody Loved Me, ואחריו את I Won't Share You: שיר עצוב ושיר פרידה, כמו סוף של סיפור."
   ],
   "picks": [
     [
-      "Sweet Child o' Mine",
-      "פתיחת גיטרה מפורסמת ושיר אהבה, הלהיט הגדול והאהוב שלהם."
+      "Last Night I Dreamt That Somebody Loved Me",
+      "נפתח ברעשים ובפסנתר, ואז הופך לאחד השירים העצובים שלהם."
     ],
     [
-      "Welcome to the Jungle",
-      "הפותח, לוס אנג׳לס כג׳ונגל מסוכן, עם צעקה וריף ענק."
+      "Girlfriend In a Coma",
+      "שיר קצר וקליל עם כלי מיתר, מצחיק ועצוב בצורה מוזרה."
     ],
     [
-      "Paradise City",
-      "המנון ענק שמאיץ לקראת הסוף, לשירה בקולי קולות במכונית."
+      "Stop Me If You Think You've Heard This One Before",
+      "שיר מהיר וסוחף, עם גיטרות מנצנצות ומילים מלאות הומור שחור."
     ]
   ],
   "durations": [
-    "4:34",
-    "3:23",
-    "4:28",
-    "4:24",
-    "3:49",
-    "6:46",
-    "3:40",
-    "3:52",
-    "5:56",
-    "3:17",
-    "3:26",
-    "6:13"
+    "3:01",
+    "3:48",
+    "5:26",
+    "2:03",
+    "3:36",
+    "5:06",
+    "2:45",
+    "5:35",
+    "2:02",
+    "2:51"
   ],
-  "youtubePlaylist": "PLFAcddgaFN8za73Nyn5yqmHv1EGI84tbF"
+  "youtubePlaylist": "PLI6kLIhBBwmSINqXCvKvZtgaAp6D3j6Z1"
 }

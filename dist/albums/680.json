@@ -1,93 +1,153 @@
 {
-  "spotifyAlbum": "0fV9DAddjwNZcmCP1Q8b01",
+  "spotifyAlbum": "0QNPblZ1LIHTKja8pvHauW",
   "tracks": [
     [
-      "Feel So Different",
-      null,
-      5
-    ],
-    [
-      "I Am Stretched On Your Grave",
-      null,
-      9
-    ],
-    [
-      "Three Babies",
-      null,
-      1
-    ],
-    [
-      "The Emperor's New Clothes",
-      null,
-      7
-    ],
-    [
-      "Black Boys On Mopeds",
+      "Contract on the World Love Jam",
       null,
       0
     ],
     [
-      "Nothing Compares 2 U",
+      "Brothers Gonna Work It Out",
       null,
-      8
+      1
     ],
     [
-      "Jump In the River",
+      "911 Is a Joke",
       null,
-      4
+      2
     ],
     [
-      "You Cause As Much Sorrow",
-      null,
-      6
-    ],
-    [
-      "The Last Day of Our Acquaintance",
+      "Incident at 66.6 FM",
       null,
       3
     ],
     [
-      "I Do Not Want What I Haven't Got",
+      "Welcome to the Terrordome",
       null,
-      2
+      4
+    ],
+    [
+      "Meet the G That Killed Me",
+      null,
+      5
+    ],
+    [
+      "Pollywanacraka",
+      null,
+      6
+    ],
+    [
+      "Anti‐Nigger Machine",
+      null,
+      7
+    ],
+    [
+      "Burn Hollywood Burn",
+      null,
+      8
+    ],
+    [
+      "Power to the People",
+      null,
+      9
+    ],
+    [
+      "Who Stole the Soul?",
+      null,
+      10
+    ],
+    [
+      "Fear of a Black Planet",
+      null,
+      11
+    ],
+    [
+      "Revolutionary Generation",
+      null,
+      12
+    ],
+    [
+      "Can’t Do Nuttin’ for Ya Man",
+      null,
+      13
+    ],
+    [
+      "Reggie Jax",
+      null,
+      14
+    ],
+    [
+      "Leave This Off Your Fu*kin Charts",
+      null,
+      15
+    ],
+    [
+      "B Side Wins Again",
+      null,
+      16
+    ],
+    [
+      "War at 33⅓",
+      null,
+      17
+    ],
+    [
+      "Final Count of the Collision Between Us and the Damned",
+      null,
+      18
+    ],
+    [
+      "Fight the Power",
+      null,
+      19
     ]
   ],
   "focus": [
-    0,
     1,
-    5
+    2,
+    19
   ],
   "story": [
-    "שינייד או׳קונור גדלה בדבלין שבאירלנד, בילדות קשה ואלימה, ונשלחה כנערה למוסד של נזירות לנערות \"בעייתיות\". שם גילתה מורה את קולה, ומשם התחילה לשיר. היא התפרסמה עם ראש מגולח, מבט ישיר וכעס שלא הסתירה, ו־I Do Not Want What I Haven't Got, אלבומה השני, יצא ב־1990. היא הפיקה אותו בעצמה, והוא אישי, חשוף ועוצמתי, אלבום של אישה צעירה שמדברת על כאב, על אמהות, על אמונה ועל פרידה.",
-    "הקול של או׳קונור הוא הכל: הוא יכול ללחוש כמו ילדה ולצרוח כמו סערה, לפעמים באותו שיר. Nothing Compares 2 U, שכתב פרינס, הוא שיר געגועים כואב לאהוב שהלך, והקליפ שלו, צילום קרוב של פניה כשדמעה זולגת על לחייה, הפך לאחד הקליפים המפורסמים בעולם. Feel So Different פותח בתפילת השלווה, על רקע כלי מיתר. I Am Stretched on Your Grave הוא שיר אירי עתיק, שמושר על קצב תופים של היפ הופ. Black Boys on Mopeds זועם על מוות של נער שחור בלונדון. The Emperor's New Clothes קצבי ומתריס, ושיר הנושא, הסוגר, מושר כמעט בלי שום ליווי.",
-    "Nothing Compares 2 U הגיע למקום הראשון ביותר מעשרים מדינות, והאלבום מכר מיליוני עותקים. או׳קונור הפכה לכוכבת עולמית, אבל גם לדמות שנויה במחלוקת, שלא פחדה להתעמת עם הכנסייה, עם התקשורת ועם תעשיית המוזיקה. היא מתה ב־2023, ונזכרת היום כאחת הזמרות האמיצות והמרגשות של דורה.",
-    "שמעו את Nothing Compares 2 U, ואחריו את I Am Stretched on Your Grave: הכאב הפרטי והמסורת העתיקה, באותו קול. ואחר כך את שיר הנושא, בשקט מוחלט."
+    "פאבליק אנמי כבר הופיעו כאן עם It Takes a Nation of Millions to Hold Us Back (אלבום 635). Fear of a Black Planet, שיצא ב־1990, צפוף, ארוך ושאפתני עוד יותר: יותר מעשרים קטעים, שבנויים מאלפי דגימות, צעקות, נאומים וצלילים, בהפקת הבומב סקווד. השם, \"פחד מכוכב לכת שחור\", מתייחס לפחד של לבנים מפני ערבוב בין גזעים, וצ׳אק די צוחק עליו ותוקף אותו. באותה תקופה הקבוצה הייתה גם במרכז סערה, אחרי ההתבטאויות האנטישמיות של פרופסור גריף, וגם בשירים כאן יש שורות שנתפסו כפוגעות.",
+    "הצליל כמו סערה: שכבות של דגימות שמתנגשות זו בזו, צפירות, תופים, ומעליהם הקול העמוק של צ׳אק די והקריאות של פלייבור פלאב. Fight the Power, ההמנון, נכתב לסרט \"עשה את הדבר הנכון\" של ספייק לי, וקורא להילחם בכוחות שמדכאים, כולל ביקורת חריפה על גיבורי התרבות האמריקאית הלבנה. 911 Is a Joke, בקולו של פלייבור פלאב, הוא שיר מצחיק וכועס על אמבולנסים שמגיעים מאוחר לשכונות השחורות. Brothers Gonna Work It Out קורא לאחדות. Burn Hollywood Burn, עם איס קיוב (אלבום 677), תוקף את הדרך שבה הוליווד מציגה שחורים.",
+    "האלבום מכר מיליון עותקים זמן קצר מאוד אחרי שיצא, ונבחר לארכיון ההקלטות הלאומי של ספריית הקונגרס האמריקאית. Fight the Power הפך לאחד השירים הפוליטיים החשובים בתולדות המוזיקה האמריקאית.",
+    "שמעו את Fight the Power בקול רם, ואחר כך את 911 Is a Joke כדי לשמוע את ההומור של הקבוצה. ואחר כך חזרו ל־It Takes a Nation (אלבום 635), כדי להשוות."
   ],
   "picks": [
     [
-      "Nothing Compares 2 U",
-      "שיר געגועים כואב שכתב פרינס, עם אחד הקליפים המפורסמים בעולם."
+      "Fight the Power",
+      "ההמנון מהסרט של ספייק לי, קריאה עוצמתית להילחם בכוחות המדכאים."
     ],
     [
-      "I Am Stretched On Your Grave",
-      "שיר אירי עתיק שמושר על קצב תופים של היפ הופ, מפתיע ומרגש."
+      "911 Is a Joke",
+      "שיר מצחיק וכועס של פלייבור פלאב על אמבולנסים שמגיעים מאוחר מדי."
     ],
     [
-      "Feel So Different",
-      "הפותח, תפילת השלווה על רקע כלי מיתר, וקול שעובר מלחישה לסערה."
+      "Brothers Gonna Work It Out",
+      "קריאה לאחדות, על קצב צפוף ומלא שכבות של דגימות."
     ]
   ],
   "durations": [
-    "6:46",
-    "5:33",
-    "4:44",
-    "5:16",
-    "3:53",
-    "4:40",
-    "4:12",
-    "5:03",
-    "4:39",
-    "5:48"
+    "1:44",
+    "5:05",
+    "3:17",
+    "1:38",
+    "5:26",
+    "0:45",
+    "3:52",
+    "3:17",
+    "2:46",
+    "3:48",
+    "3:52",
+    "3:42",
+    "5:43",
+    "2:47",
+    "1:36",
+    "2:31",
+    "3:46",
+    "2:08",
+    "0:49",
+    "4:43"
   ],
-  "youtubePlaylist": "PLz_wBLfXJIHczdvw1odcOBNm3mHBl0hTC"
+  "youtubePlaylist": "PL-QwWsqHt69WtTWm0hMwzfB21R7cZgG4a"
 }

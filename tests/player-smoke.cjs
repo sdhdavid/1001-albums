@@ -94,7 +94,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
     v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});
     v.listeners.touchend({touches:[],changedTouches:[{clientX:290,clientY:200,identifier:1}]});await flush();
     assert.equal(s.ctx.location.hash,'#/album/2','desktop touch does not navigate'); }
-  for (const [n,dx] of [[1,-100],[950,100]]) {
+  for (const [n,dx] of [[1,-100],[1001,100]]) {
     const s=await boot({phone:true,hash:`#/album/${n}`});await flush();await flush();const v=s.nodes['album-view'];
     v.listeners.touchstart({touches:[{clientX:190,clientY:200,identifier:1}],target:{closest:()=>null}});
     v.listeners.touchend({touches:[],changedTouches:[{clientX:190+dx,clientY:200,identifier:1}]});await flush();
@@ -145,7 +145,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   assert(rail[0].classSet.has('current'),'current decade highlighted');
   rail[1].click();assert(n['album-list'].scrolledTo,'clicking a decade scrolls the list');
   assert.deepEqual(n['album-genres'].children.map(c=>c.textContent),['סטנדרטים וקברט'],'genre labels shown on the album page');assert.equal(n['album-genres'].hidden,false);
-  assert.equal(rows(),950);assert.equal(n['edition-label'].textContent,'950 האלבומים הראשונים','album count label follows the site'); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
+  assert.equal(rows(),1001);assert.equal(n['edition-label'].textContent,'כל 1001 האלבומים','album count label follows the site'); assert.equal(n['album-title'].textContent,'In the Wee Small Hours');
   assert.equal(n['track-list'].children.length,16);
   // "Next album" from the bottom of the page jumps up to the new album; no jump when already at the top.
   { const v=n['album-view']; let jumps=0; v.scrollIntoView=()=>jumps++;
@@ -162,8 +162,8 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   const pilotData=pilotAll();
   for (const [k,a] of Object.entries(pilotData)) { assert.equal(a.durations.length,a.tracks.length,`durations for ${k}`); for (const d of a.durations) assert.match(d,/^\d{1,2}:\d{2}$/,`duration format in ${k}`); }
   assert.equal(n['track-list'].children[0].children[0].children[0].textContent,pilotData['1'].durations[0]);
-  assert.equal(n['list-progress'].textContent,'האזנת ל־1 מתוך 950 אלבומים');assert.equal(n['progress-meter'].value,1);assert.equal(n['progress-meter'].max,950);
-  assert.equal(n['toggle-progress'].textContent,'1 מתוך 950');
+  assert.equal(n['list-progress'].textContent,'האזנת ל־2 מתוך 1001 אלבומים','the stored #999 moved to #1000 (White Album renumbering)');assert.equal(n['progress-meter'].value,2);assert.equal(n['progress-meter'].max,1001);
+  assert.equal(n['toggle-progress'].textContent,'2 מתוך 1001');
   for (let i=0;i<10;i++) {
     const data=pilotAll()[String(i+1)];
     assert.equal(n['track-list'].children.length,data.tracks.length);
@@ -208,7 +208,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   p.index=1;p.options.events.onStateChange({data:1});
   assert.equal(n['track-note-title'].textContent,'Freddie Freeloader');
   const before=calls.length;n['mark-done'].click();assert.equal(calls.length,before,'mark heard must not interrupt');
-  assert.deepEqual(JSON.parse(storage.get('album-journey-2005-done')),[1,999,21]);
+  assert.deepEqual(JSON.parse(storage.get('album-journey-2005-done')),[1,1000,21]);
   n['mode-short'].click();assert.deepEqual([...p.ids],['ylXk1LBvIqU','TLDflhhdPCg','-488UORrfJ0']);
   n['next-track'].click();assert.equal(p.index,1);
   assert.equal(n['track-note-title'].textContent,'Blue in Green','focused playlist index maps to actual video');
@@ -257,7 +257,7 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   assert.equal(n['album-youtube-player'].src,'about:blank','switching to the mapped player unloads prior album');
   p.options.events.onError({data:150});assert.equal(n['player-error'].hidden,false);assert.match(n['player-error-text'].textContent,/150/);
   n['next-track'].click();assert.equal(n['player-error'].hidden,true);
-  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const lastAlbum=added['950'];
+  const catalog=JSON.parse(fs.readFileSync('dist/albums.json','utf8'));const lastAlbum=added['1001'];
   for (let number=24; number<=50; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title);
     assert.equal(n['embedded-listening'].hidden,false);
@@ -290,11 +290,11 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
       n['mode-full'].click();
     }
   }
-  for (let number=51; number<=950; number++) {
+  for (let number=51; number<=1001; number++) {
     await nx();assert.equal(n['album-title'].textContent,catalog[number-1].title,`album ${number}`);
     const album=added[String(number)];
-    if (number===53||number===544) { assert.equal(p.ids.length,4); continue; }
-    if (number===145||number===232) { assert.equal(album.fullAlbumVideo,true);assert.equal(p.ids[0],album.tracks[0][1]);assert.equal(album.picks.length,Math.min(3,album.tracks.length),'one pick per piece, up to three');assert(catalog[number-1].genres?.length>0);continue; }
+    if (number===53||number===545) { assert.equal(p.ids.length,4); continue; }
+    if (number===146||number===233) { assert.equal(album.fullAlbumVideo,true);assert.equal(p.ids[0],album.tracks[0][1]);assert.equal(album.picks.length,Math.min(3,album.tracks.length),'one pick per piece, up to three');assert(catalog[number-1].genres?.length>0);continue; }
     assert.equal(n['embedded-listening'].hidden,false);
     assert.equal(n['track-list'].children.length,album.tracks.length,`album ${number} queue`);
     assert.equal(p.ids.list,album.youtubePlaylist,`album ${number} playlist`);
@@ -336,10 +336,10 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   n['album-search'].value='Miles';n['album-search'].listeners.input();assert.equal(rows(),4,'search combines with genre');
   pick('');assert.equal(rows(),4);n['album-search'].value='';n['album-search'].listeners.input();
   assert.equal(rows(),catalogNow.length);
-  // Spotify: every album but #626, #652 and #828 (not on Spotify) has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
+  // Spotify: every album but #627, #653 and #829 (not on Spotify) has an embed; switching stops YouTube, is remembered, and switching back restores the queue.
   const all=pilotAll();
   for (const [k,a] of Object.entries(all)) if (!a.noSpotify) assert.match(a.spotifyAlbum||'',/^[A-Za-z0-9]{22}$/,`spotify id for ${k}`);
-  assert.deepEqual(Object.keys(all).filter(k=>all[k].noSpotify),['626','652','828'],'only #626, #652 and #828 lack a Spotify album');
+  assert.deepEqual(Object.keys(all).filter(k=>all[k].noSpotify),['627','653','829'],'only #627, #653 and #829 lack a Spotify album');
   n['service-spotify'].click();
   assert.equal(n['spotify-listening'].hidden,false);assert.equal(n['embedded-listening'].hidden,true);assert.equal(n['mode-switch'].hidden,true);
   assert.equal(n['spotify-player'].src,`https://open.spotify.com/embed/album/${all['100'].spotifyAlbum}?utm_source=generator`);
@@ -377,12 +377,12 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   { const h=await boot(), m=h.nodes; await flush();
     assert.equal(m['home'].hidden,false,'home shown first');assert.equal(m['album-page'].hidden,true);
     const hero=m['home-hero'].children;assert.equal(hero[1].children[1].textContent,'Elvis Presley','next unheard album (1 is heard)');
-    assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 950/);
+    assert.match(hero[1].children[0].textContent,/להמשיך במסע · אלבום 2 מתוך 1001/);
     const sections=m['home-grid'].children;assert.deepEqual(sections.map(c=>c.children[0].children[0].textContent),['שנות ה־50','שנות ה־60','שנות ה־70','שנות ה־80','שנות ה־90','שנות ה־2000']);
-    const tiles=sections.flatMap(c=>c.children[1].children);assert.equal(tiles.length,950,'one tile per album on the site');
+    const tiles=sections.flatMap(c=>c.children[1].children);assert.equal(tiles.length,1001,'one tile per album on the site');
     assert(tiles[0].children.some(c=>c.className==='tile-check'),'heard album has a check');assert(!tiles[2].children.some(c=>c.className==='tile-check'));
     assert(tiles[1].className.includes('next'),'next album outlined');
-    m['home-unheard'].click();assert.equal(m['home-grid'].children.flatMap(c=>c.children[1].children).length,949,'"not heard yet" hides heard albums');
+    m['home-unheard'].click();assert.equal(m['home-grid'].children.flatMap(c=>c.children[1].children).length,999,'"not heard yet" hides heard albums');
     m['home-all'].click();m['home-search'].value='Miles';m['home-search'].listeners.input();assert.equal(m['home-grid'].children.flatMap(c=>c.children[1].children).length,4);
     m['home-search'].value='';m['home-search'].listeners.input();
     // Clicking a tile opens that album and puts it in the address; "מה זה?" returns home with the welcome box.
@@ -396,5 +396,5 @@ async function boot({broken=false, noStorage=false, hash='', phone=false, lang='
   // A shared link to an album opens that album directly.
   { const d=await boot({hash:'#/album/41'}); await flush();await flush();
     assert.equal(d.nodes['album-page'].hidden,false);assert.equal(d.nodes['home'].hidden,true);assert.equal(d.nodes['album-title'].textContent,'Getz / Gilberto'); }
-  console.log('PASS: book entries 1–950 (including the 51–100 through 901–950 batches; #626, #652 and #828 have no Spotify album; with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
+  console.log('PASS: book entries 1–1001 (including the 51–100 through 952–1001 batches, renumbered after the White Album was inserted as #134; #627, #653 and #829 have no Spotify album; with stories, genres and playlist positions), all YouTube queues or continuous album videos, track buttons, focused selection, transport, replay, errors, search, progress, the phone album drawer, the home page grid and album links, the welcome box, track lengths and the Spotify switch. Mock API only; live playback is not verified.');
 })().catch(err=>{console.error(err);process.exitCode=1});

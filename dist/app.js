@@ -12,7 +12,7 @@ const STR = {
     allGenres: "כל הז'אנרים",
     decade: d => `שנות ה־${d < 2000 ? d - 1900 : d}`,
     railTitle: (label, on, all) => `${label} · ${on} מתוך ${all} אלבומים באתר`,
-    edition: n => `${n} האלבומים הראשונים`,
+    edition: n => n >= 1001 ? `כל ${n} האלבומים` : `${n} האלבומים הראשונים`,
     listProgress: (h, n) => `האזנת ל־${h} מתוך ${n} אלבומים`,
     ofTotal: (h, n) => `${h} מתוך ${n}`,
     doneYes: '✓ האזנתי לאלבום', doneNo: 'סימון שהאזנתי',
@@ -151,6 +151,18 @@ function playableAlbum(album) {
   const a = {...album};
   if (a.fullAlbumVideo) a.tracks = a.tracks.map((t, i) => [t[0], t[1], i, t[3] || 0]);
   return a;
+}
+// One-time move of saved progress after the White Album was inserted as #134 (albums from 134 on moved up by one).
+const RENUMBER_KEY = 'album-journey-2005-renumbered-134';
+if (!readStore(RENUMBER_KEY, false)) {
+  const up = n => (Number.isInteger(n) && n >= 134 ? n + 1 : n);
+  const d = readStore(DONE_KEY, null);
+  if (Array.isArray(d)) writeStore(DONE_KEY, d.map(up));
+  const f = readStore(FOCUS_KEY, null);
+  if (f && typeof f === 'object' && !Array.isArray(f)) writeStore(FOCUS_KEY, Object.fromEntries(Object.entries(f).map(([k, v]) => [String(up(Number(k))), v])));
+  const l = readStore(LAST_KEY, null);
+  if (Number.isInteger(l)) writeStore(LAST_KEY, up(l));
+  writeStore(RENUMBER_KEY, true);
 }
 const storedDone = readStore(DONE_KEY, []);
 const done = new Set(Array.isArray(storedDone) ? storedDone.filter(Number.isInteger) : []);
