@@ -201,6 +201,25 @@ WANT.update({
     891: ['Race for the Prize', 'A Spoonful Weighs a Ton', 'The Spark That Bled', 'The Spiderbite Song', "Buggin'", 'What Is the Light?',
           'The Observer', "Waitin' for a Superman", 'Suddenly Everything Has Changed', 'The Gash', 'Feeling Yourself Disintegrate',
           'Sleeping on the Roof']})
+# 901–950 second pass
+YT_QUERY.update({910: 'U2 All That You Can\'t Leave Behind 2000 full album', 935: 'Gillian Welch Time The Revelator full album'})
+SPOTIFY_TRACKS.update({907: ['6I5eFZDHx6BWKztvq30AHH', '5vIniO9ClKFIeMG4oFy7mG'], 916: ['3AJwUDP919kvQ9QcozQPxg'], 919: ['5u3ppK9fCA5gBdFVdRywOf', '1w4xMh8oVSS5ylNtNYSwZX'],
+                       922: ['48wtZV65X2JwfkxplBnOBI', '7prAcROrmK9ZUIN5EgSXTe'], 924: ['7xb1hyP7AoQJ36iGBWotvK'], 925: ['7yXIJ2sBHsUAWjL1FqcgcH'],
+                       949: ['0NJjOFqKFSbbHM8HOke7GA', '02DNqgAg5jtr5BoaB8zmSC']})
+SPOTIFY_CHECK.update({901: ['7LKQtdC6uWxqLzSbDonFij', '4dTCMO1A5HyZ1upLiw0zAE'], 903: ['2E1q8eohZZ1BUQ7Bq5WUIY', '6pJSkIvinycPLXlH8BG8lS'],
+                      906: ['6Vp1b0Xsv8dbpBZfvkWSZG', '6HeyW5oBSlc7CrSoyJ67Fd', '4onsS61UR8uhzfRbQIyYES'], 908: ['3hGM52SddRWwI4yatyZYmb', '7McxSOyMEbKhHlCqBIaQ6w'],
+                      911: ['6PFPjumGRpZnBzqnDci6qJ', '2pKw6GERJVAD61449B1EEM'], 913: ['7y0QwysyQgSf9fyBFr6Q3x', '7qdi1B4jqHEA5NvV34haRP'],
+                      915: ['1BROiAW4CtstJEwqMds6Pu', '3cADvHRdKniF9ELCn1zbGH'], 917: ['5Vdh9NszWNh82xuzTBdNHO', '72GMOkq47rXzdAMJrjf4RV'],
+                      920: ['6t7956yu5zYf5A829XRiHC', '5xifZlByZcZecgkP7sYSoW', '04Xgxe2lRRSK9MN3xDt16s'], 933: ['2HcjLD0ButtKsQYqzoyOx9', '45X9HQfGolie9tQHYD4bD1'],
+                      934: ['2yNaksHgeMQM9Quse463b5', '5yIIxsXGdQucmqHN82xGig', '2k8KgmDp9oHrmu0MIj4XDE'], 938: ['5ElnMKBlg21XKlqAynLH9x', '4JG7AXihvAyyliHwcTDovw'],
+                      939: ['54I5tDCMjnNVWSENHg8EDH', '2NaYh6NEBGVAV9la4vKJSK'], 940: ['4WOZU9evfEO7eI6ICsoGN0', '31KW4rB15ZKePadjCPv1xw'],
+                      943: ['0f0nGqpgiu4z6wg0Mrcs8L', '2w9KjhjN2oMGhEvE15HK5T'], 945: ['4hF66CtQgAPU6LzedAQi4V', '2DV2rxp2DAqCJyBC2Zc1Fu'],
+                      947: ['3ul9GmXlTkmRMh3OciXxFR'], 950: ['2SuUATTRN6HEIrCTGH9Xes', '09atk4oR2eXg6ICTo0mdhP', '2BlL4Gv2DLPu8p58Wcmlm9']})
+WANT.update({
+    910: ['Beautiful Day', "Stuck in a Moment You Can't Get Out Of", 'Elevation', 'Walk On', 'Kite', 'In a Little While', 'Wild Honey',
+          'Peace on Earth', 'When I Look at the World', 'New York', 'Grace'],
+    935: ['Revelator', 'My First Lover', 'Dear Someone', 'Red Clay Halo', 'April the 14th Part 1', 'I Want to Sing That Rock and Roll',
+          'Elvis Presley Blues', 'Ruination Day Part 2', 'Everything Is Free', 'I Dream a Highway']})
 VIDEOS = {}  # video pages need a signed-in browser from GitHub Actions, so chapters can't be read there
 catalog = {a['n']: a for a in store.catalog()}
 have = set(store.numbers())
