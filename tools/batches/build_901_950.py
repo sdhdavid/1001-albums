@@ -7,19 +7,19 @@ from stories_901_950 import STORIES
 
 SPOTIFY = {
  901:'7LKQtdC6uWxqLzSbDonFij', 902:'33nyNThvBKPzS4NGdnWACf', 903:'2E1q8eohZZ1BUQ7Bq5WUIY', 904:'7hmZCaBzp6mVrelxW6Ckrn', 905:'0Z4pW2hvnmlTLWSGEozZ5n',
- 906:'6Vp1b0Xsv8dbpBZfvkWSZG', 907:'', 908:'3hGM52SddRWwI4yatyZYmb', 909:'6GjwtEZcfenmOf6l18N7T7', 910:'7a5U0GPoAvT3gvEY66FRuN',
+ 906:'6Vp1b0Xsv8dbpBZfvkWSZG', 907:'5C7B6Wi35TyMOQVtt2eRAV', 908:'3hGM52SddRWwI4yatyZYmb', 909:'6GjwtEZcfenmOf6l18N7T7', 910:'7a5U0GPoAvT3gvEY66FRuN',
  911:'6PFPjumGRpZnBzqnDci6qJ', 912:'7DC0pE943VR5tAKIvQXHts', 913:'7y0QwysyQgSf9fyBFr6Q3x', 914:'0hBWhJEmVyNPG2Jq71CJXz', 915:'1BROiAW4CtstJEwqMds6Pu',
- 916:'', 917:'5Vdh9NszWNh82xuzTBdNHO', 918:'1uWyROzREJNyGbLNvgABzm', 919:'', 920:'6t7956yu5zYf5A829XRiHC',
- 921:'7Ce9F1Eof9r7u9tr702H5C', 922:'', 923:'1JgEmaIjznPkIEnzd4pxou', 924:'', 925:'',
+ 916:'6ZG5lRT77aJ3btmArcykra', 917:'5Vdh9NszWNh82xuzTBdNHO', 918:'1uWyROzREJNyGbLNvgABzm', 919:'0DzNsKau960IGGNMkUFRvV', 920:'6t7956yu5zYf5A829XRiHC',
+ 921:'7Ce9F1Eof9r7u9tr702H5C', 922:'6IeqtN9QwL5LUyQw1hlzMu', 923:'1JgEmaIjznPkIEnzd4pxou', 924:'0TlTgV1uUBIeO99VVYyk8N', 925:'0KOns13HZj9l75YdF1j1Qi',
  926:'3GBnNRYsxBfEeMSMmTpJ25', 927:'2tm3Ht61kqqRZtIYsBjxEj', 928:'6eIhOXRKIOXa71UBX7WIv5', 929:'3nyA5CLiEDw7jWJ8W4Vu4J', 930:'10cCtAAEpW4JAARBL4AvRH',
  931:'4LboNEcWQGTpRj9m5AxAod', 932:'1tYlx93ShW1M8TiAVDJSKc', 933:'2HcjLD0ButtKsQYqzoyOx9', 934:'2yNaksHgeMQM9Quse463b5', 935:'55FP2ypQcghszSqylyBRbp',
  936:'4j0BDfrtgQeMLA4RaSCch4', 937:'7rIhZOxiuEieQylkZt50TN', 938:'5ElnMKBlg21XKlqAynLH9x', 939:'54I5tDCMjnNVWSENHg8EDH', 940:'4WOZU9evfEO7eI6ICsoGN0',
  941:'2hR5HQzHdxgAiAjyvGqSI3', 942:'6g6WBTqT5gE4fAcwRljpjc', 943:'0f0nGqpgiu4z6wg0Mrcs8L', 944:'0rPtXOMN42nsLDiShvGamv', 945:'4hF66CtQgAPU6LzedAQi4V',
- 946:'3zyTnmQF1J9B9z7excfhIa', 947:'3ul9GmXlTkmRMh3OciXxFR', 948:'0RHX9XECH8IVI3LNgWDpmQ', 949:'', 950:'2SuUATTRN6HEIrCTGH9Xes',
+ 946:'3zyTnmQF1J9B9z7excfhIa', 947:'3ul9GmXlTkmRMh3OciXxFR', 948:'0RHX9XECH8IVI3LNgWDpmQ', 949:'6Fhnezpt7TKojq1ufkZ5qA', 950:'2SuUATTRN6HEIrCTGH9Xes',
 }
 
 # Which discovered playlist to use when it is not the top-scoring one (index into rec['youtube']).
-PLAYLIST_CHOICE = {}
+PLAYLIST_CHOICE = {942: 1}   # #942: the top match has a malformed playlist id
 LENGTHS_FROM_PLAYLIST = {}
 RENAME = {"Sincere (Re-Cue'd)": 'Sincere', 'Re‐Hash': 'Re-Hash', '19‒2000': '19-2000', 'Ágaetis Byrjun': 'Ágætis byrjun', 'AMY': 'Amy',
           'Outro (Limp Bizkit/Chocolate Starfish And The Hot Dog Flavored Water)': 'Outro'}
